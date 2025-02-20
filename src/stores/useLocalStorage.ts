@@ -37,13 +37,17 @@ interface LocalStorageState {
   clearLocations: () => void;
 }
 
+const isClient = typeof window !== "undefined";
+
 export const useLocalStorageStore = create<LocalStorageState>((set, get) => ({
-  locations: JSON.parse(localStorage.getItem("Locations") || "[]"),
-  weatherData: JSON.parse(localStorage.getItem("weatherData") || "{}"),
-  shortWeatherData: JSON.parse(localStorage.getItem("shortweatherdata") || "{}"),
-  settings: JSON.parse(localStorage.getItem("Settings") || "null"),
+  locations: isClient ? JSON.parse(localStorage.getItem("Locations") || "[]") : [],
+  weatherData: isClient ? JSON.parse(localStorage.getItem("weatherData") || "{}") : {},
+  shortWeatherData: isClient ? JSON.parse(localStorage.getItem("shortweatherdata") || "{}") : {},
+  settings: isClient ? JSON.parse(localStorage.getItem("Settings") || "null") : null,
 
   saveLocation: (location, isCurrent) => {
+    if (!isClient) return;
+
     let updatedLocations = [...get().locations];
     
     if (isCurrent) {
@@ -74,11 +78,12 @@ export const useLocalStorageStore = create<LocalStorageState>((set, get) => ({
     
     set({ locations: updatedLocations });
     localStorage.setItem('Locations', JSON.stringify(updatedLocations));
-    return newLocation
+    return newLocation;
   },
 
+  removeLocation: (id) => {
+    if (!isClient) return;
 
-  removeLocation: (id) =>
     set((state) => {
       const updatedLocations = state.locations.filter((loc) => loc.id !== id);
       const updatedWeatherData = { ...state.weatherData };
@@ -92,33 +97,46 @@ export const useLocalStorageStore = create<LocalStorageState>((set, get) => ({
       localStorage.setItem("shortweatherdata", JSON.stringify(updatedShortWeatherData));
 
       return { locations: updatedLocations, weatherData: updatedWeatherData, shortWeatherData: updatedShortWeatherData };
-    }),
+    });
+  },
 
-  saveWeatherData: (locationId, data) =>
+  saveWeatherData: (locationId, data) => {
+    if (!isClient) return;
+    
     set((state) => {
       const updatedData = { ...state.weatherData, [locationId]: { data, timestamp: Date.now() } };
       localStorage.setItem("weatherData", JSON.stringify(updatedData));
       return { weatherData: updatedData };
-    }),
+    });
+  },
 
-  saveShortWeatherData: (locationId, code) =>
+  saveShortWeatherData: (locationId, code) => {
+    if (!isClient) return;
+    
     set((state) => {
       const updatedData = { ...state.shortWeatherData, [locationId]: { code, timestamp: Date.now() } };
       localStorage.setItem("shortweatherdata", JSON.stringify(updatedData));
       return { shortWeatherData: updatedData };
-    }),
+    });
+  },
 
-  saveSettings: (values) =>
+  saveSettings: (values) => {
+    if (!isClient) return;
+    
     set(() => {
       localStorage.setItem("Settings", JSON.stringify(values));
       return { settings: values };
-    }),
+    });
+  },
 
-  clearLocations: () =>
+  clearLocations: () => {
+    if (!isClient) return;
+    
     set(() => {
       localStorage.removeItem("weatherData");
       localStorage.removeItem("shortweatherdata");
       localStorage.removeItem("Locations");
       return { locations: [], weatherData: {}, shortWeatherData: {} };
-    }),
+    });
+  },
 }));

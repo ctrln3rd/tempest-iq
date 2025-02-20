@@ -30,19 +30,25 @@ export const useSettingsStore = create<{
   getAutoAge: () => number;
   getThreshold: () => number;
 }>((set, get) => ({
-  settings: JSON.parse(localStorage.getItem('Settings') || 'null') || defaultSettings,
+  settings: (typeof window !== 'undefined' && localStorage.getItem('Settings'))
+    ? JSON.parse(localStorage.getItem('Settings') as string)
+    : defaultSettings,
 
   updateSettings: (newSettings) => {
     set((state) => {
       const updatedSettings = { ...state.settings, ...newSettings };
-      localStorage.setItem('Settings', JSON.stringify(updatedSettings));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('Settings', JSON.stringify(updatedSettings));
+      }
       return { settings: updatedSettings };
     });
   },
 
   resetSettings: () => {
     set(() => {
-      localStorage.setItem('Settings', JSON.stringify(defaultSettings));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('Settings', JSON.stringify(defaultSettings));
+      }
       return { settings: defaultSettings };
     });
   },
