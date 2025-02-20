@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@layer base{html,body {
+  @apply bg-gray-800 text-white max-sm:text-sm overflow-x-hidden max-w-screen;
+  
+}
+}
+h1{
+  @apply flex flex-row justify-center items-center text-3xl font-light max-sm:text-2xl;
+}
+
+button:not(.no-global-style){
+  @apply bg-blue-400 text-white hover:bg-blue-600 active:bg-blue-900 cursor-pointer px-5 py-1 rounded-lg max-sm:px-2 max-sm:py-0.5;
+}
+.hide-scrollbar{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar{
+  display: none;
+}
