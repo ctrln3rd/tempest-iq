@@ -228,7 +228,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
           {locations.length > 3 && <button className="no-global-style hover:text-red-500 cursor-pointer" onClick={clearLocations}>clear</button>}
           </div>
         </div>
-        <div className="flex flex-col items-start gap-3  max-sm:items-stretch">
+        <div className="flex flex-col items-start gap-3  max-sm:items-stretch max-sm:px-3">
           {locations.map((loc: any) => (
             <div key={loc.id} className="flex flex-row gap-2  items-center justify-between min-w-[40vw] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
               <div className="flex flex-col items-start gap-1">
@@ -272,8 +272,8 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
               />
             </form>
           <div className="flex flex-col items-start gap-3">
-            <p>{searchResponse || "Locations will appear here to choose from"}</p>
-            <ul className="flex flex-col items-stretch  gap-3">
+            <p className="self-end">{searchResponse || "Locations will appear here to choose from"}</p>
+            <ul className="flex flex-col items-stretch w-[100%] gap-3">
               {searchResults.map((result) => (
                 <li key={result.id} onClick={() => handleSaveClick(result)} className="text-sm opacity-80 border-b border-white px-2">
                   {result.display_name}

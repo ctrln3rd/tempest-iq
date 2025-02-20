@@ -6,7 +6,7 @@ export async function GET(req: Request){
     const location = searchParams.get('location') || 'uknown location'
 
     return new ImageResponse(
-        <div style={{
+       <div style={{
             display:'flex',
             width: '1200px',
             height: '630px',
