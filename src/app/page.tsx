@@ -1,4 +1,3 @@
-'use client';
 import Home from "@/component/Home";
 import type { Metadata } from "next";
 
