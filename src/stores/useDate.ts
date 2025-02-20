@@ -19,7 +19,7 @@ interface DateConfigState {
     adjustZuluTime: (inputDate: string, currentDate: string) => Date;
     addDay: (inputDate: string, num: number) => Date;
     checkSameDay: (day: string, day1: string) => boolean;
-    calculateAstro: (first: Date, last: Date, currentTime: Date, isDay: boolean) => { progress: string; last: string; first: string };
+    calculateAstro: (first: string, last: string, currentTime: string, isDay: boolean) => { progress: string; last: string; first: string };
     formatSunriseSet: (inputDate: string, currentDate: string) => string;
     checkWeatherDiffExpired: (lastDate: number, hours: number) => boolean;
 }
@@ -99,8 +99,8 @@ export const useDateConfigStore = create<DateConfigState>(() => ({
                 lastHour = format(first, 'hh:mm a');
                 firstHour = format(last, 'hh:mm a');
             } else {
-                let localRise = first;
-                if (isSameDay(last, currentTime)) localRise = addDays(localRise, 1);
+                let localRise  = first;
+                if (isSameDay(last, currentTime)) localRise = String(addDays(localRise, 1));
                 percentage = (differenceInMinutes(currentTime, last) / differenceInMinutes(localRise, last)) * 100;
                 lastHour = format(first, 'hh:mm a');
                 firstHour = format(last, 'hh:mm a');

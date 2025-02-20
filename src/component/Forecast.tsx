@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 //import { getcodecondition, getcodeIconChart} from "../weatherConfig";;
 import { XAxis, YAxis, ResponsiveContainer, Line, LineChart } from 'recharts';
-import { formatday, formatLocalDate, calculateAstro} from "../dateConfig";
-import { temperatureUnit, temperatureUnitChart } from "../settingsConfig";
 import { DailyForecast, DailyChartData } from "@/types/weatherTypes";
 import { MediumIcon, SmallIcon } from "./Images";
+import { useDateConfigStore } from "@/stores/useDate";
+import { useSettingsStore } from "@/stores/useSettings";
 import { useWeatherConfigStore } from "@/stores/useWeather";
 
 
@@ -32,10 +32,12 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
     const [astroposition, setastroposition] = useState<number>(0)
 
     const {getCodeIcon, getCodeCondition } = useWeatherConfigStore();
+    const {formatDay, calculateAstro, formatLocalDate} = useDateConfigStore();
+    const {temperatureUnitChart, temperatureUnit} = useSettingsStore();
     
     useEffect(()=>{
         const calculateastro = ()=>{
-        const astrodata = calculateAstro(dailyforecast.sunrise[0], dailyforecast.sunset[0], currenttime, isDay);
+        const astrodata = calculateAstro(dailyforecast.sunrise[0], dailyforecast.sunset[0], currenttime, Boolean(isDay));
 
             setastroposition(Number(astrodata.progress))
             setastrotime({first: astrodata.first, last: astrodata.last})
@@ -66,11 +68,11 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
         const dates = dailyforecast.time;
         const precipitationDays = precipitationSum.map((value, index)=> ({index: index, prep: value})).filter(day => day.prep > 0)
         if(precipitationDays.length > 3){
-            return `wet days a head from ${formatday(dates[precipitationDays[0].index], currenttime)}`;
+            return `wet days a head from ${formatDay(dates[precipitationDays[0].index], currenttime)}`;
         }else if(precipitationDays.length > 0){
             const firstprepday = precipitationDays[0];
             const amount  = firstprepday.prep;
-            const day = formatday(dates[firstprepday.index], currenttime)
+            const day = formatDay(dates[firstprepday.index], currenttime)
             let chance ;
             if(amount < 0.3){
                 chance = 'low chance'
@@ -109,7 +111,7 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
     useEffect(()=>{
         let myarray: DailyChartData[] = [];
         dailyforecast.time.forEach((dt, index)=>{
-            const details = `${formatday(dt, currenttime)} ${temperatureUnit(dailyforecast.temperature_2m_max[index])}/${temperatureUnit(dailyforecast.temperature_2m_min[index])}`;
+            const details = `${formatDay(dt, currenttime)} ${temperatureUnit(dailyforecast.temperature_2m_max[index])}/${temperatureUnit(dailyforecast.temperature_2m_min[index])}`;
             //const temp =  Math.round(settings.temp === 'celcius' ? dt.values.temperature: toFahrenheit(dt.values.temperature));
             const temp = temperatureUnitChart(dailyforecast.temperature_2m_max[index]);
             const icon = dailyforecast.weather_code[index];
