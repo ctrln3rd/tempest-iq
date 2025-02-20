@@ -1,8 +1,7 @@
 'use client';
 import React from 'react';
-//import { getLastsettings, settingsunits , updatesettingsdata, resetSettings} from '../settingsConfig';
 import { useSettingsStore } from '@/stores/useSettings';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { SmallIcon } from './Images';
 
 interface Settings {

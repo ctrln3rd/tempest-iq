@@ -1,3 +1,4 @@
+'use client';
 import Weather from "@/component/Weather";
 import { Metadata } from "next";
 
