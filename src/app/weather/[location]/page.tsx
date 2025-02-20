@@ -6,19 +6,21 @@ interface PageParams {
 }
 
 
-export async function generateMetadata({ params }: PageParams): Promise<Metadata>{
-    const locationName = decodeURIComponent(params.location)
-   return{
-    title: `weather in ${location || 'Nairobi'}`,
-    description: `get the latest weather updates for ${location || 'Nairobi'}`,
-    openGraph: {
-        title: `weather in ${location || 'Nairobi'}`,
-        description: `get the latest weather updates for ${location || 'Nairobi'}`,
-        url: `https://weatherrush.netlify.app/weather/${encodeURIComponent(locationName)}`,
-        images: [`/api/og-image?location=${locationName}`]
-    }
-   }
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+    const locationName = decodeURIComponent(params.location);
+    
+    return {
+        title: `Weather in ${locationName || 'Nairobi'}`,
+        description: `Get the latest weather updates for ${locationName || 'Nairobi'}`,
+        openGraph: {
+            title: `Weather in ${locationName || 'Nairobi'}`,
+            description: `Get the latest weather updates for ${locationName || 'Nairobi'}`,
+            url: `https://weatherrush.netlify.app/weather/${encodeURIComponent(locationName)}`,
+            images: [`/api/og-image?location=${locationName}`],
+        }
+    };
 }
+
 
 
 export default function WeatherPage(){
