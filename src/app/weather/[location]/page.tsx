@@ -1,21 +1,15 @@
 import Weather from "@/component/Weather";
 import { Metadata } from "next";
 
-interface PageProps {
-    params: { location: string };
-}
-
-// Fix: Pass props instead of destructuring directly
-export async function generateMetadata(props: PageProps): Promise<Metadata> {
-    const { location } = props.params;
-    const locationName = decodeURIComponent(location);
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+    const locationName = decodeURIComponent(params?.location || "Nairobi");
 
     return {
-        title: `Weather in ${locationName || "Nairobi"}`,
-        description: `Get the latest weather updates for ${locationName || "Nairobi"}`,
+        title: `Weather in ${locationName}`,
+        description: `Get the latest weather updates for ${locationName}`,
         openGraph: {
-            title: `Weather in ${locationName || "Nairobi"}`,
-            description: `Get the latest weather updates for ${locationName || "Nairobi"}`,
+            title: `Weather in ${locationName}`,
+            description: `Get the latest weather updates for ${locationName}`,
             url: `https://weatherrush.netlify.app/weather/${encodeURIComponent(locationName)}`,
             images: [`/api/og-image?location=${locationName}`],
         },
@@ -25,3 +19,4 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 export default function WeatherPage() {
     return <Weather />;
 }
+
