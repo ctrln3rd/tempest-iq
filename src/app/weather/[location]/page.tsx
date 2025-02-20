@@ -5,9 +5,10 @@ interface PageProps {
     params: { location: string };
 }
 
-// Fix: Ensure correct type matching
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const locationName = decodeURIComponent(params.location);
+// Fix: Pass props instead of destructuring directly
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+    const { location } = props.params;
+    const locationName = decodeURIComponent(location);
 
     return {
         title: `Weather in ${locationName || "Nairobi"}`,
