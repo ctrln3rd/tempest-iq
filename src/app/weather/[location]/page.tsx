@@ -12,7 +12,7 @@ export async function generateMetadata({params}:{params : {location: string}}): 
             title: `Weather in ${locationName}`,
             description: `Get the latest weather updates for ${String(locationName).toLocaleUpperCase()}, summerized, easy to read and interprate`,
             url: `https://weatherrush.netlify.app/weather/${encodeURIComponent(String(locationName))}`,
-            images: [`/weather/${params.location}/open-graph-image`],
+            images: [`/weather/${params.location}/opengraph-image`],
         },
     };
 }

@@ -2,9 +2,8 @@ import { ImageResponse } from "next/og";
 
 export const runtime = 'edge';
 
-export async function GET({ params }: { params: { location: string } }) {
-    const location = decodeURIComponent(params.location); 
-
+export async function Image({ params }: { params: { location: string } }) {
+    const location = params.location || 'nairobi'
     return new ImageResponse(
        <div style={{
             display:'flex',
