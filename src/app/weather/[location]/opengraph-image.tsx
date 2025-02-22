@@ -1,9 +1,8 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = 'edge';
-export async function GET(req: Request){
-    const {searchParams} = new URL(req.url)
-    const location = searchParams.get('location') || 'uknown location'
+export async function GET({ params }: { params: { location: string } }) {
+    const location = decodeURIComponent(params.location); 
 
     return new ImageResponse(
        <div style={{

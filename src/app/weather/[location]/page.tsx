@@ -1,7 +1,7 @@
 import Weather from "@/component/Weather";
 import { Metadata } from "next";
 
-export async function generateMetadata({params}:{params : {location: any}}): Promise<Metadata> {
+export async function generateMetadata({params}:{params : {location: string}}): Promise<Metadata> {
     const locationName = decodeURIComponent(params?.location || "Nairobi");
     
 
