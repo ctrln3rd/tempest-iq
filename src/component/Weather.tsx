@@ -42,6 +42,9 @@ export default function Weather(){
         if (!selectedLocation) {
             console.error("Cannot fetch weather data for invalid location:");
             router.push('/');
+            toast.error('you must have coords',{
+                autoClose: 5000
+            })
             return;
         }
 
@@ -151,12 +154,12 @@ export default function Weather(){
             {current ? (
                 <div  style={{'--image-url': `url(${getCodeBackground(current?.weather_code, isday)})`} as React.CSSProperties}
                     className={`flex flex-col items-center gap-10 absolute top-0 left-0 w-[100%] z-0 pt-20
-                        bg-[image:var(--image-url)]`}
+                        bg-[image:var(--image-url)] max-sm:pt-[15vh]`}
                 >
-                    <div className='min-w-[40vw] h-[40vh] px-2 py-5 rounded-2xl backdrop-blur-lg flex flex-col items-end justify-end gap-4 max-sm:min-w-[80vw]'>
+                    <div className='min-w-[40vw] min-h-[40vh] px-2 py-5 rounded-2xl backdrop-blur-lg flex flex-col items-end justify-end gap-4 max-sm:min-w-[80vw]'>
                         <div className="flex flex-col gap-2 items-end">
-                            <p className="text-7xl">
-                                {temperatureUnitChart(Number(current?.temperature_2m))}<sup className="text-lg">°</sup>
+                            <p className=" flex flex-row items-start text-7xl">
+                                {temperatureUnitChart(Number(current?.temperature_2m))}<sup className="text-2xl">°</sup>
                             </p>
                             <p className="text-lg ">{getCodeCondition(current?.weather_code)}</p>
                         </div>

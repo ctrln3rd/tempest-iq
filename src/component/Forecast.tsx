@@ -160,7 +160,7 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
 
 
     return(
-        <div className='flex flex-col gap-10 bg-gray-900 rounded-t-xl px-5 pt-2 pb-20'>
+        <div className='flex flex-col gap-10 bg-gray-900 rounded-t-xl px-5 pt-2 pb-20 w-full'>
         <div className="flex flex-row justify-between items-center pb-1 border-b border-amber-50">
         <div className="flex flex-row items-center gap-1">
         <SmallIcon src='/images/forecast.png' alt="f"/>
@@ -203,7 +203,7 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
           <SmallIcon src='/images/day.png' alt="ico"/>
           <h4>day by day</h4>
           </div>
-        <div className="w-[70vw] overflow-x-auto scrollbar-hidden hide-scrollbar max-sm:w-[95vw]" id="chart-scroll">
+        <div className="w-[100%] overflow-x-auto scrollbar-hidden hide-scrollbar " id="chart-scroll">
         <div className="w-[160%] max-sm:w-[280%]">
         <ResponsiveContainer width={'100%'} height={chartheight}  {...{overflow: 'visible'}}>
             <LineChart data={dailychartdata} margin={{left: 20, top: 80, right: 90, bottom: 70}}  {...{overflow: 'visible'}}>
@@ -232,7 +232,7 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
           </div>
             <div className="flex flex-row gap-5 relative max-sm:gap-2">
             <p id='sunrise'><span>{isDay ? 'sunrise': 'sunset'}</span> <br/>{astrotime.first}</p>
-            <div className="w-[50vw] relative items-center justify-center max-sm:w-[70vw]" >
+            <div className="w-[70%] relative items-center justify-center" >
                 <div className={`w-[100%] h-1 ${isDay ? 'bg-sky-500':'bg-black'}  absolute top-[50%] left-[50%] tranform translate-[-50%] `}></div>
                 <div className={`absolute top-[50%] left-[${astroposition}%] tranform translate-y-[-50%]`}>
                 <MediumIcon src={`/images/${isDay ? 'sun' : 'star'}.png`} alt="ico" />
