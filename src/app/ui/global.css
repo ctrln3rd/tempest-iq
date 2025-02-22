@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @layer base{html,body {
-  @apply bg-gray-800 text-white overflow-x-hidden max-w-screen max-sm:text-sm;
+  @apply bg-gray-800 text-white text-famil overflow-x-hidden max-w-screen max-sm:text-sm;
   
 }
 }

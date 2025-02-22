@@ -58,11 +58,11 @@ export default function Weather(){
                     const toastId = toast.loading('Updating...');
                     const response =await fetchWeatherData();
                     response ? toast.update(toastId,{
-                        render: 'success',
+                        render: 'updated',
                         isLoading: false,
                         autoClose: 3000,
                     }) : toast.update(toastId,{
-                        render: 'error',
+                        render: 'error updating',
                         isLoading: false,
                         autoClose: 3000,
                     })
@@ -71,11 +71,11 @@ export default function Weather(){
                 const toastId = toast.loading('fetching data')
                 const response = await fetchWeatherData();
                 response ? toast.update(toastId,{
-                    render: 'success',
+                    render: 'updated',
                     isLoading: false,
                     autoClose: 3000,
                 }) : toast.update(toastId, {
-                    render: 'error',
+                    render: 'error fetching',
                     isLoading: false,
                     autoClose: 3000
                 })
@@ -135,15 +135,15 @@ export default function Weather(){
     }, [current]);
 
     const handleRefresh = async () => {
-        const toastId = toast.loading('Refreshing weather data...');
+        const toastId = toast.loading('updating...');
         const response = await fetchWeatherData();
         response ? 
         toast.update(toastId,{
-            render: 'success',
+            render: 'updated',
             isLoading: false,
             autoClose: 3000,
         }) : toast.update(toastId,{
-            render: 'error',
+            render: 'error updating',
             isLoading: false,
             autoClose: 3000,
         });

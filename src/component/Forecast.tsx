@@ -19,11 +19,7 @@ interface AstroTime{
     first: string;
     last: string;
 }
-interface CustomAxisData{
-    x: number;
-    y: number;
-    payload: {value: string;};
-}
+
 
 export default function Forecast({dailyforecast, currenttime, isDay, handleRefresh }: PropsData){
     const [dailychartdata, setdaillychartdata] = useState<any[] | undefined>(undefined);
@@ -166,7 +162,7 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
         <SmallIcon src='/images/forecast.png' alt="f"/>
         <h3>Forecast next 7 days | <span className="opacity-70">{formatLocalDate(currenttime)}</span></h3>
         </div>
-        <button onClick={handleRefresh}>refresh</button>
+        <button onClick={handleRefresh}>update</button>
         </div>
 
         <div className="flex flex-col gap-3">
