@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 
 export async function generateMetadata({params} :any): Promise<Metadata> {
-    const locationName = decodeURIComponent(params?.location || "Nairobi");
+    const locationName = decodeURIComponent(params.location || "Nairobi");
     
 
     return {
@@ -13,7 +13,7 @@ export async function generateMetadata({params} :any): Promise<Metadata> {
             title: `Weather in ${locationName}`,
             description: `Get the latest weather updates for ${locationName.toLocaleUpperCase()}, summerized, easy to read and interprate`,
             url: `https://weatherrush.netlify.app/weather/${encodeURIComponent(locationName)}`,
-            images: [`https://weatherrush.netlify.app/weather/${params.location}/opengraph-image`],
+            images: [`https://weatherrush.netlify.app/api/og?location=${encodeURIComponent(locationName)}`],
         },
     };
 }

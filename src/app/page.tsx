@@ -6,7 +6,7 @@ export const metadata: Metadata = {
    description: 'weather rush provides you with quick detailed and easily interprateble weather data for any location in the world',
    openGraph: {
       title:'weather rush',
-      images: ['opengraph.jpg'],
+      images: ['https://weatherrush.netlify.app/opengraph.jpg'],
       description: 'weather rush provides you with quick detailed and easily interprateble weather data for any location in the world'
    }
 }
