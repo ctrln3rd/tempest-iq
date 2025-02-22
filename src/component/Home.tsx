@@ -164,8 +164,8 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
     router.push(`/weather/${encodeURIComponent(location.name)}`)
   }
 
-  const handleremove = (loc: any)=>{
-    const response: any =  removeLocation(loc);
+  const handleremove = (id: string)=>{
+    const response: any =  removeLocation(id);
     if(response){
       toast.update('handleremove',{
         render: 'success',
@@ -248,7 +248,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
                 ) : (
                   <p>Location added</p>
                 )}
-               <button onClick={() => handleremove(loc)} className="text-sm justify-self-end max-sm:self-end" >Remove</button>
+               <button onClick={() => handleremove(String(loc.id))} className="text-sm justify-self-end max-sm:self-end" >Remove</button>
               </div>
              
             </div>

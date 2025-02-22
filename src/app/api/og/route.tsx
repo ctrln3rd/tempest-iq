@@ -25,10 +25,7 @@ export async function GET(req: NextRequest) {
        
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px', paddingRight: '10px'}}>
             <h1>Weather Rush</h1>
-            <div style={{display: 'flex', flexDirection: 'row' , justifyContent: 'center' , alignItems: 'center' , gap: '3px'}}>
-            <p style={{color: 'yellow'}}>{location} </p>
-            <p>weather</p>
-            </div>
+            <p><span style={{color: 'yellow'}}>{location}</span>-weather</p>
         </div>
         </div>,{
             width: 1200,

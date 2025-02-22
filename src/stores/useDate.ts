@@ -102,8 +102,8 @@ export const useDateConfigStore = create<DateConfigState>(() => ({
                 lastHour = format(first, 'hh:mm a');
                 firstHour = format(last, 'hh:mm a');
             } else {
-                let localRise  = first;
-                if (isSameDay(last, currentTime)) localRise = String(addDays(localRise, 1));
+                let localRise  = parseISO(first);
+                if (isSameDay(last, currentTime)) localRise = addDays(localRise, 1);
                 percentage = (differenceInMinutes(currentTime, last) / differenceInMinutes(localRise, last)) * 100;
                 lastHour = format(first, 'hh:mm a');
                 firstHour = format(last, 'hh:mm a');
