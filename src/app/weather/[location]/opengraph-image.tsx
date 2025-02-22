@@ -2,13 +2,8 @@ import { ImageResponse } from "next/og";
 
 export const runtime = 'edge';
 
-type PageProps = {
-    params: {
-        location: string;
-    };
-};
 
-export async function Image({ params }: PageProps) {
+export async function Image({ params }: {params: {location: string}}) {
     const location = params.location || 'nairobi'
     return new ImageResponse(
        <div style={{
