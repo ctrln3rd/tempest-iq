@@ -1,18 +1,24 @@
 import Weather from "@/component/Weather";
 import { Metadata } from "next";
 
-export async function generateMetadata({params}: {params : {location: any}}): Promise<Metadata> {
+type PageProps = {
+    params: {
+        location: string;
+    };
+};
+
+export async function generateMetadata({params}: PageProps): Promise<Metadata> {
     const locationName = decodeURIComponent(params?.location || "Nairobi");
     
 
     return {
         title: `Weather in ${locationName}`,
-        description: `Get the latest weather updates for ${String(locationName)?.toLocaleUpperCase()}, summerized, easy to read and interprate`,
+        description: `Get the latest weather updates for ${locationName.toLocaleUpperCase()}, summerized, easy to read and interprate`,
         openGraph: {
             title: `Weather in ${locationName}`,
-            description: `Get the latest weather updates for ${String(locationName).toLocaleUpperCase()}, summerized, easy to read and interprate`,
-            url: `https://weatherrush.netlify.app/weather/${encodeURIComponent(String(locationName))}`,
-            images: [`/weather/${params.location}/opengraph-image`],
+            description: `Get the latest weather updates for ${locationName.toLocaleUpperCase()}, summerized, easy to read and interprate`,
+            url: `https://weatherrush.netlify.app/weather/${encodeURIComponent(locationName)}`,
+            images: [`https://weatherrush.netlify.app/weather/${params.location}/opengraph-image`],
         },
     };
 }
