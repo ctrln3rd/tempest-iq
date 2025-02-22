@@ -42,7 +42,7 @@ export default function Weather(){
         if (!selectedLocation) {
             console.error("Cannot fetch weather data for invalid location:");
             router.push('/');
-            toast.error('you must have coords',{
+            toast.error('you must add to your locations',{
                 autoClose: 5000
             })
             return;
@@ -200,7 +200,7 @@ export default function Weather(){
             ) : (
                 <div className="flex flex-col items-center absolute top-[50%] left-[50%] transform translate-[-50%]">
                     <LargeIcon src='/images/cool.png' alt="weather" />
-                    weather data will show here
+                    {!selectedLocation ? 'no coordiates provided for the location to get the data ' :'weather data will show here'}
                 </div>
             )}
         </>

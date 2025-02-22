@@ -272,10 +272,10 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
               />
             </form>
           <div className="flex flex-col items-start gap-3">
-            <p className="self-end">{searchResponse || "Locations will appear here to choose from"}</p>
+            <p className="self-center">{searchResponse || "Locations will appear here to choose from"}</p>
             <ul className="flex flex-col items-stretch w-[100%] gap-3">
               {searchResults.map((result) => (
-                <li key={result.id} onClick={() => handleSaveClick(result)} className="text-sm opacity-80 border-b border-white px-2">
+                <li key={result.id} onClick={() => handleSaveClick(result)} className="text-sm opacity-80 border-b border-white px-2 pb-1">
                   {result.display_name}
                 </li>
               ))}

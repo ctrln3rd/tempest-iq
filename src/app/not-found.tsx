@@ -1,4 +1,15 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'not found in weather rush',
+    description: 'page does not exist but weather rush provides you with quick detailed and easily interprateble weather data for any location in the world',
+    openGraph: {
+       title:'not found in weather rush',
+       images: ['opengraph.jpg'],
+       description: 'page does not exist but weather rush provides you with quick detailed and easily interprateble weather data for any location in the world'
+    }
+ }
 
 export default function NotFound(){
     return(

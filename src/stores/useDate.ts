@@ -2,8 +2,9 @@
 
 import { create } from 'zustand';
 import { 
-    format, parseISO, isToday, isYesterday, isTomorrow, getTime, isSameHour, addHours, addMinutes, addDays, 
-    differenceInMinutes, isSameDay, formatDistanceToNow, differenceInMilliseconds 
+    format, parseISO, startOfDay, isToday, getTime, isSameHour, addHours, addMinutes, addDays, 
+    differenceInMinutes, isSameDay, formatDistanceToNow, differenceInMilliseconds, 
+    differenceInDays
 } from 'date-fns';
 
 interface DateConfigState {
@@ -36,10 +37,12 @@ export const useDateConfigStore = create<DateConfigState>(() => ({
     },
     formatDay: (inputDate, currentDate) => {
         try {
-            const filtered1 = parseISO(inputDate);
-            if (isToday(filtered1)) return 'Today';
-            if (isYesterday(filtered1)) return 'Yesterday';
-            if (isTomorrow(filtered1)) return 'Tomorrow';
+            const filtered1 = startOfDay(parseISO(inputDate));
+            const filtered = startOfDay(parseISO(currentDate));
+            const diff = differenceInDays (filtered1, filtered)
+            if(diff === 0) return 'Today';
+            if(diff === 1) return 'Tomorrow';
+            if(diff === -1) return 'Yesterday';
             return format(filtered1, 'EEE');
         } catch (err) {
             console.error(err);

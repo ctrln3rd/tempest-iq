@@ -164,7 +164,7 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
         <div className="flex flex-row justify-between items-center pb-1 border-b border-amber-50">
         <div className="flex flex-row items-center gap-1">
         <SmallIcon src='/images/forecast.png' alt="f"/>
-        <h3>Forecast next 7 days | <span>{formatLocalDate(currenttime)}</span></h3>
+        <h3>Forecast next 7 days | <span className="opacity-70">{formatLocalDate(currenttime)}</span></h3>
         </div>
         <button onClick={handleRefresh}>refresh</button>
         </div>
@@ -192,7 +192,7 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
           <div className=" bg-gray-600 px-4 py-1 rounded-lg flex flex-col items-start gap-3">
           <div className="flex flex-row items-center gap-1">
             <SmallIcon src='/images/caution.png' alt="ico"/>
-            <h5 className="opacity-75">caution</h5>
+            <h5 className="opacity-75">today's caution</h5>
             </div>
             <p>{cautionSummary()}</p>
           </div>
@@ -230,11 +230,11 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
           <SmallIcon src='/images/astro.png' alt="ico"/>
           <h4>astro track | <span className="opacity-70">{isDay ? 'day-time': 'night-time'}</span></h4>
           </div>
-            <div className="flex flex-row gap-5 relative max-sm:gap-2">
+            <div className="flex flex-row gap-5 relative max-sm:gap-2 w-full">
             <p id='sunrise'><span>{isDay ? 'sunrise': 'sunset'}</span> <br/>{astrotime.first}</p>
             <div className="w-[70%] relative items-center justify-center" >
                 <div className={`w-[100%] h-1 ${isDay ? 'bg-sky-500':'bg-black'}  absolute top-[50%] left-[50%] tranform translate-[-50%] `}></div>
-                <div className={`absolute top-[50%] left-[${astroposition}%] tranform translate-y-[-50%]`}>
+                <div className={`absolute top-[50%] tranform translate-y-[-50%]`} style={{left: `${astroposition}%`}}>
                 <MediumIcon src={`/images/${isDay ? 'sun' : 'star'}.png`} alt="ico" />
                 </div>
             </div>
