@@ -62,9 +62,7 @@ export default function Home() {
            if(!lastcurrent || calculateDistance(lastcurrent.lat, lastcurrent.lon, geo_location.latitude, geo_location.longitude)){
              const response = await  updatecurrentlocation(geo_location.latitude, geo_location.longitude)
              if(response === true){
-             toast.update('locationchanged',{
-                render: 'location changed',
-                isLoading: false,
+             toast.success('location updated',{
                 autoClose: 3000,
             })
              }
@@ -86,7 +84,7 @@ export default function Home() {
     )}); return position
      }catch(error: any){
      console.error('Geolocation error:', error)
-     if(error.code === 1) toast.info('geolocation denied allow',{
+     if(error.code === 1) toast.info('geolocation not allowed',{
       autoClose: 30000,
       closeOnClick: true,
       draggable:true,
@@ -168,7 +166,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
     const response: any =  removeLocation(id);
     if(response){
       toast.update('handleremove',{
-        render: 'success',
+        render: 'removed',
         isLoading: false,
         type: 'success',
         autoClose: 3000,
@@ -189,14 +187,14 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
       const response = await updatecurrentlocation(geolocation.latitude, geolocation.longitude);
       if(response){
         toast.update(toastId,{
-          render: 'success',
+          render: 'updated',
           isLoading: false,
           type: 'success',
           autoClose: 3000,
       })
       }else{
         toast.update(toastId,{
-          render: 'error',
+          render: 'an error occurred',
           isLoading: false,
           type: 'error',
           autoClose: 3000,
@@ -224,7 +222,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
           <h2 className="text-2xl font-medium ">{locations.length} {locations.length > 1 ? "locations" : "location"}</h2>
           <div className="flex flex-row items-end justify-center gap-3">
           {locations.length < 31 && <button onClick={() => setIsSearch(true)} className="no-global-style border-r border-amber-50 pr-2 cursor-pointer">add</button>}
-          <button className="no-global-style border-r border-amber-50 pr-2 hover:text-blue-600 cursor-progress" onClick={handleRefreshClick}>refresh</button>
+          <button className="no-global-style border-r border-amber-50 pr-2 hover:text-blue-600 cursor-progress" onClick={handleRefreshClick}>refresh current</button>
           {locations.length > 3 && <button className="no-global-style hover:text-red-500 cursor-pointer" onClick={clearLocations}>clear</button>}
           </div>
         </div>
@@ -247,7 +245,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
                 ) : (
                   <p>Location added</p>
                 )}
-               <button onClick={() => handleremove(String(loc.id))} className="text-sm justify-self-end max-sm:self-end" >Remove</button>
+               {!loc.currrent && <button onClick={() => handleremove(String(loc.id))} className="text-sm justify-self-end max-sm:self-end" >Remove</button>}
               </div>
              
             </div>

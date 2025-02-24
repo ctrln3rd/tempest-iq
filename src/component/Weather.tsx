@@ -59,10 +59,12 @@ export default function Weather(){
                     const response =await fetchWeatherData();
                     response ? toast.update(toastId,{
                         render: 'updated',
+                        type: 'success',
                         isLoading: false,
                         autoClose: 3000,
                     }) : toast.update(toastId,{
                         render: 'error updating',
+                        type: 'error',
                         isLoading: false,
                         autoClose: 3000,
                     })
@@ -72,10 +74,12 @@ export default function Weather(){
                 const response = await fetchWeatherData();
                 response ? toast.update(toastId,{
                     render: 'updated',
+                    type: 'success',
                     isLoading: false,
                     autoClose: 3000,
                 }) : toast.update(toastId, {
                     render: 'error fetching',
+                    type: 'error',
                     isLoading: false,
                     autoClose: 3000
                 })
