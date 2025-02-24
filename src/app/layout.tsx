@@ -1,18 +1,15 @@
+'use client';
 import Header from "@/component/Header";
 import  { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import './ui/global.css';
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-   other: {
-    "google-site-verification": "LUkKqWSPj-9G4-wQcv2ohaT20kb7pKJqAv9eM24m2H8"
-   }
-}
 
 export default function RootLayouts({ children }: { children: React.ReactNode }){
   return(
     <html lang="en">
+      <head>
+      <meta name="google-site-verification" content="LUkKqWSPj-9G4-wQcv2ohaT20kb7pKJqAv9eM24m2H8" />
+      </head>
       <body>
         <Header/>
         {children}
