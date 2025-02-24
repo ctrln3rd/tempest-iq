@@ -85,7 +85,7 @@ export const useLocalStorageStore = create<LocalStorageState>((set, get) => ({
     if (!isClient) return;
 
     set((state) => {
-      const updatedLocations = state.locations.filter((loc) => loc.id !== id);
+      const updatedLocations = state.locations.filter((loc) => String(loc.id) !== id);
       const updatedWeatherData = { ...state.weatherData };
       const updatedShortWeatherData = { ...state.shortWeatherData };
 

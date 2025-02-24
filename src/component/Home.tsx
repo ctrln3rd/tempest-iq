@@ -10,7 +10,7 @@ import { useWeatherConfigStore } from "@/stores/useWeather";
 import { useDateConfigStore } from "@/stores/useDate";
 import { useSettingsStore } from "@/stores/useSettings";
 import { useSelectedLocationStore } from "@/stores/useLocation";
-import { LargeIcon } from "./Images";
+import { LargeIcon, SmallIcon } from "./Images";
 interface Location {
   id: string;
   name: string;
@@ -231,10 +231,9 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
         <div className="flex flex-col items-start gap-3  max-sm:items-stretch max-sm:px-3">
           {locations.map((loc: any) => (
             <div key={loc.id} className="flex flex-row gap-2  items-center justify-between min-w-[40vw] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
-              <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1"  onClick={() => handleLocationSelect(loc)}>
               <h4 className="text-lg font-medium self-start">{loc.name} {loc.current && "(Current)"}</h4>
-              <button className="no-global-style opacity-70 hover:text-sky-600 cursor-pointer" 
-              onClick={() => handleLocationSelect(loc)}> {shortWeatherData[loc.id] ? 'full data':'get weather data'}</button>
+              <div className="opacity-70"><SmallIcon src="/images/forward.png" alt="full data"/></div>
               </div>
               <div className="flex flex-row  items-center gap-4 max-sm:flex-col max-sm:items-start max-sm:gap-2">
                 {shortWeatherData[loc.id] ? (
