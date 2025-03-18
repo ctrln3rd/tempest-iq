@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<!-- Banner -->
+![Weather Rush](https://capsule-render.vercel.app/api?type=rect&color=gradient&text=🌤️Weather%20Rush&fontSize=50&fontAlignY=45&height=100)
 
-## Getting Started
+# 🌍 Weather Rush  
+### ⚡ Fast & Accurate Weather App built with Next.js  
 
-First, run the development server:
+🚀 **Weather Rush** is a modern weather app that provides real-time weather updates for any location.  
+It is powered by:  
+✔️ **Open-Meteo API** (Weather Data)  
+✔️ **Nominatim API** (Geolocation Search)  
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌟 **Live Demo**  
+🔗 **[Try Weather Rush](https://weatherrush.netlify.app/)**  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 **Tech Stack**
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Open-Meteo API](https://img.shields.io/badge/OpenMeteo-FF9900?style=for-the-badge&logo=weather&logoColor=white)
+![Nominatim](https://img.shields.io/badge/Nominatim-0078D7?style=for-the-badge&logo=mapbox&logoColor=white)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📸 **Screenshots**
+### 🌍 Weather Page
+![Home](https://public/screenshots/Weather.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 📍 Search Locations  
+![Search](https://public/screenshots/search.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 📍 Weather Page Mobile view
+![Weather page mobile](https://public/screenshots/search.png)
 
-## Deploy on Vercel
+### 📍 Search Locations  mobile view
+![Search mobile view](https://public/screenshots/search.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📦 **Installation**
+### 1️⃣ Clone the repo  
+```sh
+git clone https://github.com/ctrlN3rd/weather-rush.git
+cd weather-rush
