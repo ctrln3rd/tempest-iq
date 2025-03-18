@@ -36,22 +36,22 @@ It is powered by:
 
 ## 📸 **Screenshots**
 ### 🌍 Weather Page
-![Home](https://public/screenshots/weather.jpg)
+![Home](/public/screenshots/weather.jpg)
 
 ### 📍 Locations  
-![locations](https://public/screenshots/locations.jpg)
+![locations](/public/screenshots/locations.jpg)
 
 ### 📍 Search Locations  
-![Search](https://public/screenshots/search.jpg)
+![Search](/public/screenshots/search.jpg)
 
 ### 📍 Weather Page Mobile view
-![Weather page mobile](https://public/screenshots/weathemr.jpg)
+![Weather page mobile](/public/screenshots/weatherm.jpg)
 
 ### 📍 Search Locations  mobile view
-![Search mobile view](https://public/screenshots/searchm.jpg)
+![Search mobile view](/public/screenshots/searchm.jpg)
 
 ### 📍 Settings 
-![Settings](https://public/screenshots/settings.jpg)
+![Settings](/public/screenshots/settings.jpg)
 ---
 
 ## 📦 **Installation**
