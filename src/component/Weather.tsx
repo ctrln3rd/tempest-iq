@@ -28,7 +28,7 @@ interface WeatherData {
     forecast: ForecastType;
 }
 
-function WeatherComponent(){
+export default function Weather(){
     const router = useRouter();
     const params = useSearchParams()
     const [current, setCurrent] = useState<CurrentWeather | null>(null);
@@ -37,15 +37,14 @@ function WeatherComponent(){
     const [isSaved, setSaved] = useState(true);
     const [iserror, setError] = useState(false);
     const [isday, setIsDay] = useState(false);
-
+    const locationId = params.get('id') || ''
+    const locationName = params.get('name') || 'Nairobi'
     //configs
     const {temperatureUnit, temperatureUnitChart, speedUnit, distanceUnit , getAutoAge}= useSettingsStore();
     const {checkWeatherDiffExpired, formatHour, formatLocalDate} = useDateConfigStore();
     const {locations, weatherData, saveWeatherData, saveShortWeatherData} = useLocalStorageStore();
     const {getCodeBackground,getCodeCondition, formatWind, formatVisibility, formatWindDirection, uvHealth} = useWeatherConfigStore();
     useEffect(() => {
-        const locationId = params.get('id') || ''
-        const locationName = params.get('name') || 'Nairobi'
         if (!locationId) {
             console.error("Cannot fetch weather data for invalid location:");
             router.push('/');
@@ -91,7 +90,7 @@ function WeatherComponent(){
 
 
         fetchLocation();
-    },[]);
+    },[locationId]);
 
     useEffect(()=>{
         const fetchWeather = async()=>{
@@ -299,8 +298,3 @@ className={`flex flex-col items-center gap-10 absolute top-0 left-0 w-[100%] z-0
     bg-[image:var(--image-url)] max-sm:pt-[15vh]`}
 >*/
 
-export default function Weather(){
-    <Suspense>
-    <WeatherComponent/>
-    </Suspense>
-}

@@ -7,7 +7,7 @@ import { useLocalStorageStore } from "@/stores/useLocalStorage";
 import { useHomeStore } from "@/stores/isHome";
 import { toast } from "react-toastify";
 
-function HeaderComponent() {
+export default function Header() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
@@ -61,8 +61,3 @@ function HeaderComponent() {
     );
 }
 
-export default function Header(){
-    <Suspense>
-        <HeaderComponent/>
-    </Suspense>
-}
