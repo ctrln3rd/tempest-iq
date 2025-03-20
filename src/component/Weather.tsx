@@ -1,6 +1,5 @@
 'use client';
-import React, { useState, useEffect } from "react";
-import Forecast from "./Forecast";
+import React, { useState, useEffect, Suspense } from "react";
 import { WeatherInsight, CautionAndActivities } from "./insights";
 import Animations from "./animations";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -29,7 +28,7 @@ interface WeatherData {
     forecast: ForecastType;
 }
 
-export default function Weather(){
+function WeatherComponent(){
     const router = useRouter();
     const params = useSearchParams()
     const [current, setCurrent] = useState<CurrentWeather | null>(null);
@@ -299,3 +298,9 @@ const requestInfo = {
 className={`flex flex-col items-center gap-10 absolute top-0 left-0 w-[100%] z-0 pt-20
     bg-[image:var(--image-url)] max-sm:pt-[15vh]`}
 >*/
+
+export default function Weather(){
+    <Suspense>
+    <WeatherComponent/>
+    </Suspense>
+}

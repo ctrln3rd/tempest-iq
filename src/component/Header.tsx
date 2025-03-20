@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { HeaderIcon, MediumIcon } from "./Images";
 import { useSettingsStore } from "@/stores/useSettings";
@@ -7,7 +7,7 @@ import { useLocalStorageStore } from "@/stores/useLocalStorage";
 import { useHomeStore } from "@/stores/isHome";
 import { toast } from "react-toastify";
 
-export default function Header() {
+function HeaderComponent() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
@@ -59,4 +59,10 @@ export default function Header() {
             </div>
         </header>
     );
+}
+
+export default function Header(){
+    <Suspense>
+        <HeaderComponent/>
+    </Suspense>
 }
