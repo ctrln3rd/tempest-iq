@@ -25,7 +25,7 @@ interface Coords {
   longitude: number;
 }
 
-function HomeComponent() {
+export default function Home() {
   const router = useRouter();
   const { locations, saveLocation, removeLocation,  shortWeatherData, clearLocations } = useLocalStorageStore();
   const {isCurrentChecked, setIsCurrentChecked, isEditMode, setEditMode, isCurrentRefresh, setCurrentRefresh} = useHomeStore();
@@ -273,10 +273,3 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
   )
 }
 
-export default function Home(){
-  return(
-    <Suspense>
-      <HomeComponent/>
-    </Suspense>
-  )
-}

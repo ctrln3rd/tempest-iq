@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { HeaderIcon, MediumIcon } from "./Images";
 import { useSettingsStore } from "@/stores/useSettings";
@@ -11,17 +11,19 @@ export default function Header() {
     //const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
-    let title = "Weather Rush";
-    //const locationName = searchParams.get("name");
+    const [locationName, setLocationName] = useState<string | null>(null);
+
+    // ✅ Use useEffect to access search params safely
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const urlParams = new URLSearchParams(window.location.search);
+            setLocationName(urlParams.get("name"));
+        }
+    }, []);
+
+    let title = locationName ? decodeURIComponent(locationName) : "Weather Rush";
+    if (pathname === "/settings") title = "Settings";
     
-   /* if (locationName) {
-        title = decodeURIComponent(locationName);
-    } else if (pathname === "/settings") {
-        title = "Settings";
-    }*/
-    if (pathname === "/settings") {
-        title = "Settings";
-    }
     const {settings, resetSettings} = useSettingsStore();
     const {clearLocations} = useLocalStorageStore();
     const {setCurrentRefresh, setEditMode} =  useHomeStore();
