@@ -28,7 +28,7 @@ interface WeatherData {
     forecast: ForecastType;
 }
 
-export default function Weather(){
+function WeatherComonent(){
     const router = useRouter();
     const params = useSearchParams()
     const [current, setCurrent] = useState<CurrentWeather | null>(null);
@@ -297,4 +297,10 @@ const requestInfo = {
 className={`flex flex-col items-center gap-10 absolute top-0 left-0 w-[100%] z-0 pt-20
     bg-[image:var(--image-url)] max-sm:pt-[15vh]`}
 >*/
-
+export default function Weather(){
+    return(
+        <Suspense>
+            <WeatherComonent/>
+        </Suspense>
+    )
+}
