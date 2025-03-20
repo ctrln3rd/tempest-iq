@@ -27,11 +27,9 @@ export async function generateMetadata(
   };
 }
 
-export default function WeatherPage({ searchParams }: { searchParams: { id?: string; name?: string } }) {
-  const locationId = searchParams?.id || "";
-  const locationName = decodeURIComponent(searchParams?.name || "Nairobi");
-
-  return <Weather locationId={locationId} locationName={locationName} />;
+export default function WeatherPage() {
+  
+  return <Weather />;
 }
 
 

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Forecast from "./Forecast";
 import { WeatherInsight, CautionAndActivities } from "./insights";
 import Animations from "./animations";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLocalStorageStore } from "@/stores/useLocalStorage";
 import { useDateConfigStore } from "@/stores/useDate";
 import { useSettingsStore } from "@/stores/useSettings";
@@ -29,9 +29,9 @@ interface WeatherData {
     forecast: ForecastType;
 }
 
-export default function Weather({ locationId, locationName }: { locationId: string; locationName: string }){
+export default function Weather(){
     const router = useRouter();
-    
+    const params = useSearchParams()
     const [current, setCurrent] = useState<CurrentWeather | null>(null);
     const [forecast, setforecast] = useState<ForecastType | null>(null);
     const [location, setLocation] = useState<Location | null>(null)
@@ -44,8 +44,9 @@ export default function Weather({ locationId, locationName }: { locationId: stri
     const {checkWeatherDiffExpired, formatHour, formatLocalDate} = useDateConfigStore();
     const {locations, weatherData, saveWeatherData, saveShortWeatherData} = useLocalStorageStore();
     const {getCodeBackground,getCodeCondition, formatWind, formatVisibility, formatWindDirection, uvHealth} = useWeatherConfigStore();
-
     useEffect(() => {
+        const locationId = params.get('id') || ''
+        const locationName = params.get('name') || 'Nairobi'
         if (!locationId) {
             console.error("Cannot fetch weather data for invalid location:");
             router.push('/');
@@ -91,11 +92,11 @@ export default function Weather({ locationId, locationName }: { locationId: stri
 
 
         fetchLocation();
-    },[locationId]);
+    },[]);
 
     useEffect(()=>{
         const fetchWeather = async()=>{
-            const cachedWeather = weatherData[String(locationId)];
+            const cachedWeather = weatherData[String(location?.id)];
             if (cachedWeather) {
                 feedData(cachedWeather.data)
                 if(checkWeatherDiffExpired(cachedWeather.timestamp, getAutoAge())) {
