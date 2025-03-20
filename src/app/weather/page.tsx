@@ -2,12 +2,14 @@ import Weather from "@/component/Weather";
 import { Metadata } from "next";
 
 interface WeatherProps {
-  searchParams?: { id?: string; name?: string };
+  searchParams: Promise<{ id?: string; name?: string }>;
 }
 
-export function generateMetadata({ searchParams }: WeatherProps): Metadata {
-  const locationId = searchParams?.id || "";
-  const locationName = searchParams?.name || "Nairobi";
+export async function generateMetadata({ searchParams }: WeatherProps): Promise<Metadata> {
+  const search = await searchParams; // Await searchParams before using it
+
+  const locationId = search?.id || "";
+  const locationName = search?.name || "Nairobi";
   const decodedLocationName = decodeURIComponent(locationName);
 
   return {
@@ -22,9 +24,12 @@ export function generateMetadata({ searchParams }: WeatherProps): Metadata {
   };
 }
 
-export default function WeatherPage({ searchParams }: WeatherProps) {
-  const locationId = searchParams?.id || "";
-  const locationName = searchParams?.name || "Nairobi";
+export default async function WeatherPage({ searchParams }: WeatherProps) {
+  const search = await searchParams; // Await searchParams before using it
+
+  const locationId = search?.id || "";
+  const locationName = search?.name || "Nairobi";
 
   return <Weather locationId={locationId} locationName={decodeURIComponent(locationName)} />;
 }
+
