@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSettingsStore } from '@/stores/useSettings';
 import { useState } from 'react';
 import { SmallIcon } from './Images';
@@ -37,7 +37,7 @@ const settingsunits : Settings_Units ={
 }
 
 
-export default function Settings(){
+function SettingsComponent(){
 
     const {settings, updateSettings, resetSettings} = useSettingsStore();
     const [showchangeCard, setshowchangeCard] = useState<boolean>(false);
@@ -133,5 +133,13 @@ export default function Settings(){
             <p id="creator">created by austine mark - <a href="https://austinemark.netlify.app">see others</a></p>
     </footer>
         </div>
+    )
+}
+
+export default function Settings(){
+    return(
+        <Suspense>
+            <SettingsComponent/>
+        </Suspense>
     )
 }

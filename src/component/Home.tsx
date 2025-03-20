@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -25,7 +25,7 @@ interface Coords {
   longitude: number;
 }
 
-export default function Home() {
+function HomeComponent() {
   const router = useRouter();
   const { locations, saveLocation, removeLocation,  shortWeatherData, clearLocations } = useLocalStorageStore();
   const {isCurrentChecked, setIsCurrentChecked, isEditMode, setEditMode, isCurrentRefresh, setCurrentRefresh} = useHomeStore();
@@ -270,5 +270,13 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
       </div>
       }
     </div>
+  )
+}
+
+export default function Home(){
+  return(
+    <Suspense>
+      <HomeComponent/>
+    </Suspense>
   )
 }
