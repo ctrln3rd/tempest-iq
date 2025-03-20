@@ -1,15 +1,18 @@
 import Weather from "@/component/Weather";
-import { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 
-interface WeatherProps {
+type Props = {
   searchParams: Promise<{ id?: string; name?: string }>;
-}
+};
 
-export async function generateMetadata({ searchParams }: WeatherProps): Promise<Metadata> {
-  const search = await searchParams; // Await searchParams before using it
-
-  const locationId = search?.id || "";
-  const locationName = search?.name || "Nairobi";
+export async function generateMetadata(
+  { searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // Wait for searchParams to resolve (because it's now a Promise)
+  const params = await searchParams;
+  const locationId = params?.id || "";
+  const locationName = params?.name || "Nairobi";
   const decodedLocationName = decodeURIComponent(locationName);
 
   return {
@@ -24,12 +27,11 @@ export async function generateMetadata({ searchParams }: WeatherProps): Promise<
   };
 }
 
-export default async function WeatherPage({ searchParams }: WeatherProps) {
-  const search = await searchParams; // Await searchParams before using it
+export default function WeatherPage({ searchParams }: { searchParams: { id?: string; name?: string } }) {
+  const locationId = searchParams?.id || "";
+  const locationName = decodeURIComponent(searchParams?.name || "Nairobi");
 
-  const locationId = search?.id || "";
-  const locationName = search?.name || "Nairobi";
-
-  return <Weather locationId={locationId} locationName={decodeURIComponent(locationName)} />;
+  return <Weather locationId={locationId} locationName={locationName} />;
 }
+
 
