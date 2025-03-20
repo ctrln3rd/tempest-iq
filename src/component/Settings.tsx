@@ -37,7 +37,7 @@ const settingsunits : Settings_Units ={
 }
 
 
-function SettingsComponent(){
+export default function Settings(){
 
     const {settings, updateSettings, resetSettings} = useSettingsStore();
     const [showchangeCard, setshowchangeCard] = useState<boolean>(false);
@@ -136,10 +136,3 @@ function SettingsComponent(){
     )
 }
 
-export default function Settings(){
-    return(
-        <Suspense>
-            <SettingsComponent/>
-        </Suspense>
-    )
-}

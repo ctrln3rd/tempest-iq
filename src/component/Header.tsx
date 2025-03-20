@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, Suspense } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { HeaderIcon, MediumIcon } from "./Images";
 import { useSettingsStore } from "@/stores/useSettings";
 import { useLocalStorageStore } from "@/stores/useLocalStorage";
@@ -8,15 +8,18 @@ import { useHomeStore } from "@/stores/isHome";
 import { toast } from "react-toastify";
 
 export default function Header() {
-    const searchParams = useSearchParams();
+    //const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
     let title = "Weather Rush";
-    const locationName = searchParams.get("name");
+    //const locationName = searchParams.get("name");
     
-    if (locationName) {
+   /* if (locationName) {
         title = decodeURIComponent(locationName);
     } else if (pathname === "/settings") {
+        title = "Settings";
+    }*/
+    if (pathname === "/settings") {
         title = "Settings";
     }
     const {settings, resetSettings} = useSettingsStore();
