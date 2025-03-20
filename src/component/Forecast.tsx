@@ -227,14 +227,14 @@ export default function Forecast({dailyforecast, currenttime, isDay, handleRefre
           <h4>astro track | <span className="opacity-70">{isDay ? 'day-time': 'night-time'}</span></h4>
           </div>
             <div className="flex flex-row gap-5 relative max-sm:gap-2 w-full">
-            <p id='sunrise'><span>{isDay ? 'sunrise': 'sunset'}</span> <br/>{astrotime.first}</p>
+            <p id='sunrise'><span className="opacity-70">{isDay ? 'sunrise': 'sunset'}</span> <br/>{astrotime.first}</p>
             <div className="w-[70%] relative items-center justify-center" >
                 <div className={`w-[100%] h-1 ${isDay ? 'bg-sky-500':'bg-black'}  absolute top-[50%] left-[50%] tranform translate-[-50%] `}></div>
                 <div className={`absolute top-[50%] tranform translate-y-[-50%]`} style={{left: `${astroposition}%`}}>
-                <MediumIcon src={`/images/${isDay ? 'sun' : 'star'}.png`} alt="ico" />
+                <SmallIcon src={`/images/${isDay ? 'sun' : 'star'}.png`} alt="ico" />
                 </div>
             </div>
-            <p id='sunset'><span>{isDay ? 'sunset': 'sunrise'}</span> <br/>{astrotime.last}</p>
+            <p id='sunset'><span className="opacity-70">{isDay ? 'sunset': 'sunrise'}</span> <br/>{astrotime.last}</p>
             </div>
         </div>
 </div>

@@ -8,6 +8,7 @@ interface Settings {
   distance: string;
   autorefreshduration: number;
   radiusthreshold: number;
+  version: string;
 }
 
 const defaultSettings: Settings = {
@@ -16,6 +17,7 @@ const defaultSettings: Settings = {
   distance: 'metres',
   autorefreshduration: 3,
   radiusthreshold: 10000,
+  version: 'v1'
 };
 
 // Zustand store for settings management

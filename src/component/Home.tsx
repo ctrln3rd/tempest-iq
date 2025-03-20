@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useLocalStorageStore } from "@/stores/useLocalStorage";
-import { useIsCurrentCheckedStore } from "@/stores/isCurrent";
+import { useHomeStore } from "@/stores/isHome";
 import { useWeatherConfigStore } from "@/stores/useWeather";
 import { useDateConfigStore } from "@/stores/useDate";
 import { useSettingsStore } from "@/stores/useSettings";
@@ -24,20 +24,11 @@ interface Coords {
   latitude: number;
   longitude: number;
 }
-interface SelectedLocation{
-  name: string;
-  lat: number;
-  lon: number;
-  id: number;
-  country: string;
-  current: boolean;
-}
-
 
 export default function Home() {
   const router = useRouter();
   const { locations, saveLocation, removeLocation,  shortWeatherData, clearLocations } = useLocalStorageStore();
-  const {isCurrentChecked, setIsCurrentChecked} = useIsCurrentCheckedStore();
+  const {isCurrentChecked, setIsCurrentChecked, isEditMode, setEditMode, isCurrentRefresh, setCurrentRefresh} = useHomeStore();
   const {getCodeCondition, getCodeIcon} = useWeatherConfigStore()
   const { getTimeDifference } = useDateConfigStore()
   const { getThreshold } = useSettingsStore();
@@ -102,8 +93,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
    );
    const location: any = saveLocation(response.data, true)
    if(location){
-      setSelectedLocation(location)
-      router.push(`/weather/${encodeURIComponent(location.name)}`) 
+      router.push(`/weather?id=${location.id}&name=${encodeURIComponent(location.name)}`) 
    }
    return true
 
@@ -119,7 +109,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
     setIsSearch(false);
     if(location){
     setSelectedLocation(location)
-    router.push(`/weather/${encodeURIComponent(location.name)}`)
+    router.push(`/weather?id=${location.id}&name=${encodeURIComponent(location.name)}`)
     }
   };
 
@@ -149,7 +139,6 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=5`
       );
       const data: Location[] = response.data;
-      console.log(response.data)
       setSearchResults(data.length > 0 ? data : []);
       setSearchResponse(data.length > 0 ? "Select one from the list" : "No locations found");
     } catch (err) {
@@ -157,29 +146,24 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
       setSearchResponse("Can't find location");
     }
   }
-  const handleLocationSelect = (location: SelectedLocation )=>{
-    setSelectedLocation(location)
-    router.push(`/weather/${encodeURIComponent(location.name)}`)
-  }
-
+  
   const handleremove = (id: string)=>{
     const response: any =  removeLocation(id);
     if(response){
       toast.update('handleremove',{
         render: 'removed',
         isLoading: false,
-        type: 'success',
         autoClose: 3000,
       })
     }else{
       toast.update('handleremove',{
         render: 'error',
         isLoading: false,
-        type: 'error',
         autoClose: 3000,
     })
     }
   }
+  useEffect(()=>{
   const handleRefreshClick = async()=>{
      const toastId = toast.loading('updating...')
      const geolocation: any = await getgeolocation();
@@ -189,14 +173,12 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
         toast.update(toastId,{
           render: 'updated',
           isLoading: false,
-          type: 'success',
           autoClose: 3000,
       })
       }else{
         toast.update(toastId,{
           render: 'an error occurred',
           isLoading: false,
-          type: 'error',
           autoClose: 3000,
       })
       }
@@ -204,11 +186,15 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
       toast.update(toastId,{
         render: 'location error',
         isLoading: false,
-        type: 'error',
         autoClose: 3000,
     })
      }
+    setCurrentRefresh(false)
   }
+  if(isCurrentRefresh){
+    handleRefreshClick()
+  }
+}, [isCurrentRefresh])
 
   useEffect(()=>{
     if(isSearch && inputRef.current){
@@ -216,23 +202,17 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
     }
   },[isSearch])
   return (
-    <div className="px-5  pt-10 flex-col max-sm:px-1">
+    <div className="flex px-5 pt-10 flex-col  gap-4 max-sm:px-1">
       <div className="locations-container">
-        <div className="flex flex-row justify-between pb-2 border-b border-amber-50 px-5 max-sm:px-2">
-          <h2 className="text-2xl font-medium ">{locations.length} {locations.length > 1 ? "locations" : "location"}</h2>
-          <div className="flex flex-row items-end justify-center gap-3">
-          {locations.length < 31 && <button onClick={() => setIsSearch(true)} className="no-global-style border-r border-amber-50 pr-2 cursor-pointer">add</button>}
-          <button className="no-global-style border-r border-amber-50 pr-2 hover:text-blue-600 cursor-progress" onClick={handleRefreshClick}>refresh current</button>
-          {locations.length > 3 && <button className="no-global-style hover:text-red-500 cursor-pointer" onClick={clearLocations}>clear</button>}
-          </div>
-        </div>
         <div className="flex flex-col items-start gap-3  max-sm:items-stretch max-sm:px-3">
           {locations.map((loc: any) => (
-            <div key={loc.id} className="flex flex-row gap-2  items-center justify-between min-w-[40vw] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
-              <div className="flex flex-col items-start gap-1"  onClick={() => handleLocationSelect(loc)}>
-              <h4 className="text-lg font-medium self-start">{loc.name} {loc.current && "(Current)"}</h4>
-              <div className="opacity-70"><SmallIcon src="/images/forward.png" alt="full data"/></div>
-              </div>
+            <div key={loc.id} className="flex flex-col gap-3  items-center justify-between min-w-[40vw] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
+              <div className="flex justify-between items-center w-full px-2 cursor-pointer" 
+              onClick={() => router.push(`/weather?id=${loc.id}&name=${encodeURIComponent(loc.name)}`) }>
+              <h3 className="flex flex-col items-start gap-1 cursor-pointer" >
+              <span className="text-lg font-medium self-start">{loc.name} {loc.current && "(Current)"}</span>
+              {/*<div className="opacity-70"><SmallIcon src="/images/forward.png" alt="full data"/></div>*/}
+              </h3>
               <div className="flex flex-row  items-center gap-4 max-sm:flex-col max-sm:items-start max-sm:gap-2">
                 {shortWeatherData[loc.id] ? (
                   <div className="flex flex-col items-end">
@@ -245,9 +225,9 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
                 ) : (
                   <p>Location added</p>
                 )}
-               {!loc.currrent && <button onClick={() => handleremove(String(loc.id))} className="text-sm justify-self-end max-sm:self-end" >Remove</button>}
+                </div>
               </div>
-             
+              {(!loc.current && isEditMode) && <button onClick={() => handleremove(String(loc.id))} className="text-sm justify-self-end self-end" >Remove</button>}
             </div>
           ))}
         </div>
@@ -270,17 +250,25 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
             </form>
           <div className="flex flex-col items-start gap-3">
             <p className="self-center">{searchResponse || "Locations will appear here to choose from"}</p>
-            <ul className="flex flex-col items-stretch w-[100%] gap-3">
-              {searchResults.map((result) => (
-                <li key={result.id} onClick={() => handleSaveClick(result)} className="text-sm opacity-80 border-b border-white px-2 pb-1">
+            <div className="flex flex-col items-stretch w-[100%] gap-3">
+              {searchResults.map((result, index) => (
+                <button key={index} onClick={() => handleSaveClick(result)} 
+                className="no-global-style text-sm opacity-80 border-b border-white px-2 pb-1 flex flex-col items-start text-start cursor-pointer">
                   {result.display_name}
-                </li>
+                </button>
               ))}
-            </ul>
+            </div>
           </div>
           <button onClick={() => setIsSearch(false)} className=" absolute bottom-2.5 self-end justify-self-end">Cancel</button>
         </div>
       )}
+      {isEditMode && 
+      <div className="fixed bottom-[10%] left-[50%] -translate-x-[50%] flex gap-3 px-4 py-4 rounded-lg bg-gray-900 shadow-xl">
+        {locations.length < 31 && <button onClick={() => setIsSearch(true)}>add location</button>}
+        <button onClick={()=> setEditMode(false)}>exit edit mode</button>
+       <button onClick={clearLocations}>clear all locations</button>
+      </div>
+      }
     </div>
   )
 }

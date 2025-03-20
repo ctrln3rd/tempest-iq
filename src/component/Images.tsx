@@ -20,6 +20,13 @@ export function SmallIcon({src, alt}: CustomIconProps){
         </div>
     )
 }
+export function HeaderIcon({src, alt}: CustomIconProps){
+    return(
+        <div className=" relative w-6 h-6">
+            <Image src={src} alt={alt} fill={true} sizes="(max-width: 70px)"/>
+        </div>
+    )
+}
 export function MediumIcon({src, alt}: CustomIconProps){
     return(
         <div className=" relative w-8 h-8">
