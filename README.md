@@ -16,6 +16,16 @@ It is powered by:
 
 ---
 
+---
+## 🌍 Features
+✅ Real-time Weather Updates 🌤️
+✅ Search Any Location 🗺️
+✅ Daily Forecasts & Insights 📅
+✅ Geolocation Support 📍
+✅ Fast & Optimized with Next.js ⚡
+
+---
+
 ## 🚀 **Tech Stack**
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
@@ -26,17 +36,22 @@ It is powered by:
 
 ## 📸 **Screenshots**
 ### 🌍 Weather Page
-![Home](https://public/screenshots/Weather.png)
+![Home](/public/screenshots/weather.jpg)
+
+### 📍 Locations  
+![locations](/public/screenshots/locations.jpg)
 
 ### 📍 Search Locations  
-![Search](https://public/screenshots/search.png)
+![Search](/public/screenshots/search.jpg)
 
 ### 📍 Weather Page Mobile view
-![Weather page mobile](https://public/screenshots/search.png)
+![Weather page mobile](/public/screenshots/weatherm.jpg)
 
 ### 📍 Search Locations  mobile view
-![Search mobile view](https://public/screenshots/search.png)
+![Search mobile view](/public/screenshots/searchm.jpg)
 
+### 📍 Settings 
+![Settings](/public/screenshots/settings.jpg)
 ---
 
 ## 📦 **Installation**
