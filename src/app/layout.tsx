@@ -1,10 +1,15 @@
 'use client';
+import { useEffect } from "react";
 import Header from "@/component/Header";
 import  { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import './ui/global.css';
+import { sendWelcomeNotification } from "../../lib/notificationService";
 
 export default function RootLayouts({ children }: { children: React.ReactNode }){
+  useEffect(() => {
+    sendWelcomeNotification();
+  }, []);
   return(
     <html lang="en">
       <head>
