@@ -1,7 +1,6 @@
 [build]
-command = 'npm run build:web'
+command = 'npm run build:ssr'
 publish = '.next'
-environment = { EXPORT_MODE = "false" }
 
 [[plugins]]
 package = '@netlify/plugin-nextjs'
