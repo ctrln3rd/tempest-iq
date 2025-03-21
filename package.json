@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:ssr": "next build",
+    "build:static": "next build && next export",
+    "deploy:netlify": "EXPORT_MODE=false npm run build:ssr",
+    "deploy:capacitor": "EXPORT_MODE=true npm run build:static && npx cap sync"
   },
   "dependencies": {
     "@capacitor/cli": "^7.1.0",
