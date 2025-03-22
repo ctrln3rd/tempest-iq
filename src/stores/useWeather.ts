@@ -21,7 +21,7 @@ const codeDetails: Record<string, WeatherCondition> = {
     codes: [0],
     icon: "clear.png",
     iconnight: "clear-night.png",
-    gradient: "bg-gradient-to-b from-yellow-400 to-orange-500 blur-md",
+    gradient: "bg-gradient-to-b from-blue-700 to-orange-500 blur-md",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black blur-md",
     animation: "",
   },

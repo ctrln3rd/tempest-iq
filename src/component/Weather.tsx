@@ -11,6 +11,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { CurrentWeather, ForecastType } from "@/types/weatherTypes";
 import { LargeIcon, SmallIcon } from "./Images";
+import FullForecast from "./forecasts";
 
 // Define TypeScript interfaces
 
@@ -37,6 +38,7 @@ function WeatherComonent(){
     const [isSaved, setSaved] = useState(true);
     const [iserror, setError] = useState(false);
     const [isday, setIsDay] = useState(false);
+    const [isFull, setFull] = useState(false)
     const locationId = params.get('id') || ''
     const locationName = params.get('name') || 'Nairobi'
     //configs
@@ -199,7 +201,6 @@ function WeatherComonent(){
         response ? toast.update(toastId,{ render: 'updated', isLoading: false, autoClose: 3000,
         }) : toast.update(toastId,{ render: 'error updating', isLoading: false, autoClose: 3000,});
     };
-
     return (
         <>
             {current ? (
@@ -243,7 +244,7 @@ function WeatherComonent(){
         {forecast && <div 
         className={`flex flex-col gap-5 items-start z-5
          ${isday ? 'bg-white/10': 'bg-gray-800/5'} backdrop-blur-md 
-         border border-white/20 shadow-lg px-5 py-4 w-[60%] rounded-2xl mb-7 max-sm:w-[90%]`}>
+         border border-white/20 shadow-lg px-5 py-4 w-[60%] rounded-2xl mb-7 max-sm:w-[90%] max-sm:max-w-[95%]`}>
             <div className="flex justify-between items-center w-full pb-2 border-b-1  border-b-white/70">
                 <div className="flex gap-2 items-center">
                 <SmallIcon src='/images/forecast.png' alt="f"/>
@@ -252,6 +253,7 @@ function WeatherComonent(){
                 </div>
                 <button onClick={handleRefresh}> update</button>
                 </div>
+            {!isFull && <div className="flex flex-col items-start gap-12">
             <div className="flex flex-col gap-5 items-start">
                 <h3>AI summaries and insights</h3>
                 <div className="flex gap-5 items-center w-full max-sm:flex-col max-sm:gap-2 max-sm:justify-center">
@@ -259,10 +261,12 @@ function WeatherComonent(){
                 </div>
                     
             </div>
-            <div className="flex flex-col items-start gap-3">
+            <div className="flex flex-col items-start gap-6">
             <CautionAndActivities weatherForecast={forecast}/>
             </div>
-            <button >full data</button>
+            </div>}
+            <button onClick={()=>setFull(!isFull)} >{isFull ? 'exit full data': 'view full data'}</button>
+            {isFull && <FullForecast forecastData={forecast}/>}
         </div>}
         </div>
             ) : (

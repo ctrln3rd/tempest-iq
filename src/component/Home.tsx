@@ -202,9 +202,10 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
     }
   },[isSearch])
   return (
-    <div className="flex px-5 pt-10 flex-col  gap-4 max-sm:px-1">
-      <div className="locations-container">
-        <div className="flex flex-col items-start gap-3  max-sm:items-stretch max-sm:px-3">
+    <div className="flex px-[10%] pt-10 pb-5 flex-col gap-4 max-sm:px-1">
+      <div className="flex flex-col items-start gap-5 px-5 max-sm:px-2 max-sm:items-center w-full">
+      <button className="self-start" onClick={()=>setIsSearch(true)}>Add location</button>
+        <div className="flex flex-col items-start gap-3 w-full max-sm:items-stretch max-sm:px-1">
           {locations.map((loc: any) => (
             <div key={loc.id} className="flex flex-col gap-3  items-center justify-between min-w-[40vw] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
               <div className="flex justify-between items-center w-full px-2 cursor-pointer" 
@@ -263,12 +264,13 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
         </div>
       )}
       {isEditMode && 
-      <div className="fixed bottom-[10%] left-[50%] -translate-x-[50%] flex gap-3 px-4 py-4 rounded-lg bg-gray-900 shadow-xl">
+      <div className="fixed bottom-[10%] left-[50%] -translate-x-[50%] flex gap-3 px-4 py-4 rounded-lg bg-gray-900/40 backdrop-blur-md shadow-xl text-nowrap">
         {locations.length < 31 && <button onClick={() => setIsSearch(true)}>add location</button>}
         <button onClick={()=> setEditMode(false)}>exit edit mode</button>
        <button onClick={clearLocations}>clear all locations</button>
       </div>
       }
+      <button className="self-start" onClick={()=>setIsSearch(true)}>Add location</button>
     </div>
   )
 }

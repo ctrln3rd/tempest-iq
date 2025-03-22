@@ -19,7 +19,7 @@ export default function Header() {
             const urlParams = new URLSearchParams(window.location.search);
             setLocationName(urlParams.get("name"));
         }
-    }, []);
+    }, [pathname]);
 
     let title = locationName ? decodeURIComponent(locationName) : "Weather Rush";
     if (pathname === "/settings") title = "Settings";
@@ -39,8 +39,7 @@ export default function Header() {
    }, [])
     
     return (
-        <header className={`flex flex-row justify-between relative px-10 pb-1 mx-4 max-sm:mx-2 max-sm:px-2 z-30 
-        ${pathname === '/' && 'border-b-1 border-b-white/70'}`}>
+        <header className='flex flex-row justify-between relative px-10 pb-1 mx-4 max-sm:mx-2 max-sm:px-2 z-30'>
             <h1>{title} {pathname === "/" && <MediumIcon src='/images/umbrella1.png' alt='i'/>}</h1>
             <div className='flex flex-row gap-10 max-sm:gap-8'>
                 {pathname !== '/' && 

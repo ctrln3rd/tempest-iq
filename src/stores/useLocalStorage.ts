@@ -48,9 +48,11 @@ export const useLocalStorageStore = create<LocalStorageState>((set, get) => ({
   saveLocation: (location, isCurrent) => {
     if (!isClient) return;
     let updatedLocations = [...get().locations];
+    const typeMap: Record<string, string> = {node: 'N', way: 'W', relation: 'R'}
+    const id = `${typeMap[String(location.osm_type).toLocaleLowerCase()]}${location.osm_id}`
     if (isCurrent) {
       updatedLocations = updatedLocations.filter((loc) => !loc.current);
-    } else if (updatedLocations.some((loc) => loc.id === location.place_id)) {
+    } else if (updatedLocations.some((loc) => loc.id === id)) {
       return;
     }
 
@@ -63,10 +65,8 @@ export const useLocalStorageStore = create<LocalStorageState>((set, get) => ({
       : location.display_name.split(',')[0]?.trim();
     const country = isCurrent ? location.address.country : location.display_name.split(',').pop()?.trim();
 
-    const typeMap: Record<string, string> = {node: 'N', way: 'W', relation: 'R'}
-
     const newLocation: Location = {
-      id: `${typeMap[String(location.osm_type).toLocaleLowerCase()]}${location.osm_id}`,
+      id: id,
       name,
       country,
       lat: location.lat,
