@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useState, useEffect, useRef, Suspense } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useLocalStorageStore } from "@/stores/useLocalStorage";
-import { useHomeStore } from "@/stores/isHome";
+import { useHomeStore } from "@/stores/useHome";
 import { useWeatherConfigStore } from "@/stores/useWeather";
 import { useDateConfigStore } from "@/stores/useDate";
 import { useSettingsStore } from "@/stores/useSettings";
-import { useSelectedLocationStore } from "@/stores/useLocation";
-import { LargeIcon, SmallIcon } from "./Images";
+import { ConditionIcon } from "./icons";
+
 interface Location {
   id: string;
   name: string;
@@ -20,10 +20,6 @@ interface Location {
   current?: boolean;
   display_name: string;
 }
-interface Coords {
-  latitude: number;
-  longitude: number;
-}
 
 export default function Home() {
   const router = useRouter();
@@ -32,13 +28,13 @@ export default function Home() {
   const {getCodeCondition, getCodeIcon} = useWeatherConfigStore()
   const { getTimeDifference } = useDateConfigStore()
   const { getThreshold } = useSettingsStore();
-  const {setSelectedLocation} = useSelectedLocationStore();
   
   const [isSearch, setIsSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Location[]>([]);
   const [searchResponse, setSearchResponse] = useState<string | null>(null);
   const [radiusT, setRadiusT] = useState<number>(4000);
+  const [isInfo, setInfo] = useState<string[]>([]);
 
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -47,6 +43,7 @@ export default function Home() {
     setRadiusT(getThreshold());
 
  const checkLocation = async () => {
+     if(locations.length >= 30) setInfo(prev=> [...prev, 'locations list is full clear locations or remove some'])
      const lastcurrent = locations.find(loc => loc.current === true);
            const geo_location: any = await getgeolocation();
            if(geo_location){
@@ -75,11 +72,7 @@ export default function Home() {
     )}); return position
      }catch(error: any){
      console.error('Geolocation error:', error)
-     if(error.code === 1) toast.info('geolocation not allowed',{
-      autoClose: 30000,
-      closeOnClick: true,
-      draggable:true,
-     });
+     if(error.code === 1) setInfo(prev =>[...prev,'geolocation not allowed allow for weather rush or on device for current location update'])
        return null
     }
 
@@ -91,7 +84,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
    const response = await axios.get(
      `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
    );
-   const location: any = saveLocation(response.data, true)
+   const location: any = saveLocation(response.data, true, false)
    if(location){
       router.push(`/weather?id=${location.id}&name=${encodeURIComponent(location.name)}`) 
    }
@@ -105,10 +98,9 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
 
 
   const handleSaveClick = (loc: Location) => {
-    const location: any = saveLocation(loc, false);
+    const location: any = saveLocation(loc, false, false);
     setIsSearch(false);
     if(location){
-    setSelectedLocation(location)
     router.push(`/weather?id=${location.id}&name=${encodeURIComponent(location.name)}`)
     }
   };
@@ -204,7 +196,13 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
   return (
     <div className="flex px-[10%] pt-10 pb-5 flex-col gap-4 max-sm:px-1">
       <div className="flex flex-col items-start gap-5 px-5 max-sm:px-2 max-sm:items-center w-full">
-      <button className="self-start" onClick={()=>setIsSearch(true)}>Add location</button>
+      {isInfo.length > 0 && <p className="flex flex-col items-start gap-1">
+        {isInfo.map((info, index)=>(
+          <span key={index}>{info}</span>
+        ))}
+        </p>}
+      {!(locations.length >=30) ? <button className="self-start" onClick={()=>setIsSearch(true)}>Add location</button> :
+      <button className="self-start" onClick={clearLocations}>clear locations</button>}
         <div className="flex flex-col items-start gap-3 w-full max-sm:items-stretch max-sm:px-1">
           {locations.map((loc: any) => (
             <div key={loc.id} className="flex flex-col gap-3  items-center justify-between min-w-[40vw] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
@@ -218,7 +216,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
                 {shortWeatherData[loc.id] ? (
                   <div className="flex flex-col items-end">
                     <div className="flex flex-row items-center">
-                      <LargeIcon src={getCodeIcon(Number(shortWeatherData[loc.id].code), false)} alt="icon" />
+                      <ConditionIcon condition={getCodeIcon(Number(shortWeatherData[loc.id].code))} isDay={false}/>
                       {getCodeCondition(Number(shortWeatherData[loc.id].code))}
                     </div>
                     <p className="opacity-70 font-light text-sm">{getTimeDifference(shortWeatherData[loc.id].timestamp)}</p>
@@ -270,7 +268,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
        <button onClick={clearLocations}>clear all locations</button>
       </div>
       }
-      <button className="self-start" onClick={()=>setIsSearch(true)}>Add location</button>
+      {(locations.length > 11 && locations.length < 28) &&<button className="self-start" onClick={()=>setIsSearch(true)}>Add location</button>}
     </div>
   )
 }

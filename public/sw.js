@@ -1,10 +1,8 @@
 const CACHE_NAME = 'weather-rush-v1';
-const URLS_TO_CACHE = [
-  '/', 
-  '/weather',
-  '/settings'
-];
+const IMAGE_CACHE_NAME = 'image-cache-v1'
 
+
+const URLS_TO_CACHE = [ "/", "/weather", "/settings", "/offline", "/_next/static/"];
 // Install event: Cache assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -17,8 +15,11 @@ self.addEventListener('install', (event) => {
 // Fetch event: Serve from cache if available, else fetch from network
 // Fetch event: Serve from cache when offline
 self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url)
+
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+    caches.match(url.pathname === '/weather' ? '/weather' : event.request).then(
+      (cachedResponse) => {
       return cachedResponse || fetch(event.request).catch(() => caches.match('/offline'));
     })
   );

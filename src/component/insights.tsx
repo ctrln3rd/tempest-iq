@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useDateConfigStore } from "@/stores/useDate";
 import { ForecastType } from "@/types/weatherTypes";
-import { SmallIcon } from "./Images";
 import { useSettingsStore } from "@/stores/useSettings";
+import { HelperIcon } from "./icons";
 
 export function WeatherInsight({ weatherForecast }: { weatherForecast: ForecastType }) {
   if (!weatherForecast) return null;
@@ -87,16 +87,16 @@ export function WeatherInsight({ weatherForecast }: { weatherForecast: ForecastT
     <>
       <div className="flex flex-col items-start gap-1">
         <div className="flex gap-1 items-center opacity-70">
-          <SmallIcon src='/images/umbrella.png' alt="ico"/>
+          <HelperIcon icon="precipitation"/>
           <h4>Precipitation</h4>
         </div>
         {todayInsight && <span>&#8594; {todayInsight}</span>}
         {weeklyInsight && <span>&#8594; {weeklyInsight}</span>}
       </div>
-      <div className="bg-white/50 w-[1px] h-full max-sm:w-full max-sm:h-[1px]" />
+      <div className="bg-white/50 w-[1px] h-full max-sm:hidden" />
       <div className="flex flex-col items-start gap-1">
         <div className="flex gap-1 items-center opacity-70">
-          <SmallIcon src='/images/umbrella.png' alt="ico"/>
+          <HelperIcon icon="temperature"/>
           <h4>Temperature</h4>
         </div>
         {todayTempInsight && <span>&#8594; {todayTempInsight}</span>}
@@ -177,7 +177,7 @@ export function CautionAndActivities({ weatherForecast}:{weatherForecast: Foreca
         {(todaycaution && todaycaution.length > 0) && 
         <div className="flex flex-col gap-1 items-start">
         <div className="flex items-center gap-1 opacity-70">
-          <SmallIcon src='/images/caution.png' alt="ico"/>
+          <HelperIcon icon="warning1"/>
          <h3>Today's Alert</h3>
         </div>
           <ul>
@@ -190,7 +190,7 @@ export function CautionAndActivities({ weatherForecast}:{weatherForecast: Foreca
         {(weeklycaution && weeklycaution.length > 0) && (
           <div className="flex flex-col gap-1 items-start">
         <div className="flex items-center gap-1 opacity-70">
-          <SmallIcon src='/images/caution.png' alt="ico"/>
+          <HelperIcon icon="warning2"/>
           <h3>This week alert</h3>
         </div>
             <ul>
@@ -202,7 +202,7 @@ export function CautionAndActivities({ weatherForecast}:{weatherForecast: Foreca
         )}
         <div className="flex flex-col gap-1 items-start">
         <div className="flex items-center gap-1 opacity-70">
-          <SmallIcon src='/images/activity.png' alt="ico"/>
+          <HelperIcon icon="activity"/>
           <h3>Activity Recommendation</h3>
         </div>
 

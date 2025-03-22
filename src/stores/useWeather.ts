@@ -4,7 +4,6 @@ import { create } from "zustand";
 export interface WeatherCondition {
   codes: number[];
   icon: string;
-  iconnight: string;
   gradient: string;
   gradientNight: string;
   animation: string;
@@ -14,86 +13,77 @@ export interface MoonPhase {
   text: string;
   image: string;
 }
+ export type Conditions = 'clear' | 'pcloudy' | 'cloudy' | 'drizzle' | 'rain' | 'fog' | 'snow' | 'thunderstorm';
 
 // Weather conditions
 const codeDetails: Record<string, WeatherCondition> = {
   clear: {
     codes: [0],
-    icon: "clear.png",
-    iconnight: "clear-night.png",
+    icon: "clear",
     gradient: "bg-gradient-to-b from-blue-700 to-orange-500 blur-md",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black blur-md",
     animation: "",
   },
   "mostly clear": {
     codes: [1],
-    icon: "clear.png",
-    iconnight: "clear-night.png",
+    icon: "clear",
     gradient: "bg-gradient-to-b from-yellow-400 to-orange-500 blur-md",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black blur-md",
     animation: "",
   },
   "partly cloudy": {
     codes: [2],
-    icon: "p-cloudy.png",
-    iconnight: "p-cloudy-night.png",
+    icon: "pcloudy",
     gradient: "bg-gradient-to-b from-blue-700 to-gray-900 blur-md",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black blur-md",
     animation: "animate-few-clouds",
   },
   cloudy: {
     codes: [3],
-    icon: "cloudy.png",
-    iconnight: "cloudy.png",
-    gradient: "bg-gradient-to-b from-gray-400 to-gray-650 blur-md",
+    icon: "cloudy",
+    gradient: "bg-gradient-to-b from-gray-400 to-gray-700 blur-md",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black blur-md",
     animation: "animate-clouds",
   },
   drizzle: {
     codes: [51, 53, 55, 56, 57],
-    icon: "rain.png",
-    iconnight: "rain.png",
-    gradient: "bg-gradient-to-b from-blue-700 to-gray-900 blur-md",
-    gradientNight: "bg-gradient-to-b from-blue-900 to-black blur-md",
-    animation: "animate-rain",
+    icon: "drizzle",
+    gradient: "bg-gradient-to-b from-gray-500 to-gray-900 blur-md",
+    gradientNight: "bg-gradient-to-b from-gray-800 to-black blur-md",
+    animation: "animate-light-rain",
   },
   rain: {
     codes: [61, 63, 65, 66, 67],
-    icon: "rain.png",
-    iconnight: "rain.png",
-    gradient: "bg-gradient-to-b from-blue-700 to-gray-900 blur-md",
-    gradientNight: "bg-gradient-to-b from-blue-900 to-black blur-md",
+    icon: "rain",
+    gradient: "bg-gradient-to-b from-gray-500 to-gray-900 blur-md",
+    gradientNight: "bg-gradient-to-b from-gray-800 to-black blur-md",
     animation: "animate-rain",
   },
   "rain showers": {
     codes: [80, 81, 82],
-    icon: "rain.png",
-    iconnight: "rain.png",
-    gradient: "bg-gradient-to-b from-blue-700 to-gray-900 blur-md",
-    gradientNight: "bg-gradient-to-b from-blue-900 to-black blur-md",
+    icon: "rain",
+    gradient: "bg-gradient-to-b from-gray-500 to-gray-900 blur-md",
+    gradientNight: "bg-gradient-to-b from-gray-800 to-black blur-md",
     animation: "animate-rain",
   },
   thunderstorm: {
     codes: [95, 96, 99],
-    icon: "thunderstorm.png",
-    iconnight: "thunderstorm.png",
-    gradient: "bg-gradient-to-b from-gray-800 to-black blur-md",
+    icon: "thunderstorm",
+    gradient: "bg-gradient-to-b from-gray-600 to-gray-900 blur-md",
     gradientNight: "bg-gradient-to-b from-black to-purple-900 blur-md",
     animation: "animate-lightning",
   },
   snow: {
     codes: [71, 73, 75, 77],
-    icon: "snow.png",
-    iconnight: "snow.png",
-    gradient: "bg-gradient-to-b from-blue-200 to-white blur-md",
-    gradientNight: "bg-gradient-to-b from-blue-500 to-gray-900 blur-md",
+    icon: "snow",
+    gradient: "bg-gradient-to-b from-blue-200 to-gray-500 blur-md",
+    gradientNight: "bg-gradient-to-b from-purple-900 to-black blur-md",
     animation: "animate-snow",
   },
   fog: {
     codes: [45, 48], // Fog Codes
-    icon: "fog.png",
-    iconnight: "fog.png",
-    gradient: "bg-gradient-to-b from-gray-600 to-gray-900 blur-md",
+    icon: "fog",
+    gradient: "bg-gradient-to-b from-blue-200 to-gray-900 blur-md",
     gradientNight: "bg-gradient-to-b from-gray-700 to-black blur-md",
     animation: "animate-fog",
   },
@@ -127,15 +117,11 @@ export const useWeatherConfigStore = create(() => ({
   },
 
   getCodeAnimation: (code: number, isDay: boolean): string => {
-    return Object.values(codeDetails).find(({ codes }) => codes.includes(code))?.[
-      "animation"
-    ] || "";
+    return Object.values(codeDetails).find(({ codes }) => codes.includes(code))?.animation || "";
   },
 
-  getCodeIcon: (code: number, isDay: boolean): string => {
-    return `/images/icons/${Object.values(codeDetails).find(({ codes }) => codes.includes(code))?.[
-      isDay ? "icon" : "iconnight"
-    ] || "clear-night.png"}`;
+  getCodeIcon: (code: number): Conditions => {
+    return Object.values(codeDetails).find(({ codes }) => codes.includes(code))?.icon as Conditions || 'cloudy'
   },
 
   getPrecipDetails: (precip: number): string => {

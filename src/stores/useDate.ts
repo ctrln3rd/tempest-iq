@@ -4,7 +4,9 @@ import { create } from 'zustand';
 import { 
     format, parseISO, startOfDay, isToday, getTime, isSameHour, addHours, addMinutes, addDays, 
     differenceInMinutes, isSameDay, formatDistanceToNow, differenceInMilliseconds, 
-    differenceInDays
+    differenceInDays,
+    getHours,
+    getMinutes
 } from 'date-fns';
 
 interface DateConfigState {
@@ -13,15 +15,9 @@ interface DateConfigState {
     formatLocalDate: (inputDate: string) => string;
     getTimeDifference: (inputTime: number) => string;
     formatHour: (inputDate: string, currentDate: string) => string;
-    formatStringTime: (inputDate: Date) => string;
-    formatZuluTime: (inputDate: Date) => string;
-    formatTime: (inputDate: Date) => number;
-    addHour: (inputDate: Date, amt: number) => Date;
-    adjustZuluTime: (inputDate: string, currentDate: string) => Date;
-    addDay: (inputDate: string, num: number) => Date;
+    isDayHour: (hour: string, sunrise: string, sunset: string) => boolean;
     checkSameDay: (day: string) => boolean;
-    calculateAstro: (first: string, last: string, currentTime: string, isDay: boolean) => { progress: string; last: string; first: string };
-    formatSunriseSet: (inputDate: string) => string;
+    calculateAstro: (sunrise: string, sunset: string, current: string, nextSunrise: string, isDay: boolean) => { progress: number; last: string; first: string };
     checkWeatherDiffExpired: (lastDate: number, hours: number) => boolean;
 }
 
@@ -75,45 +71,44 @@ export const useDateConfigStore = create<DateConfigState>(() => ({
             return '12am';
         }
     },
-    formatStringTime: (inputDate) => format(inputDate, 'hh:mm a').toLowerCase(),
-    formatZuluTime: (inputDate) => format(inputDate, 'hh:mm a').toLowerCase(),
-    formatTime: (inputDate) => getTime(inputDate),
-    addHour: (inputDate, amt) => addHours(inputDate, amt),
-    adjustZuluTime: (inputDate, currentDate) => {
-        try {
-            let offset = '-00:00';
-            if (/[+-]\d{2}:\d{2}/.test(currentDate)) {
-                offset = currentDate.slice(-6);
-            }
-            const addedHours = addHours(parseISO(inputDate), parseInt(offset.slice(0, 3)));
-            return addMinutes(addedHours, parseInt(`${offset.slice(0, 1)}${offset.slice(-2)}`));
-        } catch (err) {
-            console.error(err);
-            return new Date("2025-01-01T00:00:00");
+    isDayHour: (hour, sunrise, sunset)=> {
+        try{
+           const hourTime = getHours(parseISO(hour)) * 60 + getMinutes(parseISO(hour))
+           const sunriseTime = getHours(parseISO(sunrise)) * 60 + getMinutes(parseISO(sunrise))
+           const sunsetTime = getHours(parseISO(sunset)) * 60 + getMinutes(parseISO(sunset))
+           return hourTime >= sunriseTime && hourTime <= sunsetTime;
+        }catch(err){
+            console.error(err)
+            return false;
         }
     },
-    addDay: (inputDate, num) => addDays(parseISO(inputDate), num),
     checkSameDay: (day) => isToday(parseISO(day)),
-    calculateAstro: (first, last, currentTime, isDay) => {
+    calculateAstro: (sunrise, sunset, current, nextSunrise, isDay) => {
         try {
-            let percentage, lastHour, firstHour;
-            if (isDay) {
-                percentage = (differenceInMinutes(currentTime, first) / differenceInMinutes(last, first)) * 100;
-                lastHour = format(last, 'hh:mm a');
-                firstHour = format(first, 'hh:mm a');
-            } else {
-                let localRise = parseISO(first);
-                if (isSameDay(last, currentTime)) localRise = addDays(localRise, 1);
-                percentage = (differenceInMinutes(currentTime, last) / differenceInMinutes(localRise, last)) * 100;
-                lastHour = format(first, 'hh:mm a');
-                firstHour = format(last, 'hh:mm a');
+            const currentTime = getHours(parseISO(current)) * 60 + getMinutes(parseISO(current))
+            const sunriseTime = getHours(parseISO(sunrise)) * 60 + getMinutes(parseISO(sunrise))
+            const sunsetTime = getHours(parseISO(sunset)) * 60 + getMinutes(parseISO(sunset))
+            const nextSunriseTime = getHours(parseISO(nextSunrise)) * 60 + getMinutes(parseISO(nextSunrise))
+            let percentage = 0;
+            let lastHour = "2025-01-01T06:00:00"
+            let firstHour = "2025-01-01T18:00:00"
+            if(isDay){
+                percentage = ((currentTime -sunriseTime) / (sunsetTime -sunriseTime)) * 100
+                firstHour = sunrise
+                lastHour = sunset
+            }else{
+                const adjustedcurrentTime = currentTime < sunriseTime ? currentTime + 1440 :  currentTime
+                const adjustedSunsetTime = sunriseTime < sunsetTime ? sunsetTime - 1440 :  sunsetTime
+                percentage = ((adjustedcurrentTime - sunsetTime) / (nextSunriseTime - adjustedSunsetTime)) * 100
+                firstHour = sunset
+                lastHour  = nextSunrise
             }
-            return { progress: percentage.toFixed(2), last: lastHour, first: firstHour };
+            return { progress: Math.max(0, Math.min(100, percentage)), 
+                last: format(parseISO(lastHour), 'h:mm a').toLowerCase(), first: format(parseISO(firstHour), 'h:mm a').toLowerCase() };
         } catch (err) {
             console.error(err);
-            return { progress: '50', last: '06:00 pm', first: '06:00 am' };
+            return { progress: 50, last: '06:00 pm', first: '06:00 am' };
         }
     },
-    formatSunriseSet: (inputDate) => format(parseISO(inputDate), 'hh:mm a').toLowerCase(),
     checkWeatherDiffExpired: (lastDate, hours) => differenceInMilliseconds(Date.now(), lastDate) >= hours * 3600000,
 }));

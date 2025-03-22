@@ -13,43 +13,13 @@ export interface CurrentWeather {
 }
 
 
-
-export interface DailyForecast {
-    weather_code: number[];
-    time: string[];
-    temperature_2m_max: number[];
-    temperature_2m_min: number[];
-    sunrise: string[];
-    sunset: string[];
-    precipitation_sum: number[];
-    precipitation_probability_max: number[];
-    precipitation_hours: number [];
-    uv_index_max: number[];
-}
-
-export interface DailyChartData {
-  day: string;
-  temp: number;
-  icon: number;
-  prep: number;
-}
-
-export interface HourlyForecast {
-  weather_code: number[];
-  time: string[];
-  temperature_2m: number[];
-  precipitation: number[];
-  precipitation_probability: number[];
-
-}
-
 export interface ForecastType {
   days: string[];
   code: number[];
   maxTemperature: number[];
   minTemperature: number[];
-  sunrise?: string[];
-  sunset?: string[];
+  sunrise: string[];
+  sunset: string[];
   precipitationSum: number[];
   precipitationProbabilityMax: number[];
   precipitationHours: number [];
@@ -60,4 +30,5 @@ export interface ForecastType {
   precipitation: number[];
   precipitationProbability: number[];
   currentDate: string;
+  isDay: number;
 }

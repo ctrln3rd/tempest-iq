@@ -27,8 +27,8 @@ export default function RootLayouts({ children }: { children: React.ReactNode })
         {children}
         <ToastContainer 
         position="bottom-right"
-        toastClassName={()=> `bg-white text-black flex flex-row items-center gap-1 max-w-[50vw] min-w-[20vw] w-auto 
-          px-3 py-3 rounded-3xl max-sm:max-w-[65vw] max-sm:min-w-[40vw] mx-3 my-1 mb-10`} 
+        toastClassName={()=> `bg-white/15 text-white backdrop-blur-md border border-white/30 text-black flex flex-row items-center justify-center gap-1 max-w-[50vw] min-w-[15vw] w-auto 
+          px-3 py-3 rounded max-sm:max-w-[65vw] max-sm:min-w-[40vw] mx-3 my-1 mb-10`} 
         hideProgressBar={true} closeButton={false}/>
         <PWAInstallPrompt/>
       </body>

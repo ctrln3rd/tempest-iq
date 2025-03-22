@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { HeaderIcon, MediumIcon } from "./Images";
 import { useSettingsStore } from "@/stores/useSettings";
 import { useLocalStorageStore } from "@/stores/useLocalStorage";
-import { useHomeStore } from "@/stores/isHome";
+import { useHomeStore } from "@/stores/useHome";
 import { toast } from "react-toastify";
+import { HeaderIcon, OtherIcon } from "./icons";
 
 export default function Header() {
     //const searchParams = useSearchParams();
@@ -21,7 +21,7 @@ export default function Header() {
         }
     }, [pathname]);
 
-    let title = locationName ? decodeURIComponent(locationName) : "Weather Rush";
+    let title = locationName ? decodeURIComponent(locationName) : "weather-rush";
     if (pathname === "/settings") title = "Settings";
     
     const {settings, resetSettings} = useSettingsStore();
@@ -36,30 +36,59 @@ export default function Header() {
             toast('locations cleared', {autoClose: 5000})
             router.push('/')
         }
+        if(!navigator.onLine){
+            toast("your're offline. Using saved data", {
+                autoClose: 5000
+            })
+        }
    }, [])
+
+   const shareWeather = ()=>{
+    if( typeof window !== 'undefined'){
+        const weatherUrl= window.location.href;
+        if(navigator.canShare() && navigator.canShare({url: weatherUrl})) {
+            navigator.share({
+                title: 'Weather update Alert',
+                text: "Check out the latest weather update for my location",
+                url: weatherUrl,
+            })
+            .then(()=> console.log('share was successful'))
+            .catch((error)=> console.error('Error sharing:', error))
+
+        }
+    }else{
+        return;
+    }
+   }
     
     return (
         <header className='flex flex-row justify-between relative px-10 pb-1 mx-4 max-sm:mx-2 max-sm:px-2 z-30'>
-            <h1>{title} {pathname === "/" && <MediumIcon src='/images/umbrella1.png' alt='i'/>}</h1>
+            <h1 className="flex items-center gap-2 max-sm:gap-1.5">{title} {pathname === "/" && <OtherIcon icon="weather"/>}</h1>
             <div className='flex flex-row gap-10 max-sm:gap-8'>
+                {pathname === '/weather' && <button  onClick={shareWeather}
+                 className="no-global-style bg-none bg-transparent p-0 cursor-pointer !important"
+
+                >
+                   <HeaderIcon icon="share"/>
+                </button>}
                 {pathname !== '/' && 
                 <button onClick={() => router.push('/')} 
                 className="no-global-style bg-none bg-transparent p-0 cursor-pointer !important">
-                    <HeaderIcon src='/images/locations.png' alt='locations'/></button>}
+                    <HeaderIcon icon="locations"/></button>}
                 
                 {pathname === '/' && <button className="no-global-style bg-none bg-transparent p-0 cursor-pointer !important"
                 onClick={()=>setEditMode(true)}>
-                <HeaderIcon src='/images/edit.png' alt='locations'/>
+                <HeaderIcon icon="editlocations"/>
                 </button>}
                 {pathname === '/' && <button  onClick={()=>setCurrentRefresh(true)}
                  className="no-global-style bg-none bg-transparent p-0 cursor-pointer !important"
 
                 >
-                   <HeaderIcon src='/images/refresh.png' alt='locations'/>
+                   <HeaderIcon icon="updatelocation"/>
                 </button>}
                 <button onClick={() => router.push('/settings')} 
                 className="no-global-style bg-none p-0 cursor-pointer">
-                    <HeaderIcon src='/images/settings.png' alt='settings'/></button>
+                    <HeaderIcon icon="settings"/></button>
             </div>
         </header>
     );

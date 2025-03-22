@@ -2,7 +2,7 @@
 @tailwind utilities;
 
 html,body {
-  font-family: var(--font-inter);
+  font-family: var(--font-inter), sans-serif;
   @apply bg-gray-800 text-white overflow-x-hidden max-w-screen max-sm:text-sm;
 }
 
@@ -13,7 +13,7 @@ h1{
 button:not(.no-global-style){
   @apply bg-blue-400/15 backdrop-blur-md
    text-white hover:bg-blue-600 border
-    border-white/30 active:bg-blue-900 cursor-pointer px-5 py-1 rounded-md max-sm:px-2 max-sm:py-0.5;
+    border-white/30 active:bg-blue-900 cursor-pointer px-5 py-1.5 rounded-md max-sm:px-2 max-sm:py-1;
 }
 .hide-scrollbar{
   -ms-overflow-style: none;
@@ -29,7 +29,14 @@ button:not(.no-global-style){
     @apply fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none;
   }
   .raindrop {
-    @apply absolute bg-blue-400 opacity-50 w-1 h-4;
+    @apply absolute bg-blue-300 opacity-50 w-1 h-4;
+    animation: rain-fall 1.2s linear infinite;
+  }
+  .light-rain-container {
+    @apply fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none;
+  }
+  .light-raindrop {
+    @apply absolute bg-blue-300 opacity-50 w-0.5 h-3;
     animation: rain-fall 1.2s linear infinite;
   }
   @keyframes rain-fall {
@@ -55,7 +62,7 @@ button:not(.no-global-style){
     @apply fixed top-0 left-0 w-full h-full flex gap-4 pointer-events-none z-1;
   }
   .cloud {
-    @apply absolute bg-gray-400 opacity-90 w-52 h-32 rounded-lg blur-3xl;
+    @apply absolute bg-gray-400 opacity-90 w-52 h-32 rounded blur-2xl;
     animation: cloud-move 12s linear infinite;
   }
 
@@ -64,7 +71,7 @@ button:not(.no-global-style){
     @apply fixed top-0 left-0 w-full h-full flex gap-4 pointer-events-none z-1;
   }
   .light-cloud {
-    @apply absolute bg-gray-400 opacity-50 w-24 h-12 rounded-full blur-md;
+    @apply absolute bg-gray-400 opacity-50 w-24 h-12 rounded blur-md;
     animation: cloud-move 12s linear infinite;
   }
 
@@ -89,4 +96,18 @@ button:not(.no-global-style){
     70% {opacity: 0.8}
     80% {opacity: 0;}
   }
+
+  /*fog animation*/
+  .fog-container {
+    @apply fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none;
+  }
+  .fog {
+    @apply absolute bg-gray-400 blur-3xl opacity-75 w-[85%] h-[100%] rounded;
+    animation: snow-fall 8s linear infinite;
+  }
+  @keyframes snow-fall {
+    0% { transform: translateX(-100%)}
+    100% { transform: translateX(100vh)}
+  }
+
 }

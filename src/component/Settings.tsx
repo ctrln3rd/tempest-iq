@@ -2,7 +2,7 @@
 import React, { Suspense } from 'react';
 import { useSettingsStore } from '@/stores/useSettings';
 import { useState } from 'react';
-import { SmallIcon } from './Images';
+import { HelperIcon } from './icons';
 
 interface Settings {
     temperature: string;
@@ -89,7 +89,7 @@ export default function Settings(){
                         <button onClick={() =>handelOpenChangeCard(key)}>change</button>
                     </div>
                 ))}
-             <button onClick={handlereset} className='self-start flex flex-row'> <SmallIcon src='/images/reset.png' alt='ico'/>reset setting</button>
+             <button onClick={handlereset} className='self-start flex flex-row'> <HelperIcon icon='resetlist'/>reset setting</button>
             </div>
 
             {showchangeCard && <div className='fixed top-[50%] left-[50%] transform translate-[-50%] bg-gray-900 px-5 py-3 flex flex-col min-w-[40vw]
