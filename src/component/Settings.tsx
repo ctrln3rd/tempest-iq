@@ -1,5 +1,5 @@
 'use client';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { useSettingsStore } from '@/stores/useSettings';
 import { useState } from 'react';
 import { HelperIcon } from './icons';
@@ -77,7 +77,7 @@ export default function Settings(){
     }
 
     return(
-        <div className="flex flex-col items-start gap-5 px-20 pt-7 max-md:px-10 max-sm:px-5">
+        <div className="flex flex-col items-start gap-5 px-20 pt-7 pb-14 max-md:px-10 max-sm:px-5">
             <div className="flex flex-col items-stretch gap-2">
                 {Object.entries(settings).map(([key, value])=>(
                     <div key={key} className='flex flex-row justify-between w-[50vw] items-center px-2 py-3 shadow-md shadow-black rounded-lg
@@ -118,19 +118,15 @@ export default function Settings(){
                  allowing users to stay informed about current conditions and forecasts worldwide. 
                  Weather rush reflects a commitment to user-centric design, 
                  offering an intuitive interface and seamless navigation.<br/> <br/> For more projects showcasing my  skills, 
-                visit <a href="https://austinemark.netlify.app">my website</a> and
+                visit <button><a href="https://austinemark.netlify.app">my website</a> </button>and
                  experience the blend of functionality, aesthetics, and technical excellence firsthand.</p>
                 <h4>contributors</h4>
-                <p><span className='opacity-70'> Main Developer</span> Austine Mark</p>
+                <p><span className='opacity-70'> Main Developer</span> Austine Mark <button><a href='https://austinemark.netlify.app'>see more</a></button></p>
                 <p><span className='opacity-70'>Location features</span> nominatim via openstreetmap,org</p>
                 <p><span className='opacity-70'>Weather Data</span> open-meteo.com</p>
-                <p><span className='opacity-70'>navigation icons</span> flaticon.com</p>
-                <p><span className='opacity-70'>weather background images</span> deep ai</p>
-                <p><span className='opacity-70'>background images</span> pixabay.com</p>
-                <p><span className='opacity-70'>weather icons</span> Bas Milius via meteocons</p>
             </div>
             <footer>
-            <p id="creator">created by austine mark - <a href="https://austinemark.netlify.app">see others</a></p>
+            <p>&copy; created by austine mark</p>
     </footer>
         </div>
     )

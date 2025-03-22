@@ -29,7 +29,7 @@ export default function Header() {
     const {setCurrentRefresh, setEditMode} =  useHomeStore();
     useEffect(()=>{
         const existingVersion = settings.version || null
-        if(!existingVersion || existingVersion !== 'v1'){
+        if(!existingVersion || existingVersion !== 'v2'){
             resetSettings()
             clearLocations()
             toast('new different version: ', {autoClose: 3000})

@@ -46,7 +46,7 @@ function HelperIcon({icon}: HelperIconProps){
     }
 
     const IconComponent = iconMap[icon] || Thermometer
-    return <IconComponent className='w-6 h-6 max-sm:w-5 max-sm:h-5'/>
+    return <IconComponent className='w-7 h-7'/>
 }
 
 interface HeaderIconProps {
@@ -63,7 +63,7 @@ function HeaderIcon({icon}: HeaderIconProps){
     }
 
     const IconComponent = iconMap[icon] || Thermometer
-    return <IconComponent className='w-6 h-6 max-sm:w-5 max-sm:h-5'/>
+    return <IconComponent className='w-6 h-6'/>
 }
 
 interface ThemeIconProps {
@@ -76,7 +76,7 @@ function ThemeIcon({icon}: ThemeIconProps){
     }
 
     const IconComponent = iconMap[icon] || Thermometer
-    return <IconComponent className='w-16 h-16 max-sm:w-5 max-sm:h-5'/>
+    return <IconComponent className='w-16 h-16 max-sm:w-12 max-sm:h-12'/>
 }
 
 interface OtherIconProps {

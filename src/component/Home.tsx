@@ -50,7 +50,7 @@ export default function Home() {
            if(!lastcurrent || calculateDistance(lastcurrent.lat, lastcurrent.lon, geo_location.latitude, geo_location.longitude)){
              const response = await  updatecurrentlocation(geo_location.latitude, geo_location.longitude)
              if(response === true){
-             toast.success('location updated',{
+             toast('location updated',{
                 autoClose: 3000,
             })
              }
