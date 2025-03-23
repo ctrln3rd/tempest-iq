@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect, Suspense } from "react";
-import { WeatherInsight } from "./insights";
-import { CautionAndActivities } from "./cautionInsights";
+import { WeatherInsight, CautionAndActivities } from "./insights";
 import Animations from "./animations";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocalStorageStore } from "@/stores/useLocalStorage";
