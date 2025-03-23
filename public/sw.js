@@ -16,7 +16,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
   // Handle navigation requests (page loads)
-  if (event.request.mode === 'navigate') {
+  /*if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
@@ -38,7 +38,7 @@ self.addEventListener('fetch', (event) => {
         })
     );
     return;
-  }
+  }*/
 
   // Serve cached responses for static assets or fetch from network
   event.respondWith(
