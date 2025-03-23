@@ -11,61 +11,60 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch event: Serve cached pages first
+// Fetch event: Preserve query parameters when serving cached pages
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Handle navigation requests
+  // Handle navigation requests (HTML pages)
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
+      caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
         if (cachedResponse) {
           console.log('[SW] Serving cached page:', event.request.url);
-          return cachedResponse; // ✅ Serve cached page first
+          return cachedResponse; // ✅ Serve cached page from cache
         }
-
         return fetch(event.request)
           .then((response) => {
             if (!response || response.status !== 200) return response;
-
             const responseClone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(url.pathname, responseClone); // Cache the base page
+            caches.open('weather-rush-v1').then((cache) => {
+              cache.put(event.request, responseClone); // ✅ Dynamically cache pages
             });
-
             return response;
           })
-          .catch(async () => {
+          .catch(() => {
             console.log('[SW] Page not found in cache, serving /offline');
-            return caches.match('/offline'); // Only fallback if not cached
+            return caches.match('/offline'); // 🔥 Fixes infinite redirect issue
           });
       })
     );
     return;
   }
 
-  // Handle static assets caching
+  // Handle static assets (_next/static and other files)
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       return cachedResponse || fetch(event.request)
         .then((response) => {
           if (!response || response.status !== 200) return response;
-
           const responseClone = response.clone();
           if (url.pathname.startsWith('/_next/static/')) {
-            caches.open(STATIC_CACHE_NAME).then((cache) => {
+            caches.open('static-cache-v1').then((cache) => {
               cache.put(event.request, responseClone);
             });
           }
-
           return response;
         })
-        .catch(() => caches.match('/offline')); // Fallback for missing static assets
+        .catch(() => {
+          console.log(`[SW] Asset not found in cache: ${event.request.url}`);
+          return caches.match('/offline');
+        });
     })
   );
 });
 
-// Activate event: Clean old caches
+
+// Activate event: Clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
