@@ -24,7 +24,7 @@ export default function RootLayouts({ children }: { children: React.ReactNode })
       <head>
       <meta name="google-site-verification" content="LUkKqWSPj-9G4-wQcv2ohaT20kb7pKJqAv9eM24m2H8" />
       </head>
-      <body className={`${settings.fontsize === 'detailed' ? 'text-lg max-sm:text-base' : 'text-base max-sm:text-sm'}`}>
+      <body className={`${settings.fontsize === 'detailed' ? 'text-lg max-sm:text-sm' : 'text-base max-sm:text-xs'}`}>
         <Header/>
         {children}
         <ToastContainer 
