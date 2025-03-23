@@ -7,25 +7,27 @@ export const runtime = 'edge';
 export async function GET(req: NextRequest) {
    const {searchParams} = new URL(req.url)
    const location = searchParams.get('location') || 'Nairobi'
-   const imageUrl = 'https://weatherrush.netlify.app/opengraph-plain.jpg'
+   const imageUrl = 'https://weatherrush.netlify.app/logo512.png'
     return new ImageResponse(
        <div style={{
             display:'flex',
-            flexDirection: 'column',
+            flexDirection: 'row',
             width: '1200px',
             height: '630px',
-            backgroundColor: '#1e2939',
+            backgroundColor: '#767171',
             color: 'white',
-            alignItems: 'flex-end',
+            alignItems: 'center',
             justifyContent: 'center',
             fontSize: '50px',
             fontWeight: 'bold',
+            paddingInline: '10px',
+            gap: '10px'
         }}> 
-        <img src={imageUrl} style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover' , zIndex: 0}} alt='background image'/>
+        <img src={imageUrl} style={{width: '30%', height: '30%'}} alt='background image'/>
        
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px', paddingRight: '10px'}}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px'}}>
             <h1>Weather Rush</h1>
-            <p><span style={{color: 'yellow'}}>{location}</span>-weather</p>
+            <h3>weather for <span style={{color: 'wheat', opacity: 0.8}}>{location}</span>-</h3>
         </div>
         </div>,{
             width: 1200,

@@ -33,6 +33,9 @@ const settingsunits : Settings_Units ={
     },
     radiusthreshold: {
         units: [1000, 2000, 5000, 10000, 20000, 40000, 80000]
+    },
+    fontsize: {
+        units: ['sleek', 'detailed']
     }
 }
 

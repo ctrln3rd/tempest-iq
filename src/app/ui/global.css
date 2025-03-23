@@ -3,8 +3,9 @@
 
 html,body {
   font-family: var(--font-inter), sans-serif;
-  @apply bg-gray-800 text-white overflow-x-hidden max-w-screen max-sm:text-sm;
+  @apply bg-gray-800 text-white overflow-x-hidden max-w-screen;
 }
+
 
 h1{
   @apply flex flex-row justify-center items-center text-3xl font-light max-sm:text-2xl;
@@ -24,12 +25,24 @@ button:not(.no-global-style){
 }
 
 @layer utilities {
+  .precipitation-insight span{
+    @apply font-semibold;
+  }
+  .temperature-insight span{
+    @apply font-semibold;
+  }
+  .caution-insight span{
+    @apply font-semibold;
+  }
+  .activity-insight span{
+    @apply opacity-90;
+  }
   /* Rain Animation */
   .rain-container {
     @apply fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none;
   }
   .raindrop {
-    @apply absolute bg-blue-300 opacity-50 w-1 h-4;
+    @apply absolute bg-blue-300 opacity-50 w-0.5 h-4;
     animation: rain-fall 1.2s linear infinite;
   }
   .light-rain-container {
@@ -62,7 +75,7 @@ button:not(.no-global-style){
     @apply fixed top-0 left-0 w-full h-full flex gap-4 pointer-events-none z-1;
   }
   .cloud {
-    @apply absolute bg-gray-400 opacity-90 w-52 h-32 rounded blur-2xl;
+    @apply absolute bg-gray-500 opacity-80 w-[65%] h-[45%] rounded-full blur-3xl max-sm:blur-2xl;
     animation: cloud-move 12s linear infinite;
   }
 
@@ -71,7 +84,7 @@ button:not(.no-global-style){
     @apply fixed top-0 left-0 w-full h-full flex gap-4 pointer-events-none z-1;
   }
   .light-cloud {
-    @apply absolute bg-gray-400 opacity-50 w-24 h-12 rounded blur-md;
+    @apply absolute bg-gray-400 opacity-70 w-[30%] h-[25%] rounded-full blur-2xl max-sm:blur-xl;
     animation: cloud-move 12s linear infinite;
   }
 
@@ -102,7 +115,7 @@ button:not(.no-global-style){
     @apply fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none;
   }
   .fog {
-    @apply absolute bg-gray-400 blur-3xl opacity-75 w-[85%] h-[100%] rounded;
+    @apply absolute bg-gray-300 blur-[300px] max-sm:blur-[200px] opacity-65 w-[90%] h-[100%] rounded-full;
     animation: snow-fall 8s linear infinite;
   }
   @keyframes snow-fall {

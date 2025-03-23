@@ -5,216 +5,195 @@ import { ForecastType } from "@/types/weatherTypes";
 import { useSettingsStore } from "@/stores/useSettings";
 import { HelperIcon } from "./icons";
 
-export function WeatherInsight({ weatherForecast }: { weatherForecast: ForecastType }) {
-  if (!weatherForecast) return null;
-  const { precipitationProbability, precipitation, precipitationSum, temperature, maxTemperature, minTemperature, hours, days, currentDate } = weatherForecast;
 
-  const { formatHour, formatDay } = useDateConfigStore();
-  const { temperatureUnit } = useSettingsStore();
+
+const generatePrecipitationTitle = ({hours, precipitationProbability, precipitationSum, precipitation } : 
+  Pick<ForecastType, 'precipitationProbability' | 'hours' | 'precipitation' | 'precipitationSum'>) => {
+  const rainNow = precipitationProbability[0] > 50 && precipitation[0] > 0; // Is it raining now?
+  const rainToday = hours.some((_, i) => i < 24 && precipitation[i] > 0 && precipitationProbability[i] > 50 ); // Any rain today?
+  const rainThisWeek = precipitationSum.some((sum, i) => i > 0 && sum > 1); // Rain in coming days?
+  if (rainNow) return "Rain Now";
+  if (rainToday) return "Rain Coming";
+  if (rainThisWeek) return "Rainy Week Ahead";
+  return "Dry Days Ahead";
+};
+
+const generatePrecipitationInsight = (forecast : Pick<ForecastType, 'hours' |'days' | 'precipitation' | 'precipitationSum' |'currentDate' | 'precipitationProbability' | 'temperature'>,
+  formatHour: (hour: string, current: string) => string ,
+  formatDay: (day: string, current: string) => string
+) => {
+  const { days, hours, precipitation, precipitationProbability, currentDate, precipitationSum, temperature} = forecast
 
   const getSurely = (prob: number) => {
-    if (prob > 80) return "expected";
+    if (prob > 80) return "expect";
     if (prob > 50 && prob < 80) return "possible";
     return "low chance";
   };
+  const getPrecipitationType = (temp: number) => {
+    if (temp <= 0) return "snow";
+    if (temp > 0 && temp < 3) return "freezing rain";
+    return "rain"; // Default to rain for warmer temperatures
+  };
 
-  const [todayInsight, setTodayInsight] = useState<string | null>(null);
-  const [todayTempInsight, setTempInsight] = useState<string | null>(null);
-  const [weeklyInsight, setWeeklyInsight] = useState<string | null>(null);
-  const [weeklyTempInsight, setWeeklyTempInsight] = useState<string | null>(null);
+  let nextRainHour = precipitation.findIndex((amt) => amt > 0);
+  let nextRainTime = nextRainHour !== -1 ? formatHour(hours[nextRainHour], currentDate) : null;
+  let upcomingRainDays = days
+  .map((day, i) => ((precipitationSum[i] > 1 && i !== 0) ? formatDay(day, currentDate) : null))
+  .filter(Boolean);
+  let nextRainDay = upcomingRainDays.length > 0 ? upcomingRainDays[0] : null;
+  let isRainingNow = precipitation[0] > 0 && precipitationProbability[0] > 50;
+  let rainEndHour = 0;
 
-  useEffect(() => {
-    let todayInsight = "";
-    let weeklyInsight = "Dry days ahead";
-    let todaysTempInsight = "";
-    let weeklyTempInsight = "";
-
-    /** Today's Rain Insights **/
-    const isRainingNow = precipitation[0] > 0 && precipitationProbability[0] > 50;
-    let rainEndHour = 0;
-
-    if (isRainingNow) {
-      while (rainEndHour < hours.length - 1 && precipitation[rainEndHour + 1] > 0) {
-        rainEndHour++;
-      }
-      const rainEndTime = formatHour(hours[rainEndHour], currentDate);
-      todayInsight = `Rain expected until ${rainEndTime}`;
-    } else {
-      let nextRainHour = precipitation.findIndex((amt) => amt > 0);
-      if (nextRainHour !== -1) {
-        const prob = precipitationProbability[nextRainHour];
-        const time = formatHour(hours[nextRainHour], currentDate);
-        rainEndHour = nextRainHour;
-        while (rainEndHour < hours.length - 1 && precipitation[rainEndHour + 1] > 0) {
-          rainEndHour++;
-        }
-        const duration = rainEndHour - nextRainHour;
-        todayInsight = `${getSurely(prob)} rain around ${time} ${duration > 1 ? `for ${duration} hours` : ""}`;
-      }
+  if (isRainingNow) {
+    while (rainEndHour < hours.length - 1 && precipitation[rainEndHour + 1] > 0) {
+      rainEndHour++;
     }
+    const rainEndTime = formatHour(hours[rainEndHour], currentDate);
+  return (
+    <p> {getSurely(precipitationProbability[0])} <span>{getPrecipitationType(temperature[0])}</span> to continue {rainEndHour < 18 ?
+      <>untill {rainEndTime}</> : 'almost all day'
+    }, {upcomingRainDays.length > 1  && <>and possibly to continue in the coming days , {upcomingRainDays.length < 4 && <span> 
+          {upcomingRainDays.join(", ")}</span>}</>}</p>
+  );
+  }
 
-    /** Today's Temperature Insights **/
-    let maxTemp = Math.max(...temperature);
-    let minTemp = Math.min(...temperature);
-    let hottestHour = formatHour(hours[temperature.indexOf(maxTemp)], currentDate);
-    let coldestHour = formatHour(hours[temperature.indexOf(minTemp)], currentDate);
-
-    todaysTempInsight = `Hottest at ${hottestHour} (${temperatureUnit(maxTemp)}), coldest at ${coldestHour} (${temperatureUnit(minTemp)})`;
-
-    /** Weekly Insights **/
-    const upComingRainyDays = days.filter((_, i) => precipitationSum[i] > 1);
+  if (nextRainHour !== -1) {
+      return (
+        <p> {getSurely(precipitation[nextRainHour])} <span>{getPrecipitationType(temperature[nextRainHour])}</span> around <span>
+          {nextRainTime}</span>, {upcomingRainDays.length > 1  && <> and possibly to continue in the coming days on, {upcomingRainDays.length < 4 && <span>
+              {upcomingRainDays.join(", ")}</span>}</>} </p>
+      );
+  }
     
-    // Calculate average daily temperature
-    const avgTemperatures = days.map((_, i) => (maxTemperature[i] + minTemperature[i]) / 2);
-    let hottestDay = formatDay(days[avgTemperatures.indexOf(Math.max(...avgTemperatures))], currentDate);
-    let coldestDay = formatDay(days[avgTemperatures.indexOf(Math.min(...avgTemperatures))], currentDate);
 
-    if (upComingRainyDays.length > 0) {
-      weeklyInsight = upComingRainyDays.length > 2
-        ? `Wet days ahead from ${formatDay(upComingRainyDays[0], currentDate)}`
-        : `Possible rain on ${formatDay(upComingRainyDays[0], currentDate)}`;
-    }
-
-    weeklyTempInsight = `Hottest day: ${hottestDay} (${temperatureUnit(Math.max(...avgTemperatures))}), Coldest day: ${coldestDay} (${temperatureUnit(Math.min(...avgTemperatures))})`;
-
-    setTodayInsight(todayInsight);
-    setWeeklyInsight(weeklyInsight);
-    setTempInsight(todaysTempInsight);
-    setWeeklyTempInsight(weeklyTempInsight);
-  }, []);
+  if (nextRainDay) {
+    if(upcomingRainDays.length > 3){
+      return (
+        <p>
+          Dry today, wet days are coming.
+        </p>
+      )
+    }else{
+    return (
+      <p>
+        Dry today, but <span>{upcomingRainDays.join(", ")}</span> is the next wet ${upcomingRainDays.length > 1 ? 'days' : 'day'}.
+      </p>
+    );
+  }
+  }
 
   return (
-    <>
-      <div className="flex flex-col items-start gap-1">
-        <div className="flex gap-1 items-center opacity-70">
-          <HelperIcon icon="precipitation"/>
-          <h4>Precipitation</h4>
-        </div>
-        {todayInsight && <span>&#8594; {todayInsight}</span>}
-        {weeklyInsight && <span>&#8594; {weeklyInsight}</span>}
-      </div>
-      <div className="bg-white/50 w-[1px] h-full max-sm:hidden" />
-      <div className="flex flex-col items-start gap-1">
-        <div className="flex gap-1 items-center opacity-70">
-          <HelperIcon icon="temperature"/>
-          <h4>Temperature</h4>
-        </div>
-        {todayTempInsight && <span>&#8594; {todayTempInsight}</span>}
-        {weeklyTempInsight && <span>&#8594; {weeklyTempInsight}</span>}
-      </div>
-    </>
+    <p>
+      <span>Dry days ahead</span>, no precipitation expected this week.
+    </p>
   );
 }
 
 
-export function CautionAndActivities({ weatherForecast}:{weatherForecast: ForecastType}) {
-   const {precipitationHours,
-    precipitationSum,
-    uvIndexMax,
-    maxTemperature,
-    minTemperature,
-    days,
-    currentDate,} = weatherForecast;
+function generateTemperatureInsight( forecast: Pick<ForecastType, 'temperature'| 'hours' | 'days' |'minTemperature' | 'maxTemperature' | 'currentDate'>,
+  formatHour: (hour: string, current: string) => string ,
+  formatDay: (day: string, current: string) => string,
+  temperatureUnit: (temp: number) => string,
+) {
+  const { temperature, maxTemperature, minTemperature, hours, days, currentDate} = forecast
+  // Find hottest and coldest hours
 
-    const {formatHour, formatDay} = useDateConfigStore();
-    const [todaycaution, setTodaycaution] = useState<string[] | null>(null)
-    const [weeklycaution, setweeklycaution] = useState<string[] | null>(null)
-    const [activitymessages, setActivitymessages] = useState<string[] | null>(null)
-    useEffect(()=>{
-    let todayCaution: string[] = [];
-    let weeklyCaution: Record<string, string[]> = {};
-    let activityMessages: string[] = [];
-  
-    // ⚠️ Today's Weather Cautions
-    if (maxTemperature[0] >= 40) todayCaution.push(`Extreme heat today! Stay hydrated.`);
-    if (minTemperature[0] <= -5) todayCaution.push(`Freezing temperatures! Dress warmly.`);
-    if (precipitationSum[0] > 50) todayCaution.push(`Heavy rainfall alert! Possible flooding.`);
-    if (uvIndexMax[0] > 9) todayCaution.push(`High UV today! Wear sunscreen or stay indoors.`);
-  
-    // ⚠️ Weekly Weather Cautions (Checking only if different from today)
-    days.forEach((day, index) => {
-      if (index === 0) return; // Skip today (already handled above)
-  
-      if (maxTemperature[index] >= 40) {
-        weeklyCaution["Extreme heat"] ||= [];
-        weeklyCaution["Extreme heat"].push(formatDay(day, currentDate));
-      }
-      if (minTemperature[index] <= -5) {
-        weeklyCaution["Freezing conditions"] ||= [];
-        weeklyCaution["Freezing conditions"].push(formatDay(day, currentDate));
-      }
-      if (precipitationSum[index] > 50) {
-        weeklyCaution["Heavy rainfall"] ||= [];
-        weeklyCaution["Heavy rainfall"].push(formatDay(day, currentDate));
-      }
-      if (uvIndexMax[index] > 9) {
-        weeklyCaution["High UV"] ||= [];
-        weeklyCaution["High UV"].push(formatDay(day, currentDate));
-      }
-    });
+  let hottestHourIndex = temperature.indexOf(Math.max(...temperature));
+  let coldestHourIndex = temperature.indexOf(Math.min(...temperature));
 
-    let weeklyCautionMessages = Object.entries(weeklyCaution).map(
-      ([type, days]) => `${type} expected on ${days.join(", ")}.`
-    );
-  
-    // 🏃 Activity Recommendations for Today
-    if (precipitationHours[0] > 5) {
-      activityMessages.push("Best to stay indoors today. Try reading, gaming, or movies.");
-    } else if (maxTemperature[0] > 38) {
-      activityMessages.push("Too hot for outdoor activities! Try swimming or staying in shade.");
-    } else if (uvIndexMax[0] > 9) {
-      activityMessages.push("High UV today! Wear sunscreen or avoid prolonged exposure.");
-    } else {
-      activityMessages.push("Great weather for outdoor activities like jogging or hiking!");
-    }
-    setTodaycaution(todayCaution)
-    setweeklycaution(weeklyCautionMessages)
-    setActivitymessages(activityMessages)
-  }, [])
-  
-    return (
-      <>
-        {(todaycaution && todaycaution.length > 0) && 
-        <div className="flex flex-col gap-1 items-start">
-        <div className="flex items-center gap-1 opacity-70">
-          <HelperIcon icon="warning1"/>
-         <h3>Today's Alert</h3>
-        </div>
-          <ul>
-            {todaycaution.map((msg, index) => (
-              <li key={index}>{msg}</li>
-            ))}
-          </ul>
-        </div>}
-  
-        {(weeklycaution && weeklycaution.length > 0) && (
-          <div className="flex flex-col gap-1 items-start">
-        <div className="flex items-center gap-1 opacity-70">
-          <HelperIcon icon="warning2"/>
-          <h3>This week alert</h3>
-        </div>
-            <ul>
-              {weeklycaution.map((msg, index) => (
-                <li key={index}>{msg}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <div className="flex flex-col gap-1 items-start">
-        <div className="flex items-center gap-1 opacity-70">
-          <HelperIcon icon="activity"/>
-          <h3>Activity Recommendation</h3>
-        </div>
+  let hottestHour = formatHour(hours[hottestHourIndex], currentDate);
+  let coldestHour = formatHour(hours[coldestHourIndex], currentDate);
+  let hottestTemp = temperature[hottestHourIndex];
+  let coldestTemp = temperature[coldestHourIndex];
 
-        {activitymessages ? (<ul>
-          {activitymessages.map((msg, index) => (
-            <li key={index}>{msg}</li>
-          ))}
-        </ul>
-        ): (<p>No activity to recommend</p>)
-      }
-      </div>
-      </>
-    );
+  // Find hottest and coldest days
+  let hottestDayIndex =maxTemperature.indexOf(Math.max(...maxTemperature));
+  let coldestDayIndex = minTemperature.indexOf(Math.min(...minTemperature));
+
+  let hottestDay = formatDay(days[hottestDayIndex], currentDate);
+  let coldestDay = formatDay(days[coldestDayIndex], currentDate);
+  let hottestDayTemp = maxTemperature[hottestDayIndex];
+  let coldestDayTemp = minTemperature[coldestDayIndex];
+
+  return (
+    <p>
+      The hottest hour will be <span>{hottestHour} ({temperatureUnit(hottestTemp)})</span>, while the coldest will be{" "}
+      <span>{coldestHour} ({temperatureUnit(coldestTemp)})</span>. The hottest day will be <span>{hottestDay}</span> with an 
+      average of <span>({temperatureUnit(hottestDayTemp)})</span>, and the coldest will be <span>{coldestDay}</span> with an 
+      average of <span>({temperatureUnit(coldestDayTemp)})</span>.
+    </p>
+  );
+}
+
+function generateTemperatureTitle({ maxTemperature, minTemperature } : Pick<ForecastType, 'maxTemperature' | 'minTemperature'>) {
+  // Calculate the daily average temperature
+  const dailyAvgTemp = maxTemperature.map((max, i) => (max + minTemperature[i]) / 2);
+  
+  // Calculate the weekly average temperature
+  const weeklyAvgTemp = dailyAvgTemp.reduce((sum, temp) => sum + temp, 0) / dailyAvgTemp.length;
+
+  // Get today's temperature
+  const todayAvgTemp = dailyAvgTemp[0];
+
+  // Determine hot or cold thresholds (adjustable)
+  const HOT_THRESHOLD = 30; // Example: 30°C and above is considered hot
+  const COLD_THRESHOLD = 10; // Example: 10°C and below is considered cold
+
+  let title = "Moderate Temperature"; // Default title
+
+  if (todayAvgTemp >= HOT_THRESHOLD) {
+    title = "Hot Day";
+  } else if (todayAvgTemp <= COLD_THRESHOLD) {
+    title = "Cold Day";
   }
-  
+
+  if (weeklyAvgTemp >= HOT_THRESHOLD) {
+    title = "Hot Week";
+  } else if (weeklyAvgTemp <= COLD_THRESHOLD) {
+    title = "Cold Week";
+  }
+
+  return title;
+}
+
+
+
+
+export function WeatherInsight({ weatherForecast }: { weatherForecast: ForecastType }) {
+  if (!weatherForecast) return null;
+  const { formatHour, formatDay } = useDateConfigStore();
+  const { temperatureUnit } = useSettingsStore();
+ 
+  const [precipitationTitle, setPrecipitationTitle] = useState<string>('Dry days ahead')
+  const [temperatureTitle, setTemperatureTitle] = useState<string>('Temperature')
+  const [precipitationInsight, setPrecipitationInsight] = useState<JSX.Element | null>(null);
+  const [temperatureInsight, setTemperatureInsight] = useState<JSX.Element | null>(null);
+  useEffect(() => {
+    if(weatherForecast){
+      setPrecipitationTitle(generatePrecipitationTitle(weatherForecast))
+      setPrecipitationInsight(generatePrecipitationInsight(weatherForecast, formatHour, formatDay))
+      setTemperatureTitle(generateTemperatureTitle(weatherForecast))
+      setTemperatureInsight(generateTemperatureInsight(weatherForecast, formatHour, formatDay, temperatureUnit))
+    }
+    
+  }, [weatherForecast]);
+
+  return (
+    <>
+      <div className="flex flex-col items-start gap-1 precipitation-insight">
+        <div className="flex gap-1 items-center opacity-70">
+          <HelperIcon icon="precipitation"/>
+          <h4>{precipitationTitle}</h4>
+        </div>
+         {precipitationInsight && <>{precipitationInsight}</>}
+      </div>
+      <div className="flex flex-col items-start gap-1 temperature-insight">
+        <div className="flex gap-1 items-center opacity-70">
+          <HelperIcon icon="temperature"/>
+          <h4>{temperatureTitle}</h4>
+        </div>
+        {temperatureInsight && <>{temperatureInsight}</>}
+      </div>
+    </>
+  );
+}

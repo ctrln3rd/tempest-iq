@@ -11,42 +11,53 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch event: Handle caching for pages and Next.js static assets
+// Fetch event: Preserve query parameters when serving cached pages
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
+  // Handle navigation requests (page loads)
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (!response || response.status !== 200) return response;
+
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(url.pathname, responseClone); // Cache base page
+          });
+
+          return response;
+        })
+        .catch(async () => {
+          // Check if the base page (without query params) is cached
+          const cachedPage = await caches.match(url.pathname);
+          if (cachedPage) return cachedPage;
+
+          return caches.match('/offline'); // Fallback to offline page
+        })
+    );
+    return;
+  }
+
+  // Serve cached responses for static assets or fetch from network
   event.respondWith(
-    caches.match(url.origin + url.pathname) // Ignore query params for caching
-      .then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
+    caches.match(event.request).then((cachedResponse) => {
+      return cachedResponse || fetch(event.request)
+        .then((response) => {
+          if (!response || response.status !== 200) return response;
 
-        return fetch(event.request)
-          .then((response) => {
-            if (!response || response.status !== 200) {
-              return response;
-            }
+          const responseClone = response.clone();
+          if (url.pathname.startsWith('/_next/static/')) {
+            caches.open(STATIC_CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+          }
 
-            const responseClone = response.clone();
-
-            // Cache same-origin requests (including _next/static files)
-            if (url.origin === location.origin) {
-              if (url.pathname.startsWith('/_next/static/')) {
-                caches.open(STATIC_CACHE_NAME).then((cache) => {
-                  cache.put(event.request, responseClone);
-                });
-              } else {
-                caches.open(CACHE_NAME).then((cache) => {
-                  cache.put(url.origin + url.pathname, responseClone);
-                });
-              }
-            }
-
-            return response;
-          })
-          .catch(() => caches.match('/offline')); // Offline fallback
-      })
+          return response;
+        })
+        .catch(() => caches.match('/offline')); // Offline fallback
+    })
   );
 });
 

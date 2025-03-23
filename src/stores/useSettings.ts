@@ -8,15 +8,17 @@ interface Settings {
   distance: string;
   autorefreshduration: number;
   radiusthreshold: number;
+  fontsize: string;
   version: string;
 }
 
 const defaultSettings: Settings = {
   temperature: 'celcius',
   speed: 'km/h',
-  distance: 'metres',
+  distance: 'kilometers',
   autorefreshduration: 3,
   radiusthreshold: 10000,
+  fontsize: 'sleek',
   version: 'v2',
 };
 

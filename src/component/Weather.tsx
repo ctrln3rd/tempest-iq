@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, Suspense } from "react";
-import { WeatherInsight, CautionAndActivities } from "./insights";
+import { WeatherInsight } from "./insights";
+import { CautionAndActivities } from "./cautionInsights";
 import Animations from "./animations";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocalStorageStore } from "@/stores/useLocalStorage";
@@ -69,6 +70,12 @@ function WeatherComonent(){
                 setSaved(false)
                 const toastId = toast.loading('getting location...');
                 try {
+                    if(!navigator.onLine){
+                        toast("your're still offline", {
+                            autoClose: 3000
+                        })
+                        return;
+                    }
                     const locationResponse = await axios.get(
                         `https://nominatim.openstreetmap.org/lookup?osm_ids=${locationId}&format=json`
                     );
@@ -140,6 +147,12 @@ function WeatherComonent(){
     const fetchWeatherData = async () => {
         try {
             if(!location?.lat || !location.lon) return false;
+            if(!navigator.onLine){
+                toast("your're still offline", {
+                    autoClose: 3000
+                })
+                return;
+            }
             const params = {
                 ...requestInfo,
                 latitude: location?.lat,
@@ -272,7 +285,7 @@ function WeatherComonent(){
             {!isFull && <div className="flex flex-col items-start gap-7">
                 <h3>AI summaries and insights</h3>
                 <div className="flex flex-col items-start gap-6">
-                    <div className="flex gap-5 items-center w-full max-sm:flex-col max-sm:gap-5 max-sm:justify-center max-sm:items-start">
+                    <div className="flex gap-7 flex-col items-start">
                     <WeatherInsight weatherForecast={forecast}/>
                     </div>
                     <div className="w-full h-0.5 bg-white/30"/>

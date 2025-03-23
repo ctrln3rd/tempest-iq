@@ -9,7 +9,7 @@ const Animations = ({ weatherCode, isDay }: {weatherCode: number, isDay: boolean
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       {animationClass === "animate-rain" && (
         <div className="rain-container">
-          {[...Array(17)].map((_, i) => (
+          {[...Array(30)].map((_, i) => (
             <div
               key={i}
               className="raindrop"
@@ -20,7 +20,7 @@ const Animations = ({ weatherCode, isDay }: {weatherCode: number, isDay: boolean
       )}
       {animationClass === "animate-light-rain" && (
         <div className="light-rain-container">
-          {[...Array(10)].map((_, i) => (
+          {[...Array(18)].map((_, i) => (
             <div
               key={i}
               className="light-raindrop"
@@ -45,8 +45,8 @@ const Animations = ({ weatherCode, isDay }: {weatherCode: number, isDay: boolean
 
       {animationClass === "animate-clouds" && (
         <div className="clouds-container">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="cloud" style={{ top: `${Math.random() * 100}%`,  animationDelay: `${i * 6}s` }} />
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="cloud" style={{ top: `${Math.random() * 100}%`,  animationDelay: `${i * 4}s` }} />
           ))}
         </div>
       )}
@@ -64,8 +64,8 @@ const Animations = ({ weatherCode, isDay }: {weatherCode: number, isDay: boolean
       )}
       {animationClass === "animate-fog" && (
         <div className="fog-container">
-          {[...Array(2)].map((_, i) => (
-            <div key={i} className="fog" style={{ top: `${Math.random() * 100}%`,  animationDelay: `${i * 2}s` }} />
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="fog" style={{ top: `${Math.random() * 10}%`,  animationDelay: `${i * 3}s` }} />
           ))}
         </div>
       )}

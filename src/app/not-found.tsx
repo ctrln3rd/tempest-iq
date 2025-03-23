@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     description: 'page does not exist but weather rush provides you with quick detailed and easily interprateble weather data for any location in the world',
     openGraph: {
        title:'not found in weather rush',
-       images: ['https://weatherrush.netlify.app/opengraph-notfound.jpg'],
+       images: ['https://weatherrush.netlify.app/opengraph.jpg'],
        description: 'page does not exist but weather rush provides you with quick detailed and easily interprateble weather data for any location in the world'
     }
  }

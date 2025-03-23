@@ -9,6 +9,9 @@ import { HeaderIcon, OtherIcon } from "./icons";
 
 export default function Header() {
     //const searchParams = useSearchParams();
+    const {settings, resetSettings} = useSettingsStore();
+    const {clearLocations} = useLocalStorageStore();
+    const {setCurrentRefresh, setEditMode, isCurrentRefresh, isEditMode} =  useHomeStore();
     const pathname = usePathname();
     const router = useRouter();
     const [locationName, setLocationName] = useState<string | null>(null);
@@ -19,14 +22,19 @@ export default function Header() {
             const urlParams = new URLSearchParams(window.location.search);
             setLocationName(urlParams.get("name"));
         }
+        if(pathname !== '/'){
+            if(isCurrentRefresh){
+                setCurrentRefresh(false)
+            }else if(isEditMode){
+                setEditMode(false)
+            }
+        }
     }, [pathname]);
 
     let title = locationName ? decodeURIComponent(locationName) : "weather-rush";
     if (pathname === "/settings") title = "Settings";
     
-    const {settings, resetSettings} = useSettingsStore();
-    const {clearLocations} = useLocalStorageStore();
-    const {setCurrentRefresh, setEditMode} =  useHomeStore();
+    
     useEffect(()=>{
         const existingVersion = settings.version || null
         if(!existingVersion || existingVersion !== 'v2'){
@@ -46,7 +54,6 @@ export default function Header() {
    const shareWeather = ()=>{
     if( typeof window !== 'undefined'){
         const weatherUrl= window.location.href;
-        if(navigator.canShare() && navigator.canShare({url: weatherUrl})) {
             navigator.share({
                 title: 'Weather update Alert',
                 text: "Check out the latest weather update for my location",
@@ -54,8 +61,6 @@ export default function Header() {
             })
             .then(()=> console.log('share was successful'))
             .catch((error)=> console.error('Error sharing:', error))
-
-        }
     }else{
         return;
     }

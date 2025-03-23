@@ -23,7 +23,7 @@ function ConditionIcon({condition, isDay}: ConditionIconProps){
         thunderstorm: CloudLightning
     }
     const IconComponent = iconMap[condition] || Cloud
-    return <IconComponent strokeWidth={0.7} className='w-12 h-12 max-sm:w-9 max-sm:h-9 opacity-70'/>
+    return <IconComponent strokeWidth={0.7} className='w-12 h-12 max-sm:w-10 max-sm:h-10 opacity-70'/>
 }
 
 interface HelperIconProps {

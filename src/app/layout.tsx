@@ -7,8 +7,10 @@ import './ui/global.css';
 import { Inter } from "next/font/google";
 import PWAInstallPrompt from "@/component/installPrompt";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+import { useSettingsStore } from "@/stores/useSettings";
 
 export default function RootLayouts({ children }: { children: React.ReactNode }){
+  const {settings} = useSettingsStore();
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
@@ -22,7 +24,7 @@ export default function RootLayouts({ children }: { children: React.ReactNode })
       <head>
       <meta name="google-site-verification" content="LUkKqWSPj-9G4-wQcv2ohaT20kb7pKJqAv9eM24m2H8" />
       </head>
-      <body>
+      <body className={`${settings.fontsize === 'detailed' ? 'text-lg max-sm:text-base' : 'text-base max-sm:text-sm'}`}>
         <Header/>
         {children}
         <ToastContainer 

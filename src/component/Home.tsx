@@ -80,6 +80,12 @@ export default function Home() {
 
 
 const updatecurrentlocation = async (latitude: number, longitude: number)=>{
+  if(!navigator.onLine){
+    toast("your're still offline", {
+        autoClose: 3000
+    })
+    return;
+  }
  try {
    const response = await axios.get(
      `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
@@ -125,6 +131,10 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
 
   const searchLocation = async (e: React.FormEvent) => {
     e.preventDefault();
+    if(!navigator.onLine){
+      setSearchResponse('you are still offline')
+      return;
+  }
     try {
       setSearchResponse(". . .");
       const response = await axios.get(
@@ -203,7 +213,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
         </p>}
       {!(locations.length >=30) ? <button className="self-start" onClick={()=>setIsSearch(true)}>Add location</button> :
       <button className="self-start" onClick={clearLocations}>clear locations</button>}
-        <div className="flex flex-col items-start gap-3 w-full max-sm:items-stretch max-sm:px-1">
+        {locations && <div className="flex flex-col items-start gap-3 w-full max-sm:items-stretch max-sm:px-1">
           {locations.map((loc: any) => (
             <div key={loc.id} className="flex flex-col gap-3  items-center justify-between min-w-[40vw] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
               <div className="flex justify-between items-center w-full px-2 cursor-pointer" 
@@ -214,8 +224,8 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
               </h3>
               <div className="flex flex-row  items-center gap-4 max-sm:flex-col max-sm:items-start max-sm:gap-2">
                 {shortWeatherData[loc.id] ? (
-                  <div className="flex flex-col items-end">
-                    <div className="flex flex-row items-center">
+                  <div className="flex flex-col gap-2 items-end">
+                    <div className="flex flex-row items-center gap-1.5">
                       <ConditionIcon condition={getCodeIcon(Number(shortWeatherData[loc.id].code))} isDay={false}/>
                       {getCodeCondition(Number(shortWeatherData[loc.id].code))}
                     </div>
@@ -229,7 +239,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
               {(!loc.current && isEditMode) && <button onClick={() => handleremove(String(loc.id))} className="text-sm justify-self-end self-end" >Remove</button>}
             </div>
           ))}
-        </div>
+        </div>}
       </div>
 
       {isSearch && (
@@ -249,16 +259,16 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
             </form>
           <div className="flex flex-col items-start gap-3">
             <p className="self-center">{searchResponse || "Locations will appear here to choose from"}</p>
-            <div className="flex flex-col items-stretch w-[100%] gap-3">
+            {searchResults.length > 0 && <div className="flex flex-col items-stretch w-[100%] gap-3">
               {searchResults.map((result, index) => (
                 <button key={index} onClick={() => handleSaveClick(result)} 
                 className="no-global-style text-sm opacity-80 border-b border-white px-2 pb-1 flex flex-col items-start text-start cursor-pointer">
                   {result.display_name}
                 </button>
               ))}
-            </div>
+            </div>}
           </div>
-          <button onClick={() => setIsSearch(false)} className=" absolute bottom-2.5 self-end justify-self-end">Cancel</button>
+          <button onClick={() => {setIsSearch(false); setSearchResults([])}} className=" absolute bottom-2.5 self-end justify-self-end">Cancel</button>
         </div>
       )}
       {isEditMode && 
