@@ -31,12 +31,12 @@ return(
                <div className="flex gap-1 w-full overflow-x-auto scrollbar-hidden hide-scrollbar" id="hourly-list">
                 {forecast?.hours.map((hour, index)=>(
                     <div key={index} 
-                    className="bg-white/3 backdrop-blur-md border border-white/30 rounded-md px-2 py-1 flex flex-col items-center gap-2">
+                    className="flex-1 bg-white/3 backdrop-blur-md border border-white/30 rounded-md px-2 py-1 flex flex-col items-center justify-center gap-2">
                       <h5 className="text-nowrap opacity-80">{formatHour(hour, forecast.currentDate)}</h5>
                        {/*<p>{getCodeCondition(forecast.weatherCode[index])}</p>*/}
                        <ConditionIcon condition={getCodeIcon(forecast.weatherCode[index])} isDay={isDayHour(hour, forecast.sunrise[0], forecast.sunset[0])}/>
                        <p>{temperatureUnit(forecast.temperature[index])}</p>
-                       {forecast.precipitationProbability[index] > 30 && <p className="flex gap-1.5 items-center opacity-80">
+                       {forecast.precipitationProbability[index] > 30 && <p className="flex gap-1.5 items-center opacity-70">
                         <HelperIcon icon="droplet"/> <span>{forecast.precipitationProbability[index]}%</span>
                         </p>}
                     </div>

@@ -41,7 +41,7 @@ const codeDetails: Record<string, WeatherCondition> = {
   cloudy: {
     codes: [3],
     icon: "cloudy",
-    gradient: "bg-gradient-to-b from-gray-400 to-gray-700 blur-md",
+    gradient: "bg-gradient-to-b from-gray-400 to-gray-900 blur-md",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black blur-md",
     animation: "animate-clouds",
   },

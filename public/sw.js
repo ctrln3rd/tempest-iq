@@ -11,16 +11,17 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch event: Check cache before going to network
+// Fetch event: Serve cached pages first
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Handle navigation requests (full-page loads)
+  // Handle navigation requests
   if (event.request.mode === 'navigate') {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
         if (cachedResponse) {
-          return cachedResponse; // ✅ Serve from cache if available
+          console.log('[SW] Serving cached page:', event.request.url);
+          return cachedResponse; // ✅ Serve cached page first
         }
 
         return fetch(event.request)
@@ -34,13 +35,16 @@ self.addEventListener('fetch', (event) => {
 
             return response;
           })
-          .catch(() => caches.match('/offline')); // Fallback only if page isn't cached
+          .catch(async () => {
+            console.log('[SW] Page not found in cache, serving /offline');
+            return caches.match('/offline'); // Only fallback if not cached
+          });
       })
     );
     return;
   }
 
-  // Serve cached responses for static assets or fetch from network
+  // Handle static assets caching
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       return cachedResponse || fetch(event.request)
@@ -56,12 +60,12 @@ self.addEventListener('fetch', (event) => {
 
           return response;
         })
-        .catch(() => caches.match('/offline')); // Offline fallback only for missing static files
+        .catch(() => caches.match('/offline')); // Fallback for missing static assets
     })
   );
 });
 
-// Activate event: Clean up old caches
+// Activate event: Clean old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {

@@ -19,11 +19,9 @@ export default function AstroTrack({forecast}: {forecast : ForecastType}){
 
     useEffect(()=>{
                 const calculateastro = ()=>{
-                    console.log('is day:', isDay)
                 const astroData = calculateAstro(sunrise[0], sunset[0], currentDate, 
                 sunrise[1],Boolean(isDay));
                     setastrodata({first: astroData.first, last: astroData.last, pos: astroData.progress})
-                    console.log('progress:', astroData.progress)
                 }
                 if(forecast){
                     calculateastro();

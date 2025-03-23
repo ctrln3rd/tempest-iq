@@ -219,7 +219,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
               <div className="flex justify-between items-center w-full px-2 cursor-pointer" 
               onClick={() => router.push(`/weather?id=${loc.id}&name=${encodeURIComponent(loc.name)}`) }>
               <h3 className="flex flex-col items-start gap-1 cursor-pointer" >
-              <span className="text-lg font-medium self-start">{loc.name} {loc.current && "(Current)"}</span>
+              <span className="text-lg max-sm:text-base font-medium self-start">{loc.name} {loc.current && "(Current)"}</span>
               {/*<div className="opacity-70"><SmallIcon src="/images/forward.png" alt="full data"/></div>*/}
               </h3>
               <div className="flex flex-row  items-center gap-4 max-sm:flex-col max-sm:items-start max-sm:gap-2">
@@ -229,14 +229,14 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
                       <ConditionIcon condition={getCodeIcon(Number(shortWeatherData[loc.id].code))} isDay={false}/>
                       {getCodeCondition(Number(shortWeatherData[loc.id].code))}
                     </div>
-                    <p className="opacity-70 font-light text-sm">{getTimeDifference(shortWeatherData[loc.id].timestamp)}</p>
+                    <p className="opacity-70 font-light">{getTimeDifference(shortWeatherData[loc.id].timestamp)}</p>
                   </div>
                 ) : (
                   <p>Location added</p>
                 )}
                 </div>
               </div>
-              {(!loc.current && isEditMode) && <button onClick={() => handleremove(String(loc.id))} className="text-sm justify-self-end self-end" >Remove</button>}
+              {(!loc.current && isEditMode) && <button onClick={() => handleremove(String(loc.id))} className="justify-self-end self-end" >Remove</button>}
             </div>
           ))}
         </div>}
@@ -244,7 +244,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
 
       {isSearch && (
         <div ref={searchRef} className="absolute left-[50%] top-[7vh] transform translate-x-[-50%] bg-gray-900 w-[40%] h-[70%]
-        px-3 py-3 flex flex-col items-stretch gap-4 max-md:w-[70%] max-sm:w-[98%]">
+        px-3 py-3 flex flex-col items-stretch gap-4 max-md:w-[70%] max-sm:w-[98%] z-35">
             <form onSubmit={searchLocation} className="pb-2 border-b border-white w-[100%]">
               <input
                 type="search"
@@ -254,7 +254,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
                 ref={inputRef}
                 maxLength={50}
                 required
-                className="border-none outline-none w-[100%]"
+                className="border-none outline-none w-[100%] text-base max-sm:text-sm"
               />
             </form>
           <div className="flex flex-col items-start gap-3">
