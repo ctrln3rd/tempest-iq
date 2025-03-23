@@ -12,7 +12,7 @@ function generateActivityInsight(forecast: Pick<ForecastType, "precipitationHour
     const COOL_WEATHER = 20; // Ideal for outdoor activities
     const VACATION_DAYS = 2; // Next 2 days for vacation
   
-    let activityMessage: JSX.Element | null = null;
+    let activityMessage = null;
   
     // **Determine the best activity insight**
     if (precipitationHours[0] > INDOOR_THRESHOLD_HOURS) {
