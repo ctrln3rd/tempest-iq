@@ -8,7 +8,7 @@ interface Settings {
   distance: string;
   autorefreshduration: number;
   radiusthreshold: number;
-  fontsize: string;
+  displaySize: string;
   version: string;
 }
 
@@ -18,8 +18,8 @@ const defaultSettings: Settings = {
   distance: 'kilometers',
   autorefreshduration: 3,
   radiusthreshold: 10000,
-  fontsize: 'sleek',
-  version: 'v2',
+  displaySize: 'sleek',
+  version: 'v1',
 };
 
 // Zustand store for settings management

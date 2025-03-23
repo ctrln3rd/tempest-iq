@@ -23,11 +23,11 @@ export async function GET(req: NextRequest) {
             paddingInline: '10px',
             gap: '10px'
         }}> 
-        <img src={imageUrl} style={{width: '30%', height: '30%'}} alt='background image'/>
+        <img src={imageUrl} style={{width: '30%', height: '48%'}} alt='background image'/>
        
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px'}}>
             <h1>Weather Rush</h1>
-            <h3>weather for <span style={{color: 'wheat', opacity: 0.8}}>{location}</span>-</h3>
+            <h3>weather for-<span style={{color: 'wheat', opacity: 0.8}}>{location}</span></h3>
         </div>
         </div>,{
             width: 1200,

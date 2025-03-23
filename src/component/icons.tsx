@@ -5,6 +5,8 @@ import {FilePenLine, FileText, Bolt, Share2, MapPinCheckInside,
     LucideIcon
 } from "lucide-react"
 
+import { useSettingsStore } from "@/stores/useSettings";
+
 
 interface ConditionIconProps {
     condition: 'clear' | 'pcloudy' | 'cloudy' | 'drizzle' | 'rain' | 'fog' | 'snow' | 'thunderstorm';
@@ -12,6 +14,7 @@ interface ConditionIconProps {
 }
 
 function ConditionIcon({condition, isDay}: ConditionIconProps){
+    const size = useSettingsStore().settings.displaySize
     const iconMap : Record<ConditionIconProps['condition'], LucideIcon>= {
         clear: isDay ? Sun : Moon,
         pcloudy: isDay ? CloudSun : CloudMoon,
@@ -23,7 +26,7 @@ function ConditionIcon({condition, isDay}: ConditionIconProps){
         thunderstorm: CloudLightning
     }
     const IconComponent = iconMap[condition] || Cloud
-    return <IconComponent strokeWidth={0.7} className='w-12 h-12 max-sm:w-10 max-sm:h-10 opacity-70'/>
+    return <IconComponent strokeWidth={size === 'bold' ? 1 : 0.7} className={`${size === 'bold' ? 'w-12 h-12 max-sm:w-10 max-sm:h-10' : 'w-11 h-11 max-sm:w-9 max-sm:h-9'} opacity-70`}/>
 }
 
 interface HelperIconProps {
@@ -31,6 +34,7 @@ interface HelperIconProps {
 }
 
 function HelperIcon({icon}: HelperIconProps){
+    const size = useSettingsStore().settings.displaySize
     const iconMap: Record<HelperIconProps['icon'], LucideIcon>= {
         temperature: Thermometer,
         precipitation: Umbrella,
@@ -46,7 +50,7 @@ function HelperIcon({icon}: HelperIconProps){
     }
 
     const IconComponent = iconMap[icon] || Thermometer
-    return <IconComponent className='w-7 h-7'/>
+    return <IconComponent strokeWidth={!(size === 'bold') ? 1.5 : 2} className={`${size === 'bold' ? 'w-7 h-7' : 'w-5.5 h-5.5'}`}/>
 }
 
 interface HeaderIconProps {
@@ -54,6 +58,7 @@ interface HeaderIconProps {
 }
 
 function HeaderIcon({icon}: HeaderIconProps){
+    const size = useSettingsStore().settings.displaySize
     const iconMap: Record<HeaderIconProps['icon'], LucideIcon>= {
         locations: FileText,
         editlocations: FilePenLine,
@@ -63,7 +68,7 @@ function HeaderIcon({icon}: HeaderIconProps){
     }
 
     const IconComponent = iconMap[icon] || Thermometer
-    return <IconComponent className='w-6 h-6'/>
+    return <IconComponent strokeWidth={!(size === 'bold') ? 1.5 : 2} className={`${size === 'bold' ? 'w-6 h-6' : 'w-5.5 h-5.5'}`}/>
 }
 
 interface ThemeIconProps {

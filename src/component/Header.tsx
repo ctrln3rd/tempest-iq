@@ -37,7 +37,7 @@ export default function Header() {
     
     useEffect(()=>{
         const existingVersion = settings.version || null
-        if(!existingVersion || existingVersion !== 'v2'){
+        if(!existingVersion || existingVersion !== 'v1'){
             resetSettings()
             clearLocations()
             toast('new different version: ', {autoClose: 3000})

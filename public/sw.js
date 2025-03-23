@@ -11,34 +11,34 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch event: Preserve query parameters when serving cached pages
+// Fetch event: Check cache before going to network
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Handle navigation requests (page loads)
-  /*if (event.request.mode === 'navigate') {
+  // Handle navigation requests (full-page loads)
+  if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          if (!response || response.status !== 200) return response;
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse; // ✅ Serve from cache if available
+        }
 
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(url.pathname, responseClone); // Cache base page
-          });
+        return fetch(event.request)
+          .then((response) => {
+            if (!response || response.status !== 200) return response;
 
-          return response;
-        })
-        .catch(async () => {
-          // Check if the base page (without query params) is cached
-          const cachedPage = await caches.match(url.pathname);
-          if (cachedPage) return cachedPage;
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(url.pathname, responseClone); // Cache the base page
+            });
 
-          return caches.match('/offline'); // Fallback to offline page
-        })
+            return response;
+          })
+          .catch(() => caches.match('/offline')); // Fallback only if page isn't cached
+      })
     );
     return;
-  }*/
+  }
 
   // Serve cached responses for static assets or fetch from network
   event.respondWith(
@@ -56,7 +56,7 @@ self.addEventListener('fetch', (event) => {
 
           return response;
         })
-        .catch(() => caches.match('/offline')); // Offline fallback
+        .catch(() => caches.match('/offline')); // Offline fallback only for missing static files
     })
   );
 });
