@@ -68,7 +68,7 @@ export default function Header() {
    }
     
     return (
-        <header className='flex flex-row justify-between relative px-10 pt-2 mx-4 max-sm:mx-2 max-sm:px-2 z-30'>
+        <header className='flex flex-row justify-between items-center relative px-10 pt-2 mx-4 max-sm:mx-2 max-sm:px-2 z-30'>
             <h1 className="flex items-center gap-2 max-sm:gap-1.5">{title} {pathname === "/" && <OtherIcon icon="weather"/>}</h1>
             <div className='flex flex-row gap-10 max-sm:gap-8'>
                 {pathname === '/weather' && <button  onClick={shareWeather}

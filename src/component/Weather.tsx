@@ -7,9 +7,10 @@ import { useLocalStorageStore } from "@/stores/useLocalStorage";
 import { useDateConfigStore } from "@/stores/useDate";
 import { useSettingsStore } from "@/stores/useSettings";
 import { useWeatherConfigStore } from "@/stores/useWeather";
-import axios from "axios";
+import { fetchWeatherData } from "@/lib/fetchweatherData";
+import { fetchLocation } from "@/lib/fetchloaction";
 import { toast } from "react-toastify";
-import { CurrentWeather, ForecastType } from "@/types/weatherTypes";
+import { CurrentWeatherType, ForecastType } from "@/types/weatherTypes";
 import FullForecast from "./forecasts";
 import AstroTrack from "./astroTrack";
 import { HelperIcon, ThemeIcon } from "./icons";
@@ -26,7 +27,7 @@ interface Location {
   }
 
 interface WeatherData {
-    current: CurrentWeather;
+    current: CurrentWeatherType;
     forecast: ForecastType;
 }
 
@@ -35,7 +36,7 @@ interface WeatherData {
 function WeatherComonent(){
     const router = useRouter();
     const params = useSearchParams()
-    const [current, setCurrent] = useState<CurrentWeather | null>(null);
+    const [current, setCurrent] = useState<CurrentWeatherType | null>(null);
     const [forecast, setforecast] = useState<ForecastType | null>(null);
     const [location, setLocation] = useState<Location | null>(null)
     const [isSaved, setSaved] = useState(true);
@@ -50,6 +51,7 @@ function WeatherComonent(){
     const {checkWeatherDiffExpired, formatLocalDate} = useDateConfigStore();
     const {locations, weatherData, saveWeatherData, saveShortWeatherData, saveLocation} = useLocalStorageStore();
     const {getCodeBackground,getCodeCondition, formatWind, formatVisibility, formatWindDirection, uvHealth} = useWeatherConfigStore();
+    
     useEffect(() => {
         if (!locationId) {
             console.error("Cannot fetch weather data for invalid location:");
@@ -60,7 +62,7 @@ function WeatherComonent(){
             return;
         }
 
-        const fetchLocation = async() => {
+        const getLocation = async() => {
             let Location = locations.find((loc) => loc.id === locationId)
             if(Location){
                 setSaved(true)
@@ -75,11 +77,9 @@ function WeatherComonent(){
                         })
                         return;
                     }
-                    const locationResponse = await axios.get(
-                        `https://nominatim.openstreetmap.org/lookup?osm_ids=${locationId}&format=json`
-                    );
-                    if (locationResponse.data) {
-                        const newdata = locationResponse.data[0]
+                    const locationResponse = await fetchLocation(locationId)
+                    if (locationResponse) {
+                        const newdata = locationResponse[0]
                         setLocation({
                             id: locationId,
                             name: newdata.name || locationName,
@@ -98,26 +98,40 @@ function WeatherComonent(){
 
         return;
         };
-       
-
-
-        fetchLocation();
+       if(locationId){
+            getLocation();
+       }
     },[locationId]);
 
+    const fetchnewWeather = async ()=>{
+        const response = await  fetchWeatherData(location?.lat, location?.lon)
+        if(response){
+         if(isSaved){
+            saveWeatherData(String(location?.id), response);
+            saveShortWeatherData(String(location?.id), String(response.current.code ?? 3));
+        }else{
+          setAddWeather(response)
+          setAdd(true)
+        }
+        return true
+       }
+       return false
+    }
+
     useEffect(()=>{
-        const fetchWeather = async()=>{
+        const getWeather = async ()=>{
             const cachedWeather = weatherData[String(location?.id)];
             if (cachedWeather) {
                 feedData(cachedWeather.data)
                 if(checkWeatherDiffExpired(cachedWeather.timestamp, getAutoAge())) {
                     const toastId = toast.loading('Updating...');
-                    const response =await fetchWeatherData();
+                    const response = await fetchnewWeather();
                     response ? toast.update(toastId,{ render: 'updated', isLoading: false, autoClose: 3000,
                     }) : toast.update(toastId,{ render: 'error updating', isLoading: false, autoClose: 3000,})
                 }
             } else {
                 const toastId = toast.loading('fetching data')
-                const response = await fetchWeatherData();
+                const response = await fetchnewWeather();
                 response ? toast.update(toastId,{ render: 'updated', isLoading: false, autoClose: 3000,
                 }) : toast.update(toastId, { render: 'error fetching', isLoading: false, autoClose: 3000})
                 if(!response) router.push('/');  
@@ -125,10 +139,12 @@ function WeatherComonent(){
         return;
         }
         if(location){
-         fetchWeather();
+         getWeather();
         }
 
     },[location])
+
+    
 
     const feedData = (filteredData: WeatherData ) => {
         setCurrent(filteredData.current);
@@ -143,79 +159,7 @@ function WeatherComonent(){
         setAddWeather(null)
     }
 
-    const fetchWeatherData = async () => {
-        try {
-            if(!location?.lat || !location.lon) return false;
-            if(!navigator.onLine){
-                toast("your're still offline", {
-                    autoClose: 3000
-                })
-                return;
-            }
-            const params = {
-                ...requestInfo,
-                latitude: location?.lat,
-                longitude: location?.lon,
-            };
-
-            const response = await axios.get('https://api.open-meteo.com/v1/forecast', {
-                headers: { 'Content-Type': 'application/json' },
-                params: params,
-            });
-            if(!response.data) return false
-            const currentData = response.data.current ?? {};
-            const hourlyData = response.data.hourly ?? {};
-            const dailyData = response.data.daily ?? {};
-            const weatherData: WeatherData = {
-                current: {
-                    time: currentData.time ?? '2025-01-01T06:00:00',
-                    temperature: currentData.temperature_2m ?? 0,
-                    code: currentData.weather_code ?? 0,
-                    temperatureApparent: currentData.apparent_temperature ?? 0,
-                    isDay: currentData.is_day ?? true,
-                    precipitation: currentData.precipitation ?? 0,
-                    visibility: currentData.visibility ?? 0,
-                    windSpeed: currentData.wind_speed_10m ?? 0,
-                    windDirection: currentData.wind_direction_10m ?? 90,
-                    humidity: currentData.relative_humidity_2m ?? 0,
-                    uv: currentData.uv_index ?? 0
-
-                },
-                forecast: {
-                    days : dailyData.time ?? [],
-                    code: dailyData.weather_code ?? [],
-                    minTemperature: dailyData.temperature_2m_min ?? [],
-                    maxTemperature: dailyData.temperature_2m_max ?? [],
-                    precipitationSum: dailyData.precipitation_sum ?? [],
-                    precipitationProbabilityMax: dailyData.precipitation_probability_max ?? [],
-                    precipitationHours: dailyData.precipitation_hours ?? [],
-                    uvIndexMax: dailyData.uv_index_max ?? [],
-                    hours: hourlyData.time ?? [],
-                    temperature: hourlyData.temperature_2m ?? [],
-                    weatherCode: hourlyData.weather_code ?? [],
-                    precipitation: hourlyData.precipitation ?? [],
-                    precipitationProbability: hourlyData.precipitation_probability ?? [],
-                    currentDate: currentData.time ?? '2025-01-01T06:00:00',
-                    sunrise: dailyData.sunrise ?? "2025-01-01T06:00:00",
-                    sunset: dailyData.sunset ?? "2025-01-01T18:00:00",
-                    isDay: currentData.is_day ?? true
-                },
-            };
-            feedData(weatherData);
-            if(isSaved){
-                saveWeatherData(String(location?.id), weatherData);
-                saveShortWeatherData(String(location?.id), String(weatherData.current.code ?? 3));
-            }else{
-              setAddWeather(weatherData)
-              setAdd(true)
-            }
-            return true;
-
-        } catch (error) {
-            console.error('Error fetching weather data:', error);
-            return false;
-        }
-    };
+    
 
     useEffect(() => {
         if (current) {
@@ -318,28 +262,8 @@ function WeatherComonent(){
     );
 }
 
-const requestInfo = {
-    longitude: 0,
-    latitude: 0,
-    current: [
-        'temperature_2m', 'apparent_temperature', 'is_day', 'precipitation', 'weather_code', 
-        'visibility', 'wind_speed_10m', 'wind_direction_10m', 'uv_index', 'relative_humidity_2m',
-    ],
-    daily: [
-        'weather_code', 'temperature_2m_max', 'temperature_2m_min', 'sunrise', 'sunset',  
-        'precipitation_sum', 'precipitation_probability_max', 'uv_index_max', 'precipitation_hours',
-    ],
-    hourly: [
-        'temperature_2m', 'precipitation_probability', 'weather_code', 'precipitation',
-    ],
-    forecast_hours: 24,  // ✅ Limits hourly forecast to the next 24 hours
-    timezone: 'auto'
-};
 
-/*<div  style={{'--image-url': `url(${getCodeBackground(current?.code, isday)})`} as React.CSSProperties}
-className={`flex flex-col items-center gap-10 absolute top-0 left-0 w-[100%] z-0 pt-20
-    bg-[image:var(--image-url)] max-sm:pt-[15vh]`}
->*/
+
 export default function Weather(){
     return(
         <Suspense>

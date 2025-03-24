@@ -1,4 +1,4 @@
-export interface CurrentWeather {
+export interface CurrentWeatherType {
     temperature: number;
     temperatureApparent: number;
     isDay: number;

@@ -10,6 +10,7 @@ import { useHomeStore } from "@/stores/useHome";
 import { useWeatherConfigStore } from "@/stores/useWeather";
 import { useDateConfigStore } from "@/stores/useDate";
 import { useSettingsStore } from "@/stores/useSettings";
+import { getgeolocation, updatecurrentlocation, fetchLocations } from "@/lib/fetchloaction";
 import { ConditionIcon } from "./icons";
 
 interface Location {
@@ -47,61 +48,29 @@ export default function Home() {
      if(locations.length >= 30) setInfo(prev=> [...prev, 'locations list is full clear locations or remove some'])
      const lastcurrent = locations.find(loc => loc.current === true);
            const geo_location: any = await getgeolocation();
-           if(geo_location){
-           if(!lastcurrent || calculateDistance(lastcurrent.lat, lastcurrent.lon, geo_location.latitude, geo_location.longitude)){
-             const response = await  updatecurrentlocation(geo_location.latitude, geo_location.longitude)
-             if(response === true){
-             toast('location updated',{
-                autoClose: 3000,
-            })
-             }
-         }
-       }
-       setIsCurrentChecked(true)
+           if(geo_location === 'notallowed'){
+            setInfo(prev =>[...prev,'geolocation not allowed allow for weather rush or on device for current location update'])
+           }
+          else if(geo_location){
+          if(!lastcurrent || calculateDistance(lastcurrent.lat, lastcurrent.lon, geo_location.latitude, geo_location.longitude)){
+            const response = await  updatecurrentlocation(geo_location.latitude, geo_location.longitude)
+            if(response){
+                const location: any = saveLocation(response.data, true, false)
+                router.push(`/weather?id=${location.id}&name=${encodeURIComponent(location.name)}`) 
+                toast('location updated',{
+                    autoClose: 3000,
+                })
+            }
+        }
+      }
+        setIsCurrentChecked(true)
    }
      if(!isCurrentChecked){
      checkLocation();
      }
  },[])
 
- const getgeolocation =  async ()=>{
-    try{
-    const position = await new Promise((resolve, reject)=>{navigator.geolocation.getCurrentPosition(
-     (position) =>
-       resolve(position.coords),
-     (error) => reject(error)
-    )}); return position
-     }catch(error: any){
-     console.error('Geolocation error:', error)
-     if(error.code === 1) setInfo(prev =>[...prev,'geolocation not allowed allow for weather rush or on device for current location update'])
-       return null
-    }
-
- }
-
-
-const updatecurrentlocation = async (latitude: number, longitude: number)=>{
-  if(!navigator.onLine){
-    toast("your're still offline", {
-        autoClose: 3000
-    })
-    return;
-  }
- try {
-   const response = await axios.get(
-     `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-   );
-   const location: any = saveLocation(response.data, true, false)
-   if(location){
-      router.push(`/weather?id=${location.id}&name=${encodeURIComponent(location.name)}`) 
-   }
-   return true
-
- } catch (error) {
-   console.error('Error fetching current location:', error);
-   return false
- }
-}
+ 
 
 
   const handleSaveClick = (loc: Location) => {
@@ -137,13 +106,15 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
       return;
   }
     try {
-      setSearchResponse(". . .");
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=5`
-      );
-      const data: Location[] = response.data;
+      setSearchResponse("searching....");
+      const query = searchQuery
+      setSearchQuery('')
+      const response = await fetchLocations(query)
+      if(response){
+      const data: Location[] = response;
       setSearchResults(data.length > 0 ? data : []);
       setSearchResponse(data.length > 0 ? "Select one from the list" : "No locations found");
+      }
     } catch (err) {
       console.error("Error with location search:", err);
       setSearchResponse("Can't find location");
@@ -170,27 +141,19 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
   const handleRefreshClick = async()=>{
      const toastId = toast.loading('updating...')
      const geolocation: any = await getgeolocation();
-     if(geolocation){
+     if(geolocation && !(geolocation === 'notallowed')){
       const response = await updatecurrentlocation(geolocation.latitude, geolocation.longitude);
       if(response){
-        toast.update(toastId,{
-          render: 'updated',
-          isLoading: false,
-          autoClose: 3000,
-      })
+        const location: any = saveLocation(response.data, true, false)
+        router.push(`/weather?id=${location.id}&name=${encodeURIComponent(location.name)}`) 
+        toast.update(toastId,{ render: 'updated', isLoading: false, autoClose: 3000, })
+
       }else{
-        toast.update(toastId,{
-          render: 'an error occurred',
-          isLoading: false,
-          autoClose: 3000,
+        toast.update(toastId,{ render: 'an error occurred', isLoading: false, autoClose: 3000,
       })
       }
      }else{
-      toast.update(toastId,{
-        render: 'location error',
-        isLoading: false,
-        autoClose: 3000,
-    })
+      toast.update(toastId,{ render: 'location error', isLoading: false, autoClose: 3000, })
      }
     setCurrentRefresh(false)
   }
@@ -246,7 +209,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
       {isSearch && (
         <div ref={searchRef} className="absolute left-[50%] top-[7vh] transform translate-x-[-50%] bg-gray-900 w-[40%] h-[70%]
         px-3 py-3 flex flex-col items-stretch gap-4 max-md:w-[70%] max-sm:w-[98%] z-35">
-            <form onSubmit={searchLocation} className="pb-2 border-b border-white w-[100%]">
+            <form onSubmit={searchLocation} className=" py-1.5  flex flex-col items-center gap-3">
               <input
                 type="search"
                 placeholder="City..."
@@ -255,8 +218,9 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
                 ref={inputRef}
                 maxLength={50}
                 required
-                className="border-none outline-none w-[100%] text-base max-sm:text-sm"
+                className="border-none border-b border-white/80 pb-2 outline-none w-[100%] text-base max-sm:text-sm"
               />
+              {(searchQuery.length > 1 && searchResults.length < 1) && <button type="submit"> search</button>}
             </form>
           <div className="flex flex-col items-start gap-3">
             <p className="self-center">{searchResponse || "Locations will appear here to choose from"}</p>

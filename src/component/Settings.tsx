@@ -36,7 +36,7 @@ const settingsunits : Settings_Units ={
     },
     displaySize: {
         units: ['sleek', 'bold']
-    }
+    },
 }
 
 
@@ -71,7 +71,7 @@ export default function Settings(){
             default: return key
         }
     }
-    const configUnits = (key: string, unit: number)=>{
+    const configUnits = (key: string, unit: any)=>{
         switch(key){
             case 'autorefreshduration': return `${unit} hour`;
             case 'radiusthreshold' : return `${unit / 1000} kilometres`;

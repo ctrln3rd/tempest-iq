@@ -23,6 +23,7 @@ export default function RootLayouts({ children }: { children: React.ReactNode })
     <html lang="en" className={`${inter.variable}`}>
       <head>
       <meta name="google-site-verification" content="LUkKqWSPj-9G4-wQcv2ohaT20kb7pKJqAv9eM24m2H8" />
+      <link rel="canonical" href="https://weatherrush.netlify.app" />
       </head>
       <body className={`${size === 'bold' ? 'text-lg max-sm:text-sm' : 'text-base max-sm:text-xs'}`}>
         <Header/>

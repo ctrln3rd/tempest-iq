@@ -14,6 +14,7 @@ interface DateConfigState {
     formatDay: (inputDate: string, currentDate: string) => string;
     formatLocalDate: (inputDate: string) => string;
     getTimeDifference: (inputTime: number) => string;
+    getElapsed: (inputime: number) => number;
     formatHour: (inputDate: string, currentDate: string) => string;
     isDayHour: (hour: string, sunrise: string, sunset: string) => boolean;
     checkSameDay: (day: string) => boolean;
@@ -111,4 +112,5 @@ export const useDateConfigStore = create<DateConfigState>(() => ({
         }
     },
     checkWeatherDiffExpired: (lastDate, hours) => differenceInMilliseconds(Date.now(), lastDate) >= hours * 3600000,
+    getElapsed: (inputtime) => differenceInMilliseconds(Date.now(),inputtime)
 }));
