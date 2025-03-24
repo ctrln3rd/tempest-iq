@@ -109,6 +109,7 @@ function WeatherComonent(){
          if(isSaved){
             saveWeatherData(String(location?.id), response);
             saveShortWeatherData(String(location?.id), String(response.current.code ?? 3));
+            feedData(response)
         }else{
           setAddWeather(response)
           setAdd(true)

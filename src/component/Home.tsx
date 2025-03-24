@@ -218,7 +218,7 @@ export default function Home() {
                 ref={inputRef}
                 maxLength={50}
                 required
-                className="border-none border-b border-white/80 pb-2 outline-none w-[100%] text-base max-sm:text-sm"
+                className="border-none border-b border-white/80 pb-2 focus:outline-none w-[100%] text-base max-sm:text-sm"
               />
               {(searchQuery.length > 1 && searchResults.length < 1) && <button type="submit"> search</button>}
             </form>

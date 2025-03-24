@@ -101,6 +101,10 @@ button:not(.no-global-style){
     @apply absolute w-[40%] h-[40%] bg-white opacity-0 blur-3xl;
     animation: lightning-flash 3s infinite;
   }
+  .thunder-drops {
+    @apply absolute bg-blue-300 opacity-50 w-0.5 h-3;
+    animation: rain-fall 1.2s linear infinite;
+  }
   @keyframes lightning-flash {
     0%, 100% { opacity: 0; }
     40% {opacity: 0}

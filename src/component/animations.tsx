@@ -59,6 +59,13 @@ const Animations = ({ weatherCode, isDay }: {weatherCode: number, isDay: boolean
       )}
       {animationClass === "animate-lightning" && (
         <div className="lightning-container">
+          {[...Array(10)].map((_, i) => (
+            <div
+              key={i}
+              className="thunder-drops"
+              style={{ left: `${Math.random() * 100}%`, animationDelay: `${Math.random()}s` }}
+            />
+          ))}
           <div className="flash" />
         </div>
       )}
