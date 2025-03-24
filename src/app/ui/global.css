@@ -95,10 +95,10 @@ button:not(.no-global-style){
 
   /* Lightning Animation */
   .lightning-container {
-    @apply fixed top-0 left-0 w-full h-full bg-transparent pointer-events-none flex items-center justify-center;
+    @apply fixed top-0 left-0 w-full h-full bg-transparent pointer-events-none flex;
   }
   .flash {
-    @apply absolute w-[40%] h-[40%] bg-white opacity-0 blur-3xl;
+    @apply absolute w-[40%] h-[40%] top-[40%] left-[70%] -translate-x-[70%] -translate-y-[40%] bg-white opacity-0 blur-3xl;
     animation: lightning-flash 3s infinite;
   }
   .thunder-drops {
