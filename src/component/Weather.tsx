@@ -170,7 +170,7 @@ function WeatherComonent(){
      
     const handleRefresh = async () => {
         const toastId = toast.loading('updating...');
-        const response = await fetchWeatherData();
+        const response = await fetchWeatherData(location?.lat, location?.lon);
         response ? toast.update(toastId,{ render: 'updated', isLoading: false, autoClose: 3000,
         }) : toast.update(toastId,{ render: 'error updating', isLoading: false, autoClose: 3000,});
     };
