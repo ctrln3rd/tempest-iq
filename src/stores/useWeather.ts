@@ -70,7 +70,7 @@ const codeDetails: Record<string, WeatherCondition> = {
     codes: [95, 96, 99],
     icon: "thunderstorm",
     gradient: "bg-gradient-to-b from-gray-600 to-gray-900 blur-md",
-    gradientNight: "bg-gradient-to-b from-black to-purple-900 blur-md",
+    gradientNight: "bg-gradient-to-b from-gray-800 to-black blur-md",
     animation: "animate-lightning",
   },
   snow: {
