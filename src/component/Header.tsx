@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 import { useSettingsStore } from "@/stores/useSettings";
 import { useLocalStorageStore } from "@/stores/useLocalStorage";
 import { useHomeStore } from "@/stores/useHome";
@@ -77,9 +78,9 @@ export default function Header() {
                    <HeaderIcon icon="share"/>
                 </button>}
                 {pathname !== '/' && 
-                <button onClick={() => router.push('/')} 
+                <Link href={'/'}
                 className="no-global-style bg-none bg-transparent p-0 cursor-pointer !important">
-                    <HeaderIcon icon="locations"/></button>}
+                    <HeaderIcon icon="locations"/></Link>}
                 
                 {pathname === '/' && <button className="no-global-style bg-none bg-transparent p-0 cursor-pointer !important"
                 onClick={()=>setEditMode(true)}>
@@ -91,9 +92,9 @@ export default function Header() {
                 >
                    <HeaderIcon icon="updatelocation"/>
                 </button>}
-                <button onClick={() => router.push('/settings')} 
+                <Link href={'/settings'}
                 className="no-global-style bg-none p-0 cursor-pointer">
-                    <HeaderIcon icon="settings"/></button>
+                    <HeaderIcon icon="settings"/></Link>
             </div>
         </header>
     );

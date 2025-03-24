@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { toast } from "react-toastify";
 import { useLocalStorageStore } from "@/stores/useLocalStorage";
 import { useHomeStore } from "@/stores/useHome";
@@ -216,8 +217,8 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
         {locations && <div className="flex flex-col items-start gap-3 w-full max-sm:items-stretch max-sm:px-1">
           {locations.map((loc: any) => (
             <div key={loc.id} className="flex flex-col gap-3  items-center justify-between min-w-[40vw] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
-              <div className="flex justify-between items-center w-full px-2 cursor-pointer" 
-              onClick={() => router.push(`/weather?id=${loc.id}&name=${encodeURIComponent(loc.name)}`) }>
+              <Link href={{pathname: '/weather', query: {id: loc.id, name: loc.name}}}
+              className="flex justify-between items-center w-full px-2 cursor-pointer" >
               <h3 className="flex flex-col items-start gap-1 cursor-pointer" >
               <span className="text-lg max-sm:text-base font-medium self-start">{loc.name} {loc.current && "(Current)"}</span>
               {/*<div className="opacity-70"><SmallIcon src="/images/forward.png" alt="full data"/></div>*/}
@@ -235,7 +236,7 @@ const updatecurrentlocation = async (latitude: number, longitude: number)=>{
                   <p>Location added</p>
                 )}
                 </div>
-              </div>
+              </Link>
               {(!loc.current && isEditMode) && <button onClick={() => handleremove(String(loc.id))} className="justify-self-end self-end" >Remove</button>}
             </div>
           ))}
