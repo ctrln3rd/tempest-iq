@@ -11,58 +11,45 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch event: Preserve query parameters when serving cached pages
+// Fetch event: Handle navigation and static assets
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Handle navigation requests (HTML pages)
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
-        if (cachedResponse) {
-          console.log('[SW] Serving cached page:', event.request.url);
-          return cachedResponse; // ✅ Serve cached page from cache
-        }
+      caches.open(CACHE_NAME).then(async (cache) => {
         return fetch(event.request)
-          .then((response) => {
-            if (!response || response.status !== 200) return response;
-            const responseClone = response.clone();
-            caches.open('weather-rush-v1').then((cache) => {
-              cache.put(event.request, responseClone); // ✅ Dynamically cache pages
-            });
-            return response;
+          .then((fetchedResponse) => {
+            cache.put(event.request, fetchedResponse.clone());
+            return fetchedResponse;
           })
-          .catch(() => {
-            console.log('[SW] Page not found in cache, serving /offline');
-            return caches.match('/offline'); // 🔥 Fixes infinite redirect issue
+          .catch(async () => {
+            console.log('No internet, checking cache');
+            // Ignore query parameters when matching cache
+            const cacheMatch = await cache.match(url.pathname);
+            return cacheMatch || cache.match('/offline');
           });
       })
     );
-    return;
-  }
-
-  // Handle static assets (_next/static and other files)
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request)
-        .then((response) => {
-          if (!response || response.status !== 200) return response;
-          const responseClone = response.clone();
-          if (url.pathname.startsWith('/_next/static/')) {
-            caches.open('static-cache-v1').then((cache) => {
-              cache.put(event.request, responseClone);
-            });
+  } else {
+    // Handle static assets (_next/static and other files)
+    event.respondWith(
+      caches.open(STATIC_CACHE_NAME).then(async (cache) => {
+        return cache.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
           }
-          return response;
-        })
-        .catch(() => {
-          console.log(`[SW] Asset not found in cache: ${event.request.url}`);
-          return caches.match('/offline');
+          return fetch(event.request).then((fetchedResponse) => {
+            if (fetchedResponse.ok) {
+              cache.put(event.request, fetchedResponse.clone());
+            }
+            return fetchedResponse;
+          });
         });
-    })
-  );
+      })
+    );
+  }
 });
-
 
 // Activate event: Clean up old caches
 self.addEventListener('activate', (event) => {
