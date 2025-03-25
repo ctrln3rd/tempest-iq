@@ -194,32 +194,32 @@ function WeatherComonent(){
                {/* Weather Animations */}
                  <Animations weatherCode={current.code} isDay={isday} />
 
-            <div className='px-4 py-5  z-5 flex flex-col items-center justify-end gap-4 mt-[15dvh] max-sm:mt-[20dvh] max-sm:px-[5%]'>
+            <div className='px-4 py-5 z-5 flex flex-col items-center justify-end gap-4 mt-[15dvh] max-sm:mt-[20dvh] max-sm:px-[2%]'>
                     <h2 className=" flex flex-row items-start text-7xl justify-center">
                         {temperatureUnitChart(Number(current?.temperature))}<span className="text-2xl justify-self-start">°</span>
                     </h2>
                     <p className="text-xl font-light">{getCodeCondition(current?.code)}</p>
                 <div className="flex items-center gap-7 justify-center max-md:gap-5 max-sm:flex-col max-sm:gap-2.5">
-                    <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:gap-5">
-                        <p className=" flex gap-1.5 items-center">
+                    <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:gap-3.5">
+                        <p className=" flex gap-1.5 items-center max-sm:gap-1">
                            <HelperIcon icon="feelslike" /> <span className="opacity-85">Feels like</span>
                            {temperatureUnit(Number(current?.temperatureApparent))}
                         </p>
-                        <p className=" flex gap-1.5 items-center">
+                        <p className=" flex gap-1.5 items-center max-sm:gap-1">
                            <HelperIcon icon="wind"/> {!(current.windSpeed <3) &&<>{formatWindDirection(current?.windDirection)}</>} 
                             <span  className="opacity-80">{formatWind(current?.windSpeed)}</span>
                             {speedUnit(Number(current?.windSpeed))}
                         </p>
                     </div>
-                    <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:gap-5">
-                        <p style={{ color: `${uvHealth(current?.uv)}` }} className="flex items-center gap-1.5">
+                    <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:gap-3.5">
+                        <p style={{ color: `${uvHealth(current?.uv)}` }} className="flex items-center gap-1.5 max-sm:gap-1">
                             <HelperIcon icon="uv"/> <span className="opacity-80">uv Index</span> {Math.round(Number(current?.uv))}
                         </p>
-                        <p className="flex items-center gap-1.5" >
+                        <p className="flex items-center gap-1.5 max-sm:gap-1" >
                             <HelperIcon icon="humidity"/><span className="opacity-80">Humidity</span> {Math.floor(Number(current?.humidity))}
                         </p>
                         
-                        <p className="flex gap-1.5 items-center">
+                        <p className="flex gap-1.5 items-center max-sm:gap-1">
                            <HelperIcon icon="visibility"/> <span className="opacity-80"> {formatVisibility(Number(current.visibility) / 1000)}</span>
                            vis {distanceUnit(current?.visibility)}
                         </p>
