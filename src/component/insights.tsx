@@ -13,7 +13,7 @@ import { generateActivityTitle, generateActivityInsight } from "@/utils/activity
 
 export function WeatherInsight({ weatherForecast }: { weatherForecast: ForecastType }) {
   if (!weatherForecast) return null;
-  const { formatHour, formatDay } = useDateConfigStore();
+  const { formatHour, formatDay, dayTime } = useDateConfigStore();
   const { temperatureUnit } = useSettingsStore();
  
   const [precipitationTitle, setPrecipitationTitle] = useState<string>('Dry days ahead')
@@ -23,9 +23,9 @@ export function WeatherInsight({ weatherForecast }: { weatherForecast: ForecastT
   useEffect(() => {
     if(weatherForecast){
       setPrecipitationTitle(generatePrecipitationTitle(weatherForecast))
-      setPrecipitationInsight(generatePrecipitationInsight(weatherForecast, formatHour, formatDay))
+      setPrecipitationInsight(generatePrecipitationInsight(weatherForecast, formatHour, formatDay, dayTime))
       setTemperatureTitle(generateTemperatureTitle(weatherForecast))
-      setTemperatureInsight(generateTemperatureInsight(weatherForecast, formatHour, formatDay, temperatureUnit))
+      setTemperatureInsight(generateTemperatureInsight(weatherForecast, formatHour, formatDay, temperatureUnit, dayTime))
     }
     
   }, [weatherForecast]);

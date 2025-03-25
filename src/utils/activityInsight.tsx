@@ -1,16 +1,15 @@
 import { ForecastType } from "@/types/weatherTypes";
 
-function generateActivityInsight(forecast: Pick<ForecastType, "precipitationHours" | "maxTemperature" | "uvIndexMax" | "days" | 'currentDate'>,
+function generateActivityInsight(forecast: Pick<ForecastType, "precipitationHours" |'precipitationProbabilityMax' | "maxTemperature" |'minTemperature' | "uvIndexMax" | "days" | 'currentDate'>,
     formatDay: (day: string, current: string) => string,
   ) {
-    const { precipitationHours, maxTemperature, uvIndexMax, days, currentDate} = forecast
+    const { precipitationHours, precipitationProbabilityMax, minTemperature, maxTemperature, uvIndexMax, days, currentDate} = forecast
     if (!days.length) return <span>No activity suggestions.</span>;
   
     const INDOOR_THRESHOLD_HOURS = 10; // More than 5 hours of rain → indoors
     const HEAT_THRESHOLD = 35; // Over 38°C → avoid outdoor
     const UV_DANGER_THRESHOLD = 9; // UV index over 9 → avoid sun
-    const COOL_WEATHER = 20; // Ideal for outdoor activities
-    const VACATION_DAYS = 2; // Next 2 days for vacation
+    const COOL_WEATHER = 25; // Ideal for outdoor activities
   
     let activityMessage = null;
   
@@ -42,22 +41,15 @@ function generateActivityInsight(forecast: Pick<ForecastType, "precipitationHour
     }
   
     // **Look ahead for vacation-friendly days**
-    const goodDays = days.filter((_, i) => maxTemperature[i] <= COOL_WEATHER);
-    const vacationDays = days.slice(1, VACATION_DAYS + 1);
+    const goodDays = days.filter((_, i) => maxTemperature[i] <= COOL_WEATHER  && minTemperature[i] > 19 && precipitationProbabilityMax[i] < 10);
   
-    if (vacationDays.length) {
+    if (goodDays.length) {
       activityMessage = (
         <>
-          {activityMessage} Also, <span>great days for a vacation, </span>{vacationDays.length <5 ? <>{vacationDays.map((i)=>formatDay(i, currentDate)).join(", ")}</> : 'this week'}.
+          {activityMessage} Also, <span>great days for a vacation, </span>{goodDays.length <5 ? <>{goodDays.map((i)=>formatDay(i, currentDate)).join(", ")}</> : 'this week'}.
         </>
       );
-    } else if (goodDays.length) {
-      activityMessage = (
-        <>
-          {activityMessage} Plus, <span>outdoor-friendly days, </span>{goodDays.length < 5 ? <>{goodDays.map((i)=>formatDay(i, currentDate)).join(", ")}</> : 'this week'}
-        </>
-      );
-    }
+    } 
   
     return <p className="activity-insight">{activityMessage}</p>;
   }

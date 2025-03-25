@@ -1,9 +1,11 @@
 import { ForecastType } from "@/types/weatherTypes";
 
+
 function generateTemperatureInsight( forecast: Pick<ForecastType, 'temperature'| 'hours' | 'days' |'minTemperature' | 'maxTemperature' | 'currentDate'>,
     formatHour: (hour: string, current: string) => string ,
     formatDay: (day: string, current: string) => string,
     temperatureUnit: (temp: number) => string,
+    dayTime: (hour: string) => string,
   ) {
     const { temperature, maxTemperature, minTemperature, hours, days, currentDate} = forecast
     // Find hottest and coldest hours
@@ -13,24 +15,28 @@ function generateTemperatureInsight( forecast: Pick<ForecastType, 'temperature'|
   
     let hottestHour = formatHour(hours[hottestHourIndex], currentDate);
     let coldestHour = formatHour(hours[coldestHourIndex], currentDate);
-    let hottestTemp = temperature[hottestHourIndex];
-    let coldestTemp = temperature[coldestHourIndex];
+    let hottestTemp = temperatureUnit(temperature[hottestHourIndex]);
+    let coldestTemp = temperatureUnit(temperature[coldestHourIndex]);
+    let hottestTime = dayTime(hours[hottestHourIndex])
+    let coldestTime = dayTime(hours[coldestHourIndex])
   
     // Find hottest and coldest days
-    let hottestDayIndex =maxTemperature.indexOf(Math.max(...maxTemperature));
-    let coldestDayIndex = minTemperature.indexOf(Math.min(...minTemperature));
   
-    let hottestDay = formatDay(days[hottestDayIndex], currentDate);
-    let coldestDay = formatDay(days[coldestDayIndex], currentDate);
-    let hottestDayTemp = maxTemperature[hottestDayIndex];
-    let coldestDayTemp = minTemperature[coldestDayIndex];
+    const avgTemps = days.map((_, i)=> (minTemperature[i] + maxTemperature[i] / 2))
+    const hottestIndex = avgTemps.indexOf(Math.max(...avgTemps))
+    const coldestIndex = avgTemps.indexOf(Math.min(...avgTemps))
+    let hottestDay = formatDay(days[hottestIndex], currentDate);
+    let coldestDay = formatDay(days[coldestIndex], currentDate);
+    let hottestDayTemp = temperatureUnit(avgTemps[hottestIndex]);
+    let coldestDayTemp = temperatureUnit(avgTemps[coldestIndex]);
   
     return (
       <p>
-        The hottest hour will be <span>{hottestHour} ({temperatureUnit(hottestTemp)})</span>, while the coldest will be{" "}
-        <span>{coldestHour} ({temperatureUnit(coldestTemp)})</span>. The hottest day will be <span>{hottestDay}</span> with an 
-        average of <span>({temperatureUnit(hottestDayTemp)})</span>, and the coldest will be <span>{coldestDay}</span> with an 
-        average of <span>({temperatureUnit(coldestDayTemp)})</span>.
+        The hottest time will be in the <span>{hottestTime} hours</span> at <span>{hottestHour} with ({hottestTemp})</span>
+        , while the coldest time will be in the <span>{coldestTime} hours </span>
+        at <span>{coldestHour} with ({coldestTemp})</span>. <br/> The hottest day will be <span>{hottestDay}</span> with an 
+        average of <span>({hottestDayTemp})</span>, and the coldest will be <span>{coldestDay}</span> with an 
+        average of <span>({coldestDayTemp})</span>.
       </p>
     );
   }
@@ -45,9 +51,8 @@ function generateTemperatureInsight( forecast: Pick<ForecastType, 'temperature'|
     // Get today's temperature
     const todayAvgTemp = dailyAvgTemp[0];
   
-    // Determine hot or cold thresholds (adjustable)
-    const HOT_THRESHOLD = 30; // Example: 30°C and above is considered hot
-    const COLD_THRESHOLD = 10; // Example: 10°C and below is considered cold
+    const HOT_THRESHOLD = 30; 
+    const COLD_THRESHOLD = 10;
   
     let title = "Moderate Temperature"; // Default title
   

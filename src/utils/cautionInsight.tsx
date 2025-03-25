@@ -1,4 +1,5 @@
 import { ForecastType } from "@/types/weatherTypes";
+import { Presentation } from "lucide-react";
 
 function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "precipitationSum" | "maxTemperature" | "minTemperature" | "days" | 'currentDate'>,
     formatDay: (day: string, current: string) => string,
@@ -54,31 +55,31 @@ function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "pre
     );
   }
 
-  function generateCautionTitle({ precipitationSum, precipitationProbabilityMax, maxTemperature, uvIndexMax, days,}: 
+  function generateCautionTitle({ precipitationSum, maxTemperature, uvIndexMax, days,}: 
     Pick<ForecastType,"precipitationSum" | "precipitationProbabilityMax" | "maxTemperature" | "uvIndexMax" | "days">,
   ){
     if (!days.length) return 'Caution';
   
     // **Thresholds**
-    const FLOOD_RISK = 50; // mm of rain
-    const HIGH_PRECIP_PROB = 80; // % chance of rain
+    const FLOOD_RISK = 50; 
+    const HIGH_PRECIP_PROB = 28; 
     const HIGH_UV = 7;
     const HEAT_WAVE = 35;
-    const COLD_WAVE = 5;
+    const COLD_WAVE = 8;
   
-    // **Priority-Based Title Selection**
-    let title = "Good Week"; // Default title
+
+    let title = "Good Week"; 
     if (precipitationSum[0] > FLOOD_RISK) {
-      title = "Floods";
+      title = "Possible Floods";
+    }else if (precipitationSum[0] > HIGH_PRECIP_PROB) {
+      title = "Heavy Rain";
     } else if (maxTemperature[0] > HEAT_WAVE) {
       title = "Too Hot";
-    } else if (precipitationProbabilityMax[0] > HIGH_PRECIP_PROB) {
-      title = "Heavy Rain";
-    } else if (uvIndexMax[0] > HIGH_UV) {
-      title = "High UV";
     } else if (maxTemperature[0] < COLD_WAVE) {
       title = "Freezing";
-    }
+    }else if (uvIndexMax[0] > HIGH_UV) {
+      title = "High UV";
+    } 
   
     return title;
   }

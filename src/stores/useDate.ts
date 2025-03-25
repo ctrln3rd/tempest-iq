@@ -18,6 +18,7 @@ interface DateConfigState {
     formatHour: (inputDate: string, currentDate: string) => string;
     isDayHour: (hour: string, sunrise: string, sunset: string) => boolean;
     checkSameDay: (day: string) => boolean;
+    dayTime: (hour: string) => string;
     calculateAstro: (sunrise: string, sunset: string, current: string, nextSunrise: string, isDay: boolean) => { progress: number; last: string; first: string };
     checkWeatherDiffExpired: (lastDate: number, hours: number) => boolean;
 }
@@ -81,6 +82,19 @@ export const useDateConfigStore = create<DateConfigState>(() => ({
         }catch(err){
             console.error(err)
             return false;
+        }
+    },
+    dayTime: (hour) => {
+        try{
+            const thehour = getHours(parseISO(hour))
+            if(thehour >= 5 && thehour < 8) return "dawn";
+            if(thehour >= 8 && thehour < 12) return "morning";
+            if(thehour >= 12 && thehour < 17) return "afternoon";
+            if(thehour >= 17 && thehour < 20) return "evening";
+            return "night";
+        }catch(err){
+            console.error(err)
+            return "uknown"
         }
     },
     checkSameDay: (day) => isToday(parseISO(day)),
