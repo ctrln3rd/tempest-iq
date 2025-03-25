@@ -3,9 +3,9 @@ import { ForecastType } from "@/types/weatherTypes";
 
 const generatePrecipitationTitle = ({hours, precipitationProbability, precipitationSum, precipitation } : 
   Pick<ForecastType, 'precipitationProbability' | 'hours' | 'precipitation' | 'precipitationSum'>) => {
-  const rainNow = precipitationProbability[0] > 50 && precipitation[0] > 0; // Is it raining now?
-  const rainToday = hours.some((_, i) => i < 24 && precipitation[i] > 0 && precipitationProbability[i] > 50 ); // Any rain today?
-  const rainThisWeek = precipitationSum.some((sum, i) => i > 0 && sum > 1); // Rain in coming days?
+  const rainNow = precipitationProbability[0] > 50 && precipitation[0] > 0; 
+  const rainToday = hours.some((_, i) => i < 24 && precipitation[i] > 0 && precipitationProbability[i] > 50 ); 
+  const rainThisWeek = precipitationSum.some((sum, i) => i > 0 && sum > 1); 
   if (rainNow) return "Rain Now";
   if (rainToday) return "Rain Coming";
   if (rainThisWeek) return "Rainy Week Ahead";
@@ -72,7 +72,7 @@ const generatePrecipitationInsight = (forecast : Pick<ForecastType, 'hours' |'da
     }else{
     return (
       <p>
-        Dry today, but <span>{upcomingRainDays.join(", ")}</span> ${upcomingRainDays.length > 1 ? 'are' : 'is'} the next wet ${upcomingRainDays.length > 1 ? 'days' : 'day'}.
+        Dry today, but <span>{upcomingRainDays.join(", ")}</span> {upcomingRainDays.length > 1 ? 'are' : 'is'} the next wet ${upcomingRainDays.length > 1 ? 'days' : 'day'}.
       </p>
     );
   }

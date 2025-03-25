@@ -41,7 +41,7 @@ export const useDateConfigStore = create<DateConfigState>(() => ({
             if (diff === 0) return 'Today';
             if (diff === 1) return 'Tomorrow';
             if (diff === -1) return 'Yesterday';
-            return format(filtered1, 'EEE');
+            return format(filtered1, 'EEEE');
         } catch (err) {
             console.error(err);
             return 'day';

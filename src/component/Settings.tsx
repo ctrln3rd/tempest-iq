@@ -128,8 +128,9 @@ export default function Settings(){
                 <p><span className='opacity-70'>Location features</span> nominatim via openstreetmap,org</p>
                 <p><span className='opacity-70'>Weather Data</span> open-meteo.com</p>
             </div>
-            <footer>
+            <footer className='flex items-center gap-2'>
             <p>&copy; created by austine mark</p>
+            <button><a href='https://github.com/ctrln3rd/weather-rush'>source code</a></button>
     </footer>
         </div>
     )

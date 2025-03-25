@@ -17,7 +17,6 @@ export default function Header() {
     const router = useRouter();
     const [locationName, setLocationName] = useState<string | null>(null);
 
-    // ✅ Use useEffect to access search params safely
     useEffect(() => {
         if (typeof window !== "undefined") {
             const urlParams = new URLSearchParams(window.location.search);

@@ -46,7 +46,7 @@ function generateActivityInsight(forecast: Pick<ForecastType, "precipitationHour
     if (goodDays.length) {
       activityMessage = (
         <>
-          {activityMessage} Also, <span>great days for a vacation, </span>{goodDays.length <5 ? <>{goodDays.map((i)=>formatDay(i, currentDate)).join(", ")}</> : 'this week'}.
+          {activityMessage} Also, <span>great {goodDays.length > 1 ? 'days' : 'day'} for a vacation is, </span>{goodDays.length <5 ? <>{goodDays.map((i)=>formatDay(i, currentDate)).join(", ")}</> : 'this week'}.
         </>
       );
     } 

@@ -1,5 +1,4 @@
 import { ForecastType } from "@/types/weatherTypes";
-import { Presentation } from "lucide-react";
 
 function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "precipitationSum" | "maxTemperature" | "minTemperature" | "days" | 'currentDate'>,
     formatDay: (day: string, current: string) => string,
@@ -8,7 +7,7 @@ function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "pre
     if (!days.length) return <span>No caution alerts.</span>;
   
     const UV_THRESHOLD = 7;
-    const RAIN_THRESHOLD = 10;
+    const RAIN_THRESHOLD = 25;
     const HOT_TEMP_THRESHOLD = 35;
     const COLD_TEMP_THRESHOLD = 5;
   
@@ -17,39 +16,40 @@ function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "pre
     const hotDays = days.filter((_, i) => maxTemperature[i] >= HOT_TEMP_THRESHOLD);
     const coldDays = days.filter((_, i) => minTemperature[i] <= COLD_TEMP_THRESHOLD);
   
-    const uvPart = highUvDays.length ? (
-      <>
-        <span>high UV radiation</span> expected{highUvDays.length < 3 ? <span> ,{highUvDays.map((i)=>formatDay(i, currentDate)).join(", ")}</span> : ' this week'}
-      </>
-    ) : null;
-  
+    
     const rainPart = highRainDays.length ? (
       <>
-        {uvPart ? " and " : ""}
-        <span>heavy rainfall</span> expected{highRainDays.length < 5 ?<span> ,{highRainDays.map((i)=>formatDay(i, currentDate)).join(", ")}</span> : ' almost everyday this week'}
+        <span>heavy rainfall</span> expected {highRainDays.length < 5 ?<span> {highRainDays.map((i)=>formatDay(i, currentDate)).join(", ")}</span> : ' almost everyday this week'}
       </>
     ) : null;
   
     const hotPart = hotDays.length ? (
       <>
-        {(uvPart || rainPart) ? " and " : ""}
-        <span>very hot temperatures</span> expected{hotDays.length < 3  ? <span> ,{hotDays.map((i)=>formatDay(i, currentDate)).join(", ")}</span> : ' this week'}
+        {(rainPart) ? " and " : ""}
+        <span>very hot temperatures</span> expected {hotDays.length < 3  ? <span>{hotDays.map((i)=>formatDay(i, currentDate)).join(", ")}</span> : ' this week'}
       </>
     ) : null;
   
     const coldPart = coldDays.length ? (
       <>
-        {(uvPart || rainPart || hotPart) ? " and " : ""}
-        <span>cold conditions</span> expected{coldDays.length < 3 ? <span> ,{coldDays.map((i)=>formatDay(i, currentDate)).join(", ")}</span> : ' this week'}
+        {(rainPart || hotPart) ? " and " : ""}
+        <span>cold conditions</span> expected {coldDays.length < 3 ? <span>{coldDays.map((i)=>formatDay(i, currentDate)).join(", ")}</span> : ' this week'}
+      </>
+    ) : null;
+    const uvPart = highUvDays.length ? (
+      <>
+        {(rainPart || hotPart || coldPart) ? " and " : ""}
+        <span>high UV radiation</span> expected {highUvDays.length < 3 ? <span> ,{highUvDays.map((i)=>formatDay(i, currentDate)).join(", ")}</span> : ' this week'}
       </>
     ) : null;
   
+  
     return (
       <div className="caution-insight">
-        {uvPart}
         {rainPart}
         {hotPart}
         {coldPart}
+        {uvPart}
         {!uvPart && !rainPart && !hotPart && !coldPart && "No extreme weather expected."}
       </div>
     );
@@ -62,7 +62,7 @@ function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "pre
   
     // **Thresholds**
     const FLOOD_RISK = 50; 
-    const HIGH_PRECIP_PROB = 28; 
+    const HIGH_PRECIP_PROB = 25; 
     const HIGH_UV = 7;
     const HEAT_WAVE = 35;
     const COLD_WAVE = 8;
@@ -71,7 +71,7 @@ function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "pre
     let title = "Good Week"; 
     if (precipitationSum[0] > FLOOD_RISK) {
       title = "Possible Floods";
-    }else if (precipitationSum[0] > HIGH_PRECIP_PROB) {
+    }else if (precipitationSum[0] >= HIGH_PRECIP_PROB) {
       title = "Heavy Rain";
     } else if (maxTemperature[0] > HEAT_WAVE) {
       title = "Too Hot";

@@ -202,26 +202,26 @@ function WeatherComonent(){
                 <div className="flex items-center gap-7 justify-center max-md:gap-5 max-sm:flex-col max-sm:gap-2.5">
                     <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:gap-5">
                         <p className=" flex gap-1.5 items-center">
-                           <HelperIcon icon="feelslike" /> Feels like <span 
-                           className="opacity-85">{temperatureUnit(Number(current?.temperatureApparent))}</span>
+                           <HelperIcon icon="feelslike" /> <span className="opacity-85">Feels like</span>
+                           {temperatureUnit(Number(current?.temperatureApparent))}
                         </p>
                         <p className=" flex gap-1.5 items-center">
-                           <HelperIcon icon="wind"/> {current.windSpeed <3 &&<>{formatWindDirection(current?.windDirection)}</>} 
-                            <span>{formatWind(current?.windSpeed)}</span>
-                            <span className="opacity-80">{speedUnit(Number(current?.windSpeed))}</span>
+                           <HelperIcon icon="wind"/> {!(current.windSpeed <3) &&<>{formatWindDirection(current?.windDirection)}</>} 
+                            <span  className="opacity-80">{formatWind(current?.windSpeed)}</span>
+                            {speedUnit(Number(current?.windSpeed))}
                         </p>
                     </div>
                     <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:gap-5">
                         <p style={{ color: `${uvHealth(current?.uv)}` }} className="flex items-center gap-1.5">
-                            <HelperIcon icon="uv"/> uv Index <span className="opacity-80">{Math.round(Number(current?.uv))}</span>
+                            <HelperIcon icon="uv"/> <span className="opacity-80">uv Index</span> {Math.round(Number(current?.uv))}
                         </p>
                         <p className="flex items-center gap-1.5" >
-                            <HelperIcon icon="humidity"/>Humidity <span className="opacity-80">{Math.floor(Number(current?.humidity))}</span>
+                            <HelperIcon icon="humidity"/><span className="opacity-80">Humidity</span> {Math.floor(Number(current?.humidity))}
                         </p>
                         
                         <p className="flex gap-1.5 items-center">
-                           <HelperIcon icon="visibility"/> <span className="opacity-80">{distanceUnit(current?.visibility)}</span>
-                            <span> {formatVisibility(Number(current.visibility) / 1000)}</span>
+                           <HelperIcon icon="visibility"/> <span className="opacity-80"> {formatVisibility(Number(current.visibility) / 1000)}</span>
+                           vis {distanceUnit(current?.visibility)}
                         </p>
                     </div>
                 </div>
