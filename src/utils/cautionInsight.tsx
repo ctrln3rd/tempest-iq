@@ -65,10 +65,10 @@ function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "pre
     const HIGH_PRECIP_PROB = 25; 
     const HIGH_UV = 7;
     const HEAT_WAVE = 35;
-    const COLD_WAVE = 8;
+    const COLD_WAVE = 5;
   
 
-    let title = "Good Week"; 
+    let title = "Any Caution"; 
     if (precipitationSum[0] > FLOOD_RISK) {
       title = "Possible Floods";
     }else if (precipitationSum[0] >= HIGH_PRECIP_PROB) {

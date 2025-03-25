@@ -7,7 +7,8 @@ function generateActivityInsight(forecast: Pick<ForecastType, "precipitationHour
     if (!days.length) return <span>No activity suggestions.</span>;
   
     const INDOOR_THRESHOLD_HOURS = 10; // More than 5 hours of rain → indoors
-    const HEAT_THRESHOLD = 35; // Over 38°C → avoid outdoor
+    const HEAT_THRESHOLD = 35;
+    const COLD_THRESHOLD = 5; // Over 38°C → avoid outdoor
     const UV_DANGER_THRESHOLD = 9; // UV index over 9 → avoid sun
     const COOL_WEATHER = 25; // Ideal for outdoor activities
   
@@ -24,6 +25,12 @@ function generateActivityInsight(forecast: Pick<ForecastType, "precipitationHour
       activityMessage = (
         <>
           <span>Too hot for outdoor activities</span>, consider <span>swimming or staying in shade</span>.
+        </>
+      );
+    }else if (minTemperature[0] < COLD_THRESHOLD) {
+      activityMessage = (
+        <>
+          <span>Too cold for outdoor activities</span>, consider <span>keeping warm or staying by fire</span>.
         </>
       );
     } else if (uvIndexMax[0] > UV_DANGER_THRESHOLD) {
@@ -79,7 +86,7 @@ function generateActivityInsight(forecast: Pick<ForecastType, "precipitationHour
     } else if (uvIndexMax[0] > HIGH_UV) {
       title = "Sun screen"; // UV warning
     } else if (maxTemperature[0] >= PERFECT_TEMP[0] && maxTemperature[0] <= PERFECT_TEMP[1]) {
-      title = "Vacation Week"; // Perfect temperatures
+      title = "Vacation"; // Perfect temperatures
     } else if (maxTemperature[0] < CHILLY_TEMP) {
       title = "Cozy Indoors"; // Too chilly for outside
     }
