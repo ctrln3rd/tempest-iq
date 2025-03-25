@@ -75,7 +75,7 @@ button:not(.no-global-style){
     @apply fixed top-0 left-0 w-full h-full flex gap-4 pointer-events-none;
   }
   .cloud {
-    @apply absolute bg-gray-500 opacity-80 w-[65%] h-[45%] rounded-full blur-3xl max-sm:blur-2xl;
+    @apply absolute bg-gray-600 opacity-85 w-[65%] h-[45%] rounded-full blur-3xl max-sm:blur-2xl;
     animation: cloud-move 12s linear infinite;
   }
 
@@ -84,7 +84,7 @@ button:not(.no-global-style){
     @apply fixed top-0 left-0 w-full h-full flex gap-4 pointer-events-none;
   }
   .light-cloud {
-    @apply absolute bg-gray-400 opacity-70 w-[30%] h-[25%] rounded-full blur-2xl max-sm:blur-xl;
+    @apply absolute bg-gray-400 opacity-75 w-[30%] h-[25%] rounded-full blur-2xl max-sm:blur-xl;
     animation: cloud-move 12s linear infinite;
   }
 

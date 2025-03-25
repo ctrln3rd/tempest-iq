@@ -180,7 +180,7 @@ export default function Home() {
         {locations && <div className="flex flex-col items-start gap-3 w-full max-sm:items-stretch max-sm:px-1">
           {locations.map((loc: any) => (
             <div key={loc.id} className="flex flex-col gap-3  items-center justify-between min-w-[40vw] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
-              <Link href={{pathname: '/weather', query: {id: loc.id, name: loc.name}}}
+              <Link href={{pathname: '/weather', query: {id: loc.id, name: loc.name}}} prefetch={false}
               className="flex justify-between items-center w-full px-2 cursor-pointer" >
               <h3 className="flex flex-col items-start gap-1 cursor-pointer" >
               <span className="text-lg max-sm:text-base font-medium self-start">{loc.name} {loc.current && "(Current)"}</span>

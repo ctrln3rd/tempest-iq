@@ -20,14 +20,14 @@ const codeDetails: Record<string, WeatherCondition> = {
   clear: {
     codes: [0],
     icon: "clear",
-    gradient: "bg-gradient-to-b from-blue-700 to-amber-500 blur-md",
+    gradient: "bg-gradient-to-b from-sky-700 to-amber-400 blur-md",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black blur-md",
     animation: "",
   },
   "mostly clear": {
     codes: [1],
     icon: "clear",
-    gradient: "bg-gradient-to-b from-blue-700 to-amber-500 blur-md",
+    gradient: "bg-gradient-to-b from-sky-700 to-amber-400 blur-md",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black blur-md",
     animation: "",
   },

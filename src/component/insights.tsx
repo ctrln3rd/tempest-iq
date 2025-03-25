@@ -33,16 +33,16 @@ export function WeatherInsight({ weatherForecast }: { weatherForecast: ForecastT
   return (
     <>
       <div className="flex flex-col items-start gap-1 precipitation-insight">
-        <div className="flex gap-1 items-center opacity-70">
+        <div className="flex gap-1 items-center">
           <HelperIcon icon="precipitation"/>
-          <h4>{precipitationTitle}</h4>
+          <h3 className="opacity-80">{precipitationTitle}</h3>
         </div>
          {precipitationInsight && <>{precipitationInsight}</>}
       </div>
       <div className="flex flex-col items-start gap-1 temperature-insight">
-        <div className="flex gap-1 items-center opacity-70">
+        <div className="flex gap-1 items-center">
           <HelperIcon icon="temperature"/>
-          <h4>{temperatureTitle}</h4>
+          <h3 className="opacity-80">{temperatureTitle}</h3>
         </div>
         {temperatureInsight && <>{temperatureInsight}</>}
       </div>
@@ -73,15 +73,15 @@ export function CautionAndActivities({ weatherForecast}:{weatherForecast: Foreca
          <div className="flex flex-col gap-1 items-start caution-insight">
        <div className="flex items-center gap-1 opacity-70">
          <HelperIcon icon="warning2"/>
-         <h3>{cautionTitle}</h3>
+         <h3 className="opacity-80">{cautionTitle}</h3>
        </div>
            {cautionInsight}
          </div>
        )}
        {activityTitle && (<div className="flex flex-col gap-1 items-start actvity-insight">
-       <div className="flex items-center gap-1 opacity-70">
+       <div className="flex items-center gap-1">
          <HelperIcon icon="activity"/>
-         <h3>{activityTitle}</h3>
+         <h3 className="opacity-80">{activityTitle}</h3>
        </div>
         {activityInsight}
      </div>)}
