@@ -39,19 +39,26 @@ It is powered by:
 ![Home](/screenshots/desktop/weather.jpg)
 ![Home](/screenshots/mobile/weather.jpg)
 
+---
+
 
 ### 📍 Locations  
 ![locations](/screenshots/desktop/locations.jpg)
 ![locations](/screenshots/mobile/locations.jpg)
+
+---
 
 ### 🔍 Search Locations  
 ![Search](/screenshots/desktop/addlocation.jpg)
 ![Search](/screenshots/mobile/addlocation.jpg)
 rchm.jpg)
 
+---
+
 ### ⚙️ Settings 
 ![Settings](/screenshots/desktop/settings.jpg)
-![Settings](/screenshots/mobile/setttings.jpg
+![Settings](/screenshots/mobile/setttings.jpg)
+
 ---
 
 ## 📦 **Installation**
