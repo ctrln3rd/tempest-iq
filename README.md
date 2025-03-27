@@ -51,7 +51,7 @@ rchm.jpg)
 
 ### ⚙️ Settings 
 ![Settings](/screenshots/desktop/settings.jpg)
-![Settings](/screenshots/mobile/settings.jpg
+![Settings](/screenshots/mobile/setting.jpg
 ---
 
 ## 📦 **Installation**
