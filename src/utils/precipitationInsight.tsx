@@ -36,7 +36,7 @@ const generatePrecipitationInsight = (forecast : Pick<ForecastType, 'hours' |'da
   .map((day, i) => ((precipitationSum[i] > 1 && i !== 0) ? formatDay(day, currentDate) : null))
   .filter(Boolean);
   let nextRainDay = upcomingRainDays.length > 0 ? upcomingRainDays[0] : null;
-  let isRainingNow = precipitation[0] > 0 && precipitationProbability[0] > 50;
+  let isRainingNow = precipitation[0] > 0 && precipitationProbability[0] > 70;
   let rainEndHour = 0;
 
   if (isRainingNow) {
@@ -45,9 +45,9 @@ const generatePrecipitationInsight = (forecast : Pick<ForecastType, 'hours' |'da
     }
     const rainEndTime = formatHour(hours[rainEndHour], currentDate);
   return (
-    <p> {getSurely(precipitationProbability[0])} <span>{getPrecipitationType(temperature[0])}</span> likely to continue {rainEndHour < 18 ?
+    <p> <span>{getPrecipitationType(temperature[0])}</span> {rainEndHour > 1 ? <>likely to continue  {rainEndHour < 18 ?
       <>untill {rainEndHour > 3 && <> in the <span>{dayTime(hours[rainEndHour])}</span> at</>} <span>{rainEndTime}</span></> : 'almost all day'
-    }, {upcomingRainDays.length > 1  && <>and also possible to continue in the coming days {upcomingRainDays.length < 4 && <span> 
+    }</>: 'likely to stop this hour'}. {upcomingRainDays.length > 1  && <> And also possible to continue in the coming days {upcomingRainDays.length < 4 && <span> 
           ,{upcomingRainDays.join(", ")}</span>}</>}</p>
   );
   }
@@ -56,7 +56,7 @@ const generatePrecipitationInsight = (forecast : Pick<ForecastType, 'hours' |'da
       return (
         <p> {getSurely(precipitation[nextRainHour])} <span>{getPrecipitationType(temperature[nextRainHour])}</span> around 
           {nextRainHour > 3 && <><span> {dayTime(hours[nextRainHour])}</span> time at</>}
-          <span> {nextRainTime}</span>, {upcomingRainDays.length > 1  && <> and  also possible to continue in the coming days {upcomingRainDays.length < 4 && <span>
+          <span> {nextRainTime}</span>. {upcomingRainDays.length > 1  && <> And  also possible to continue in the coming days {upcomingRainDays.length < 4 && <span>
               ,{upcomingRainDays.join(", ")}</span>}</>} </p>
       );
   }
@@ -66,13 +66,13 @@ const generatePrecipitationInsight = (forecast : Pick<ForecastType, 'hours' |'da
     if(upcomingRainDays.length > 3){
       return (
         <p>
-          Dry today, wet days are coming.
+          Dry today, but wet days are coming.
         </p>
       )
     }else{
     return (
       <p>
-        Dry today, but <span>{upcomingRainDays.join(", ")}</span> {upcomingRainDays.length > 1 ? 'are' : 'is'} the next wet ${upcomingRainDays.length > 1 ? 'days' : 'day'}.
+        Dry today, but <span>{upcomingRainDays.join(", ")}</span> {upcomingRainDays.length > 1 ? 'are' : 'is'} the next wet {upcomingRainDays.length > 1 ? 'days' : 'day'}.
       </p>
     );
   }

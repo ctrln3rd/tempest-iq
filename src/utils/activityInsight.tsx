@@ -6,7 +6,7 @@ function generateActivityInsight(forecast: Pick<ForecastType, "precipitationHour
     const { precipitationHours, precipitationProbabilityMax, minTemperature, maxTemperature, uvIndexMax, days, currentDate} = forecast
     if (!days.length) return <span>No activity suggestions.</span>;
   
-    const INDOOR_THRESHOLD_HOURS = 10; // More than 5 hours of rain → indoors
+    const INDOOR_THRESHOLD_HOURS = 12; // More than 5 hours of rain → indoors
     const HEAT_THRESHOLD = 35;
     const COLD_THRESHOLD = 5; // Over 38°C → avoid outdoor
     const UV_DANGER_THRESHOLD = 9; // UV index over 9 → avoid sun
@@ -71,7 +71,7 @@ function generateActivityInsight(forecast: Pick<ForecastType, "precipitationHour
     if (!days.length) return 'activity recommendations';
   
     // **Thresholds**
-    const INDOOR_RAIN_HOURS = 10; // More than 5 hours of rain = stay indoors
+    const INDOOR_RAIN_HOURS = 12; // More than 5 hours of rain = stay indoors
     const EXTREME_HEAT = 35; // Too hot for outdoor activities
     const HIGH_UV = 9; // Dangerous UV levels
     const PERFECT_TEMP = [20, 30]; // Ideal for vacations

@@ -15,6 +15,7 @@ import FullForecast from "./forecasts";
 import AstroTrack from "./astroTrack";
 import { HelperIcon, ThemeIcon } from "./icons";
 
+
 // Define TypeScript interfaces
 
 interface Location {
@@ -46,9 +47,10 @@ function WeatherComonent(){
     const [isFull, setFull] = useState(false);
     const locationId = params.get('id') || ''
     const locationName = params.get('name') || 'Nairobi'
+    const [lastFetched, setLastFetched] = useState<number | null>(null);
     //configs
     const {temperatureUnit, temperatureUnitChart, speedUnit, distanceUnit , getAutoAge}= useSettingsStore();
-    const {checkWeatherDiffExpired, formatLocalDate} = useDateConfigStore();
+    const {checkWeatherDiffExpired, formatLocalDate, getTimeDifference} = useDateConfigStore();
     const {locations, weatherData, saveWeatherData, saveShortWeatherData, saveLocation} = useLocalStorageStore();
     const {getCodeBackground,getCodeCondition, formatWind, formatVisibility, formatWindDirection, uvHealth} = useWeatherConfigStore();
     
@@ -108,8 +110,9 @@ function WeatherComonent(){
         if(response){
          if(isSaved){
             saveWeatherData(String(location?.id), response);
-            saveShortWeatherData(String(location?.id), String(response.current.code ?? 3));
+            saveShortWeatherData(String(location?.id), String(response.current.code ?? 3),Number(response.current.isDay) ?? 1);
             feedData(response)
+            setLastFetched(Date.now())
         }else{
           setAddWeather(response)
           setAdd(true)
@@ -124,6 +127,7 @@ function WeatherComonent(){
             const cachedWeather = weatherData[String(location?.id)];
             if (cachedWeather) {
                 feedData(cachedWeather.data)
+                setLastFetched(cachedWeather.timestamp)
                 if(checkWeatherDiffExpired(cachedWeather.timestamp, getAutoAge())) {
                     const toastId = toast.loading('Updating...');
                     const response = await fetchnewWeather();
@@ -155,7 +159,7 @@ function WeatherComonent(){
     const saveNewLocation =()=>{
         saveLocation(location, false, true)
         saveWeatherData(String(location?.id), isAddWeather)
-        saveShortWeatherData(String(location?.id), String(isAddWeather?.current.code ?? 3))
+        saveShortWeatherData(String(location?.id), String(isAddWeather?.current.code ?? 3), Number(isAddWeather?.current.isDay) ?? 1)
         setAdd(false)
         setAddWeather(null)
     }
@@ -173,7 +177,7 @@ function WeatherComonent(){
         const response = await fetchWeatherData(location?.lat, location?.lon);
         if(response){
             saveWeatherData(String(location?.id), response);
-            saveShortWeatherData(String(location?.id), String(response.current.code ?? 3));
+            saveShortWeatherData(String(location?.id), String(response.current.code ?? 3), Number(response.current.isDay) ?? 1);
             feedData(response)
             toast.update(toastId,{ render: 'updated', isLoading: false, autoClose: 3000,})
         }else{
@@ -238,7 +242,9 @@ function WeatherComonent(){
                 <span className="opacity-80">{formatLocalDate(String(current.time))}</span>
                 </div>
                 <button onClick={handleRefresh}> update</button>
-                </div>
+            </div>
+            {lastFetched && <div className="flex items-center gap-1.5"> 
+                <HelperIcon icon="clock"/> last fetched: <span className="opacity-80">{getTimeDifference(lastFetched)}</span> </div>}
             {!isFull && <div className="flex flex-col items-start gap-7">
                 <h3>AI summaries and insights</h3>
                 <div className="flex flex-col items-start gap-6">

@@ -1,6 +1,6 @@
 import {FilePenLine, FileText, Bolt, Share2, MapPinCheckInside,
     Thermometer, Umbrella, CircleAlert, ClockAlert, Accessibility, Hourglass, TrendingUpDown, CalendarClock, ListRestart, SunMoon, Droplet,
-    Smile, Globe, Hand, Wind, Eye,
+    Smile, Globe, Hand, Wind, Eye, Clock,
     Sun, Moon, CloudSun, CloudMoon, Cloud, CloudRain, CloudDrizzle, CloudFog, CloudSnow, CloudLightning,
     LucideIcon
 } from "lucide-react"
@@ -31,7 +31,7 @@ function ConditionIcon({condition, isDay}: ConditionIconProps){
 
 interface HelperIconProps {
     icon: 'temperature' | 'precipitation' | 'warning1' | 'warning2' | 'activity' | 'forecast' |'hour' | 'day' |'resetlist' | 'astro' | 'droplet' |
-    'wind' | 'feelslike' | 'visibility'  | 'uv' | 'humidity'
+    'wind' | 'feelslike' | 'visibility'  | 'uv' | 'humidity' | 'clock'
 }
 
 function HelperIcon({icon}: HelperIconProps){
@@ -52,7 +52,8 @@ function HelperIcon({icon}: HelperIconProps){
         wind: Wind,
         feelslike: Hand,
         uv: Sun,
-        visibility: Eye
+        visibility: Eye,
+        clock: Clock
     }
 
     const IconComponent = iconMap[icon] || Thermometer

@@ -22,7 +22,7 @@ function generateTemperatureInsight( forecast: Pick<ForecastType, 'temperature'|
   
     // Find hottest and coldest days
   
-    const avgTemps = days.map((_, i)=> (minTemperature[i] + maxTemperature[i] / 2))
+    const avgTemps = days.map((_, i)=> ((minTemperature[i] + maxTemperature[i]) / 2))
     const hottestIndex = avgTemps.indexOf(Math.max(...avgTemps))
     const coldestIndex = avgTemps.indexOf(Math.min(...avgTemps))
     let hottestDay = formatDay(days[hottestIndex], currentDate);

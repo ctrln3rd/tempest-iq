@@ -16,6 +16,7 @@ interface WeatherData {
 
 interface ShortWeatherData {
   code: string;
+  isday: number;
   timestamp: number;
 }
 
@@ -32,7 +33,7 @@ interface LocalStorageState {
   saveLocation: (location: any, isCurrent: boolean, isParam: boolean) => void;
   removeLocation: (id: string) => void;
   saveWeatherData: (locationId: string, data: any) => void;
-  saveShortWeatherData: (locationId: string, code: string) => void;
+  saveShortWeatherData: (locationId: string, code: string, isday: number) => void;
   saveSettings: (values: AppSettings) => void;
   clearLocations: () => void;
 }
@@ -116,11 +117,11 @@ export const useLocalStorageStore = create<LocalStorageState>((set, get) => ({
     });
   },
 
-  saveShortWeatherData: (locationId, code) => {
+  saveShortWeatherData: (locationId, code, isday) => {
     if (!isClient) return;
     
     set((state) => {
-      const updatedData = { ...state.shortWeatherData, [locationId]: { code, timestamp: Date.now() } };
+      const updatedData = { ...state.shortWeatherData, [locationId]: { code, isday, timestamp: Date.now() } };
       localStorage.setItem("shortweatherdata", JSON.stringify(updatedData));
       return { shortWeatherData: updatedData };
     });

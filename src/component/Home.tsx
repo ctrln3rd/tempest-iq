@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -190,7 +189,7 @@ export default function Home() {
                 {shortWeatherData[loc.id] ? (
                   <div className="flex flex-col gap-2 items-end">
                     <div className="flex flex-row items-center gap-1.5">
-                      <ConditionIcon condition={getCodeIcon(Number(shortWeatherData[loc.id].code))} isDay={false}/>
+                      <ConditionIcon condition={getCodeIcon(Number(shortWeatherData[loc.id].code ?? 3))} isDay={Boolean(shortWeatherData[loc.id].isday ?? 1)}/>
                       {getCodeCondition(Number(shortWeatherData[loc.id].code))}
                     </div>
                     <p className="opacity-70 font-light">{getTimeDifference(shortWeatherData[loc.id].timestamp)}</p>
