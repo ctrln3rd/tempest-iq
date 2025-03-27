@@ -243,7 +243,7 @@ function WeatherComonent(){
                 </div>
                 <button onClick={handleRefresh}> update</button>
             </div>
-            {lastFetched && <div className="flex items-center gap-1.5"> 
+            {lastFetched && <div className="self-end flex items-center gap-1.5"> 
                 <HelperIcon icon="clock"/> last fetched: <span className="opacity-80">{getTimeDifference(lastFetched)}</span> </div>}
             {!isFull && <div className="flex flex-col items-start gap-7">
                 <h3>AI summaries and insights</h3>
