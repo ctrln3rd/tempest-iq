@@ -179,6 +179,7 @@ function WeatherComonent(){
             saveWeatherData(String(location?.id), response);
             saveShortWeatherData(String(location?.id), String(response.current.code ?? 3), Number(response.current.isDay) ?? 1);
             feedData(response)
+            setLastFetched(Date.now())
             toast.update(toastId,{ render: 'updated', isLoading: false, autoClose: 3000,})
         }else{
             toast.update(toastId,{ render: 'error updating', isLoading: false, autoClose: 3000,});
