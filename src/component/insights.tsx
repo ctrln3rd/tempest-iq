@@ -4,10 +4,10 @@ import { useDateConfigStore } from "@/stores/useDate";
 import { ForecastType } from "@/types/weatherTypes";
 import { useSettingsStore } from "@/stores/useSettings";
 import { HelperIcon } from "./icons";
-import { generatePrecipitationTitle, generatePrecipitationInsight } from "@/utils/precipitationInsight";
-import { generateTemperatureTitle, generateTemperatureInsight } from "@/utils/temperatureInsight";
-import { generateCautionTitle, generateCautionInsight } from "@/utils/cautionInsight";
-import { generateActivityTitle, generateActivityInsight } from "@/utils/activityInsight";
+import { generatePrecipitationInsight } from "@/utils/precipitationInsight";
+import { generateTemperatureInsight } from "@/utils/temperatureInsight";
+import { generateCautionInsight } from "@/utils/cautionInsight";
+import { generateActivityInsight } from "@/utils/activityInsight";
 
 
 
@@ -22,10 +22,12 @@ export function WeatherInsight({ weatherForecast }: { weatherForecast: ForecastT
   const [temperatureInsight, setTemperatureInsight] = useState<ReactNode | null>(null);
   useEffect(() => {
     if(weatherForecast){
-      setPrecipitationTitle(generatePrecipitationTitle(weatherForecast))
-      setPrecipitationInsight(generatePrecipitationInsight(weatherForecast, formatHour, formatDay, dayTime))
-      setTemperatureTitle(generateTemperatureTitle(weatherForecast))
-      setTemperatureInsight(generateTemperatureInsight(weatherForecast, formatHour, formatDay, temperatureUnit, dayTime))
+      const [newPrecipitationTitle, newPrecipitation] = generatePrecipitationInsight(weatherForecast, formatHour, formatDay, dayTime)
+      const [newTemperatureTitle, newTemperature] = generateTemperatureInsight(weatherForecast, formatHour, formatDay, temperatureUnit, dayTime)
+      setPrecipitationTitle(newPrecipitationTitle)
+      setPrecipitationInsight(newPrecipitation)
+      setTemperatureTitle(newTemperatureTitle)
+      setTemperatureInsight(newTemperature)
     }
     
   }, [weatherForecast]);
@@ -59,10 +61,12 @@ export function CautionAndActivities({ weatherForecast}:{weatherForecast: Foreca
 
   useEffect(()=>{
       if(weatherForecast){
-          setCautionTitle(generateCautionTitle(weatherForecast))
-          setActivityTitle(generateActivityTitle(weatherForecast))
-          setCautionInsight(generateCautionInsight(weatherForecast, formatDay))
-          setActivityInsight(generateActivityInsight(weatherForecast, formatDay))
+          const [newcautionTitle, newcaution] = generateCautionInsight(weatherForecast, formatDay)
+          const [newactivityTitle, newactivity] = generateActivityInsight(weatherForecast, formatDay)
+          setCautionTitle(newcautionTitle)
+          setActivityTitle(newactivityTitle)
+          setCautionInsight(newcaution)
+          setActivityInsight(newactivity)
       }
 
   }, [weatherForecast])

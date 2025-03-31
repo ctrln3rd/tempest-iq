@@ -25,7 +25,7 @@ interface Location {
 export default function Home() {
   const router = useRouter();
   const { locations, saveLocation, removeLocation,  shortWeatherData, clearLocations } = useLocalStorageStore();
-  const {isCurrentChecked, setIsCurrentChecked, isEditMode, setEditMode, isCurrentRefresh, setCurrentRefresh} = useHomeStore();
+  const {isCurrentChecked, setIsCurrentChecked, isEditMode, setEditMode} = useHomeStore();
   const {getCodeCondition, getCodeIcon} = useWeatherConfigStore()
   const { getTimeDifference } = useDateConfigStore()
   const { getThreshold } = useSettingsStore();
@@ -136,7 +136,7 @@ export default function Home() {
     })
     }
   }
-  useEffect(()=>{
+
   const handleRefreshClick = async()=>{
      const toastId = toast.loading('updating...')
      const geolocation: any = await getgeolocation();
@@ -154,12 +154,7 @@ export default function Home() {
      }else{
       toast.update(toastId,{ render: 'location error', isLoading: false, autoClose: 3000, })
      }
-    setCurrentRefresh(false)
   }
-  if(isCurrentRefresh){
-    handleRefreshClick()
-  }
-}, [isCurrentRefresh])
 
   useEffect(()=>{
     if(isSearch && inputRef.current){
@@ -199,6 +194,7 @@ export default function Home() {
                 )}
                 </div>
               </Link>
+              {loc.current && <button onClick={handleRefreshClick} className="justify-self-end self-end">update</button>}
               {(!loc.current && isEditMode) && <button onClick={() => handleremove(String(loc.id))} className="justify-self-end self-end" >Remove</button>}
             </div>
           ))}
@@ -217,9 +213,12 @@ export default function Home() {
                 ref={inputRef}
                 maxLength={50}
                 required
-                className="border-none border-b border-white/80 pb-2 focus:outline-none w-[100%] text-base max-sm:text-sm"
+                className="appearance-none  border-b border-b-white/30 pb-2 px-1  w-[100%] text-base max-sm:text-sm"
               />
-              {(searchQuery.length > 1 && searchResults.length < 1) && <button type="submit"> search</button>}
+              {(searchQuery.length > 1) && <div className="flex gap-8 max-sm:gap-2.5">
+              {searchResults.length < 1 && <button type="submit"> search</button>}
+              <button type="button" onClick={() => {setIsSearch(false); setSearchResults([])}}>cancel</button>
+              </div>}
             </form>
           <div className="flex flex-col items-start gap-3">
             <p className="self-center">{searchResponse || "Locations will appear here to choose from"}</p>
@@ -232,7 +231,7 @@ export default function Home() {
               ))}
             </div>}
           </div>
-          <button onClick={() => {setIsSearch(false); setSearchResults([])}} className=" absolute bottom-2.5 self-end justify-self-end">Cancel</button>
+          <button  className=" absolute bottom-2.5 self-end justify-self-end">Cancel</button>
         </div>
       )}
       {isEditMode && 

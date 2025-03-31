@@ -1,15 +1,17 @@
 import { ForecastType } from "@/types/weatherTypes";
+import React from "react";
 
 function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "precipitationSum" | "maxTemperature" | "minTemperature" | "days" | 'currentDate'>,
     formatDay: (day: string, current: string) => string,
-) {
+):[string, React.ReactNode]{
     const { uvIndexMax, precipitationSum, maxTemperature, minTemperature, days,currentDate } = forecast
-    if (!days.length) return <span>No caution alerts.</span>;
   
     const UV_THRESHOLD = 7;
     const RAIN_THRESHOLD = 25;
     const HOT_TEMP_THRESHOLD = 35;
     const COLD_TEMP_THRESHOLD = 5;
+
+    let cautionTitle = "Any Caution"; 
   
     const highUvDays = days.filter((_, i) => uvIndexMax[i] >= UV_THRESHOLD);
     const highRainDays = days.filter((_, i) => precipitationSum[i] >= RAIN_THRESHOLD);
@@ -21,7 +23,7 @@ function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "pre
       <>
         <span>heavy rainfall</span> expected {highRainDays.length < 5 ?<span> {highRainDays.map((i)=>formatDay(i, currentDate)).join(", ")}</span> : ' almost everyday this week'}
       </>
-    ) : null;
+    )  : null;
   
     const hotPart = hotDays.length ? (
       <>
@@ -42,46 +44,29 @@ function generateCautionInsight(forecast: Pick<ForecastType, "uvIndexMax" | "pre
         <span>high UV radiation</span> expected {highUvDays.length < 3 ? <span> ,{highUvDays.map((i)=>formatDay(i, currentDate)).join(", ")}</span> : ' this week'}
       </>
     ) : null;
+
+    if(rainPart){
+      cautionTitle = "Heavy Rainfall"
+    }else if (hotPart){
+      cautionTitle = "Too Hot"
+    }else if(coldPart){
+      cautionTitle = "Too Cold"
+    }else if(uvPart){
+      cautionTitle = "High radiation"
+    }
   
   
-    return (
-      <div className="caution-insight">
+    return [cautionTitle, 
+      <p className="caution-insight">
         {rainPart}
         {hotPart}
         {coldPart}
         {uvPart}
         {!uvPart && !rainPart && !hotPart && !coldPart && "No extreme weather expected."}
-      </div>
-    );
+      </p>
+    ];
   }
 
-  function generateCautionTitle({ precipitationSum, maxTemperature, uvIndexMax, days,}: 
-    Pick<ForecastType,"precipitationSum" | "precipitationProbabilityMax" | "maxTemperature" | "uvIndexMax" | "days">,
-  ){
-    if (!days.length) return 'Caution';
   
-    // **Thresholds**
-    const FLOOD_RISK = 50; 
-    const HIGH_PRECIP_PROB = 25; 
-    const HIGH_UV = 7;
-    const HEAT_WAVE = 35;
-    const COLD_WAVE = 5;
   
-
-    let title = "Any Caution"; 
-    if (precipitationSum[0] > FLOOD_RISK) {
-      title = "Possible Floods";
-    }else if (precipitationSum[0] >= HIGH_PRECIP_PROB) {
-      title = "Heavy Rain";
-    } else if (maxTemperature[0] > HEAT_WAVE) {
-      title = "Too Hot";
-    } else if (maxTemperature[0] < COLD_WAVE) {
-      title = "Freezing";
-    }else if (uvIndexMax[0] > HIGH_UV) {
-      title = "High UV";
-    } 
-  
-    return title;
-  }
-  
-export {generateCautionTitle, generateCautionInsight}
+export {generateCautionInsight}

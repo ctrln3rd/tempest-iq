@@ -12,7 +12,7 @@ export default function Header() {
     //const searchParams = useSearchParams();
     const {settings, resetSettings} = useSettingsStore();
     const {clearLocations} = useLocalStorageStore();
-    const {setCurrentRefresh, setEditMode, isCurrentRefresh, isEditMode} =  useHomeStore();
+    const {setEditMode, isEditMode} =  useHomeStore();
     const pathname = usePathname();
     const router = useRouter();
     const [locationName, setLocationName] = useState<string | null>(null);
@@ -23,9 +23,7 @@ export default function Header() {
             setLocationName(urlParams.get("name"));
         }
         if(pathname !== '/'){
-            if(isCurrentRefresh){
-                setCurrentRefresh(false)
-            }else if(isEditMode){
+            if(isEditMode){
                 setEditMode(false)
             }
         }
@@ -84,12 +82,6 @@ export default function Header() {
                 {pathname === '/' && <button className="no-global-style bg-none bg-transparent p-0 cursor-pointer !important"
                 onClick={()=>setEditMode(true)}>
                 <HeaderIcon icon="editlocations"/>
-                </button>}
-                {pathname === '/' && <button  onClick={()=>setCurrentRefresh(true)}
-                 className="no-global-style bg-none bg-transparent p-0 cursor-pointer !important"
-
-                >
-                   <HeaderIcon icon="updatelocation"/>
                 </button>}
                 <Link href={'/settings'}
                 className="no-global-style bg-none p-0 cursor-pointer">

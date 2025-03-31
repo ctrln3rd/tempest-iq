@@ -1,4 +1,5 @@
 import { ForecastType } from "@/types/weatherTypes";
+import React from "react";
 
 
 function generateTemperatureInsight( forecast: Pick<ForecastType, 'temperature'| 'hours' | 'days' |'minTemperature' | 'maxTemperature' | 'currentDate'>,
@@ -6,7 +7,7 @@ function generateTemperatureInsight( forecast: Pick<ForecastType, 'temperature'|
     formatDay: (day: string, current: string) => string,
     temperatureUnit: (temp: number) => string,
     dayTime: (hour: string) => string,
-  ) {
+  ): [string, React.ReactNode] {
     const { temperature, maxTemperature, minTemperature, hours, days, currentDate} = forecast
     // Find hottest and coldest hours
   
@@ -29,46 +30,31 @@ function generateTemperatureInsight( forecast: Pick<ForecastType, 'temperature'|
     let coldestDay = formatDay(days[coldestIndex], currentDate);
     let hottestDayTemp = temperatureUnit(avgTemps[hottestIndex]);
     let coldestDayTemp = temperatureUnit(avgTemps[coldestIndex]);
+    let todayavg = temperatureUnit(avgTemps[0])
+
+    const weeklyAvgTemp = avgTemps.reduce((sum, temp) => sum + temp, 0) / avgTemps.length;
+
+    let temperatureTitle = "Moderate Day";
+    if(avgTemps[0] >= 30){
+       temperatureTitle = "Hot Day"
+    }else if(avgTemps[0] <= 10){
+      temperatureTitle = "Cold Day"
+    }else if(weeklyAvgTemp >= 30){
+      temperatureTitle = "Hot Week"
+    }else if(weeklyAvgTemp <= 10){
+      temperatureTitle = "Cold Week"
+    }
   
-    return (
+    return [ temperatureTitle,
       <p>
-        The hottest time will be in the <span>{hottestTime} hours</span> at <span>{hottestHour} with ({hottestTemp})</span>
+        Today average temperature is <span>{todayavg}</span> and hottest time will be in the <span>{hottestTime} hours</span> at <span>{hottestHour} with ({hottestTemp})</span>
         , while the coldest time will be in the <span>{coldestTime} hours </span>
         at <span>{coldestHour} with ({coldestTemp})</span>. <br/> The hottest day will be <span>{hottestDay}</span> with an 
         average of <span>({hottestDayTemp})</span>, and the coldest will be <span>{coldestDay}</span> with an 
         average of <span>({coldestDayTemp})</span>.
       </p>
-    );
+    ];
   }
   
-  function generateTemperatureTitle({ maxTemperature, minTemperature } : Pick<ForecastType, 'maxTemperature' | 'minTemperature'>) {
-    // Calculate the daily average temperature
-    const dailyAvgTemp = maxTemperature.map((max, i) => (max + minTemperature[i]) / 2);
-    
-    // Calculate the weekly average temperature
-    const weeklyAvgTemp = dailyAvgTemp.reduce((sum, temp) => sum + temp, 0) / dailyAvgTemp.length;
-  
-    // Get today's temperature
-    const todayAvgTemp = dailyAvgTemp[0];
-  
-    const HOT_THRESHOLD = 30; 
-    const COLD_THRESHOLD = 10;
-  
-    let title = "Moderate Temperature"; // Default title
-  
-    if (todayAvgTemp >= HOT_THRESHOLD) {
-      title = "Hot Day";
-    } else if (todayAvgTemp <= COLD_THRESHOLD) {
-      title = "Cold Day";
-    }
-  
-    if (weeklyAvgTemp >= HOT_THRESHOLD) {
-      title = "Hot Week";
-    } else if (weeklyAvgTemp <= COLD_THRESHOLD) {
-      title = "Cold Week";
-    }
-  
-    return title;
-  }
 
-export {generateTemperatureTitle, generateTemperatureInsight}
+export {generateTemperatureInsight}
