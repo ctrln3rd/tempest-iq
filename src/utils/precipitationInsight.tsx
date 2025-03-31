@@ -39,14 +39,14 @@ function generatePrecipitationInsight (forecast : Pick<ForecastType, 'hours' |'d
     const rainEndTime = formatHour(hours[rainEndHour], currentDate);
     precipitationResponse = <> <span>{getPrecipitationType(temperature[0])}</span> {rainEndHour > 1 ? <>likely to continue  {rainEndHour < 18 ?
       <>untill {rainEndHour > 3 && <> in the <span>{dayTime(hours[rainEndHour])}</span> at</>} <span>{rainEndTime}</span></> : 'almost all day'
-    }</>: 'likely to stop this hour'}. {upcomingRainDays.length > 1  && <> And also possible to continue in the coming days {upcomingRainDays.length < 4 && <span> 
+    }</>: 'likely to stop this hour'}. {upcomingRainDays.length > 1  && <> And also expected in the coming days {upcomingRainDays.length < 4 && <span> 
           ,{upcomingRainDays.join(", ")}</span>}</>}</>
   
   }else if (nextRainHour !== -1) { 
     precipitationTitle = "Rain Coming"
     precipitationResponse = <> {getSurely(precipitationProbability[nextRainHour])} <span>{getPrecipitationType(temperature[nextRainHour])}</span> around 
       {nextRainHour > 3 && <><span> {dayTime(hours[nextRainHour])}</span> time at</>}
-      <span> {nextRainTime}</span>. {upcomingRainDays.length > 1  && <> And  also possible to continue in the coming days {upcomingRainDays.length < 4 && <span>
+      <span> {nextRainTime}</span>. {upcomingRainDays.length > 1  && <> And  also expected in the coming days {upcomingRainDays.length < 4 && <span>
           ,{upcomingRainDays.join(", ")}</span>}</>} </>
     ;
   } else if (nextRainDay) {

@@ -235,7 +235,7 @@ function WeatherComonent(){
         {forecast && <div 
         className={`flex flex-col gap-5 items-start z-5
          ${isday ? 'bg-white/10': 'bg-gray-800/5'} backdrop-blur-md 
-         border border-white/20 shadow-lg px-5 py-4 w-[60%] rounded-2xl pb-7 max-sm:px-2.5 max-sm:w-[93%]`}>
+         border border-white/20 shadow-lg px-5 py-4 w-[60%] rounded-2xl pb-7 max-sm:px-2.5 max-md:w-[80%] max-sm:w-[93%]`}>
             <div className="flex justify-between items-center w-full pb-2 border-b-1  border-b-white/70">
                 <div className="flex gap-2 items-center">
                 <HelperIcon icon="forecast"/>
