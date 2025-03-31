@@ -107,7 +107,6 @@ export default function Home() {
     try {
       setSearchResponse("searching....");
       const query = searchQuery
-      setSearchQuery('')
       const response = await fetchLocations(query)
       if(response){
       const data: Location[] = response;
@@ -194,7 +193,7 @@ export default function Home() {
                 )}
                 </div>
               </Link>
-              {loc.current && <button onClick={handleRefreshClick} className="justify-self-end self-end">update</button>}
+              {loc.current && <button onClick={handleRefreshClick} className="justify-self-end self-start">update</button>}
               {(!loc.current && isEditMode) && <button onClick={() => handleremove(String(loc.id))} className="justify-self-end self-end" >Remove</button>}
             </div>
           ))}
@@ -213,9 +212,9 @@ export default function Home() {
                 ref={inputRef}
                 maxLength={50}
                 required
-                className="appearance-none  border-b border-b-white/30 pb-2 px-1  w-[100%] text-base max-sm:text-sm"
+                className="appearance-none  border-b border-b-white/30 pb-2 px-1 w-[100%] text-base max-sm:text-sm focus:outline-none focus:border-b-white/35"
               />
-              {(searchQuery.length > 1) && <div className="flex gap-8 max-sm:gap-2.5">
+              {!(searchResponse === 'searching....') && <div className="flex gap-8 max-sm:gap-2.5">
               {searchResults.length < 1 && <button type="submit"> search</button>}
               <button type="button" onClick={() => {setIsSearch(false); setSearchResults([])}}>cancel</button>
               </div>}
@@ -231,7 +230,6 @@ export default function Home() {
               ))}
             </div>}
           </div>
-          <button  className=" absolute bottom-2.5 self-end justify-self-end">Cancel</button>
         </div>
       )}
       {isEditMode && 
