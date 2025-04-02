@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest{
         description: "Accurate forecast insights and summeries powererd by intelligence",
         icons: [
           {
-            src: "logo512.png",
+            src: "/logo512.png",
             type: "image/png",
             sizes: "512x512",
             purpose: 'any'
