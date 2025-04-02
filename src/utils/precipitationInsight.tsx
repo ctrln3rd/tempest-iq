@@ -15,9 +15,9 @@ function generatePrecipitationInsight (forecast : Pick<ForecastType, 'hours' |'d
     return "very low chance";
   };
   const getPrecipitationType = (temp: number) => {
-    if (temp <= 0) return "snow";
-    if (temp > 0 && temp < 3) return "freezing rain";
-    return "rain"; // Default to rain for warmer temperatures
+    if (temp <= 0) return "Snow";
+    if (temp > 0 && temp < 3) return "Freezing Rain";
+    return "Rain"; // Default to rain for warmer temperatures
   };
 
   let nextRainHour = precipitation.findIndex((amt, i) => amt > 0 && precipitationProbability[i] > 10); 
@@ -44,7 +44,7 @@ function generatePrecipitationInsight (forecast : Pick<ForecastType, 'hours' |'d
           ,{upcomingRainDays.join(", ")}</span>}</>}</>
   
   }else if (nextRainHour !== -1) { 
-    precipitationTitle = "Rain Coming"
+    precipitationTitle =  `${getPrecipitationType(temperature[nextRainHour])} Coming`
     precipitationResponse = <> {getSurely(precipitationProbability[nextRainHour])} <span>{getPrecipitationType(temperature[nextRainHour])}</span> around 
       {nextRainHour > 3 && <><span> {dayTime(hours[nextRainHour])}</span> time at</>}
       <span> {nextRainTime}</span>. {upcomingRainDays.length > 1  && <> Also expected in the coming days {upcomingRainDays.length < 4 && <span>
@@ -52,11 +52,11 @@ function generatePrecipitationInsight (forecast : Pick<ForecastType, 'hours' |'d
     ;
   } else if (nextRainDay) {
     if(upcomingRainDays.length > 3){
-      precipitationTitle = "Wet Days Ahead"
+      precipitationTitle = "Wet Days Coming"
       precipitationResponse =  <>Dry now, but Wet days are coming this week.</>
       
     }else{
-      precipitationTitle = "wet Day Ahead"
+      precipitationTitle = "Wet Day Coming"
       precipitationResponse = <>
         Dry now, but <span>{upcomingRainDays.join(", ")}</span> {upcomingRainDays.length > 1 ? 'are' : 'is'} the next wet {upcomingRainDays.length > 1 ? 'days' : 'day'}.
       </>

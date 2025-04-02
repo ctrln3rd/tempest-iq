@@ -203,14 +203,14 @@ function WeatherComonent(){
                     </h2>
                 </div>
                 <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:flex-col max-sm:items-start max-sm:gap-2">
-                    <p className=" flex gap-1.5 items-center max-sm:gap-0.5">
+                    <p className=" flex gap-1.5 items-center">
                         <HelperIcon icon="feelslike" /> <span className="opacity-85">Feels like</span>
                         {temperatureUnit(Number(current?.temperatureApparent))}
                     </p>
-                    <p className="flex items-center gap-1.5 max-sm:gap-0.5" >
+                    <p className="flex items-center gap-1.5" >
                         <HelperIcon icon="humidity"/><span className="opacity-80">Humidity</span> {Math.floor(Number(current?.humidity))}
                     </p>
-                    <p className=" flex gap-1.5 items-center max-sm:gap-0.5">
+                    <p className=" flex gap-1.5 items-center">
                         <HelperIcon icon="wind"/> {!(current.windSpeed <3) &&<>{formatWindDirection(current?.windDirection)}</>} 
                         <span  className="opacity-80">{formatWind(current?.windSpeed)}</span>
                         {speedUnit(Number(current?.windSpeed))}

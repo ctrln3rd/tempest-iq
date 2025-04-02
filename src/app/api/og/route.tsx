@@ -7,14 +7,14 @@ export const runtime = 'edge';
 export async function GET(req: NextRequest) {
    const {searchParams} = new URL(req.url)
    const location = searchParams.get('location') || 'Nairobi'
-   const imageUrl = 'https://tempestiq.netlify.app/thunder.png'
+   const imageUrl = 'https://tempestiq.netlify.app/logo512.png'
     return new ImageResponse(
        <div style={{
             display:'flex',
             flexDirection: 'row',
             width: '1200px',
             height: '630px',
-            backgroundColor: '#',
+            backgroundColor: '#333f50',
             color: 'white',
             alignItems: 'center',
             justifyContent: 'center',
@@ -26,8 +26,10 @@ export async function GET(req: NextRequest) {
         <img src={imageUrl} style={{width: '250px', height: '250px'}} alt='background image'/>
        
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px'}}>
-            <h1>Tempest Iq - <span style={{color: '#42b0f5', opacity: 0.8}}>{location}</span></h1>
+            <h1>TempestIQ</h1>
+            <h2 style={{color: '#42b0f5', opacity: 0.8}}>{location}</h2>
         </div>
+
         </div>,{
             width: 1200,
             height: 630,
