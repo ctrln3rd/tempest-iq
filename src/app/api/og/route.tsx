@@ -26,8 +26,8 @@ export async function GET(req: NextRequest) {
         <img src={imageUrl} style={{width: '250px', height: '250px'}} alt='background image'/>
        
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px'}}>
-            <h1>TempestIQ</h1>
-            <h2 style={{color: '#42b0f5', opacity: 0.8}}>{location}</h2>
+            <h1 style={{margin: 0, padding: 0}}>TempestIQ</h1>
+            <h2 style={{color: '#42b0f5', opacity: 0.8, margin: 0, padding: 0}}>{location}</h2>
         </div>
 
         </div>,{
