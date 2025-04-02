@@ -4,10 +4,8 @@ export interface CurrentWeatherType {
     isDay: number;
     precipitation?: number;
     code: number;
-    visibility: number;
     windSpeed: number;
     windDirection: number;
-    uv: number;
     humidity: number;
     time?: string;
 }

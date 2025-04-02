@@ -189,53 +189,39 @@ function WeatherComonent(){
         <>
             {current ? (
                 <div
-                className={`absolute inset-0 w-full h-full flex flex-col items-center gap-10 pt-20`}
-            >
-                <div className="fixed inset-0 z-0 w-full h-full">
-                <div className={`w-full h-full ${getCodeBackground(current.code, isday)}`} />
-                hello
-               </div>
+                className={`absolute inset-0 w-full h-full flex flex-col items-center gap-[20%] max-sm:gap-[25%] pb-[10%]`}>
+                <div className={`w-full h-full fixed inset-0 ${getCodeBackground(current.code, isday)}`} />
 
                {/* Weather Animations */}
                  <Animations weatherCode={current.code} isDay={isday} />
 
-            <div className='px-4 py-5 z-5 flex flex-col items-center justify-end gap-4 mt-[15dvh] max-sm:mt-[20dvh] max-sm:px-[2%]'>
-                    <h2 className=" flex flex-row items-start text-7xl justify-center">
-                        {temperatureUnitChart(Number(current?.temperature))}<span className="text-2xl justify-self-start">°</span>
+            <div className='self-start py-5 z-5 flex flex-col items-start justify-end pl-[4%] gap-4 mt-[10dvh]'>
+                <div className="flex gap-2 items-center">
+                    <p className="text-lg font-light opacity-85">{getCodeCondition(current?.code)}</p>
+                    <h2 className=" flex flex-row items-start text-2xl justify-center">
+                        {temperatureUnitChart(Number(current?.temperature))}<span className="justify-self-start">°</span>
                     </h2>
-                    <p className="text-xl font-light">{getCodeCondition(current?.code)}</p>
-                <div className="flex items-center gap-7 justify-center max-md:gap-5 max-sm:flex-col max-sm:gap-2.5">
-                    <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:gap-3.5">
-                        <p className=" flex gap-1.5 items-center max-sm:gap-1">
-                           <HelperIcon icon="feelslike" /> <span className="opacity-85">Feels like</span>
-                           {temperatureUnit(Number(current?.temperatureApparent))}
-                        </p>
-                        <p className=" flex gap-1.5 items-center max-sm:gap-1">
-                           <HelperIcon icon="wind"/> {!(current.windSpeed <3) &&<>{formatWindDirection(current?.windDirection)}</>} 
-                            <span  className="opacity-80">{formatWind(current?.windSpeed)}</span>
-                            {speedUnit(Number(current?.windSpeed))}
-                        </p>
-                    </div>
-                    <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:gap-3.5">
-                        <p style={{ color: `${uvHealth(current?.uv)}` }} className="flex items-center gap-1.5 max-sm:gap-1">
-                            <HelperIcon icon="uv"/> <span className="opacity-80">uv Index</span> {Math.round(Number(current?.uv))}
-                        </p>
-                        <p className="flex items-center gap-1.5 max-sm:gap-1" >
-                            <HelperIcon icon="humidity"/><span className="opacity-80">Humidity</span> {Math.floor(Number(current?.humidity))}
-                        </p>
-                        
-                        <p className="flex gap-1.5 items-center max-sm:gap-1">
-                           <HelperIcon icon="visibility"/> <span className="opacity-80"> {formatVisibility(Number(current.visibility) / 1000)}</span>
-                           vis {distanceUnit(current?.visibility)}
-                        </p>
-                    </div>
+                </div>
+                <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:gap-3">
+                    <p className=" flex gap-1.5 items-center max-sm:gap-0.5">
+                        <HelperIcon icon="feelslike" /> <span className="opacity-85">Feels like</span>
+                        {temperatureUnit(Number(current?.temperatureApparent))}
+                    </p>
+                    <p className=" flex gap-1.5 items-center max-sm:gap-0.5">
+                        <HelperIcon icon="wind"/> {!(current.windSpeed <3) &&<>{formatWindDirection(current?.windDirection)}</>} 
+                        <span  className="opacity-80">{formatWind(current?.windSpeed)}</span>
+                        {speedUnit(Number(current?.windSpeed))}
+                    </p>
+                    <p className="flex items-center gap-1.5 max-sm:gap-0.5" >
+                        <HelperIcon icon="humidity"/><span className="opacity-80">Humidity</span> {Math.floor(Number(current?.humidity))}
+                    </p>
                 </div>
             </div>
         {/*forecast container*/}
         {forecast && <div 
         className={`flex flex-col gap-5 items-start z-5
          ${isday ? 'bg-white/10': 'bg-gray-800/5'} backdrop-blur-md 
-         border border-white/20 shadow-lg px-5 py-4 w-[60%] rounded-2xl pb-7 max-sm:px-2.5 max-md:w-[80%] max-sm:w-[93%]`}>
+         border border-white/20 shadow-lg px-5 py-4 w-[80%] rounded-2xl pb-7 max-sm:px-2.5 max-md:w-[80%] max-sm:w-[93%]`}>
             <div className="flex justify-between items-center w-full pb-2 border-b-1  border-b-white/70">
                 <div className="flex gap-2 items-center">
                 <HelperIcon icon="forecast"/>
@@ -247,7 +233,7 @@ function WeatherComonent(){
             {lastFetched && <div className="self-end flex items-center gap-1.5"> 
                 <HelperIcon icon="clock"/> last fetched: <span className="opacity-80">{getTimeDifference(lastFetched)}</span> </div>}
             {!isFull && <div className="flex flex-col items-start gap-7">
-                <h3>AI summaries and insights</h3>
+                <h3>Smart AI summaries and insights</h3>
                 <div className="flex flex-col items-start gap-6">
                     <div className="flex gap-7 flex-col items-start">
                     <WeatherInsight weatherForecast={forecast}/>

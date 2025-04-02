@@ -6,7 +6,7 @@ import { useSettingsStore } from "@/stores/useSettings";
 import { useLocalStorageStore } from "@/stores/useLocalStorage";
 import { useHomeStore } from "@/stores/useHome";
 import { toast } from "react-toastify";
-import { HeaderIcon, OtherIcon } from "./icons";
+import { HeaderIcon } from "./icons";
 
 export default function Header() {
     //const searchParams = useSearchParams();
@@ -29,7 +29,7 @@ export default function Header() {
         }
     }, [pathname]);
 
-    let title = locationName ? decodeURIComponent(locationName) : "weather-rush";
+    let title = locationName ? decodeURIComponent(locationName) : "tempet IQ";
     if (pathname === "/settings") title = "Settings";
     
     
@@ -54,7 +54,7 @@ export default function Header() {
         const weatherUrl= window.location.href;
             navigator.share({
                 title: 'Weather update Alert',
-                text: "Check out the latest weather update for my location",
+                text: "Check out the latest sky over my location",
                 url: weatherUrl,
             })
             .then(()=> console.log('share was successful'))
@@ -65,8 +65,8 @@ export default function Header() {
    }
     
     return (
-        <header className='flex flex-row justify-between items-center relative px-10 pt-2 mx-4 max-sm:mx-2 max-sm:px-2 z-30'>
-            <h1 className="flex items-center gap-2 max-sm:gap-1.5">{title} {pathname === "/" && <OtherIcon icon="weather"/>}</h1>
+        <header className='flex flex-row justify-between items-center relative px-[3%] pt-2 z-30'>
+            <h1 className="flex items-center gap-2 max-sm:gap-1.5">{title}</h1>
             <div className='flex flex-row gap-10 max-sm:gap-8'>
                 {pathname === '/weather' && <button  onClick={shareWeather}
                  className="no-global-style bg-none bg-transparent p-0 cursor-pointer !important"

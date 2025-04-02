@@ -2,12 +2,12 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest{
     return {
-        short_name: "weather",
-        name: "weather rush",
+        short_name: "tempetiq",
+        name: "Tempet IQ",
         icons: [
           {
             src: "favicon.ico",
-            sizes: "64x64 32x32 24x24 16x16",
+            sizes: "48x48 32x32 16x16",
             type: "image/x-icon"
           },
           {

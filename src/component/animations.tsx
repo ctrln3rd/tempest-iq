@@ -46,20 +46,20 @@ const Animations = ({ weatherCode, isDay }: {weatherCode: number, isDay: boolean
       {animationClass === "animate-clouds" && (
         <div className="clouds-container">
           {[...Array(2)].map((_, i) => (
-            <div key={i} className="cloud" style={{ top: `${Math.random() * 50}%`,  animationDelay: `${i * 2}s` }} />
+            <div key={i} className="cloud" style={{ top: `${Math.random() * 30}%`,  animationDelay: `${i * 2}s` }} />
           ))}
         </div>
       )}
       {animationClass === "animate-few-clouds" && (
         <div className="few-clouds-container">
           {[...Array(2)].map((_, i) => (
-            <div key={i} className="light-cloud" style={{ top: `${Math.random() * 50}%`,  animationDelay: `${i * 2}s` }} />
+            <div key={i} className="light-cloud" style={{ top: `${Math.random() * 30}%`,  animationDelay: `${i * 2}s` }} />
           ))}
         </div>
       )}
       {animationClass === "animate-lightning" && (
         <div className="lightning-container">
-          {[...Array(10)].map((_, i) => (
+          {[...Array(15)].map((_, i) => (
             <div
               key={i}
               className="thunder-drops"

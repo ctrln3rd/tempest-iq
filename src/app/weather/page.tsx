@@ -16,13 +16,13 @@ export async function generateMetadata(
   const decodedLocationName = decodeURIComponent(locationName);
 
   return {
-    title: `Weather in ${decodedLocationName}`,
-    description: `Get the latest weather updates for ${decodedLocationName.toUpperCase()}, summarized, easy to read and interpret.`,
+    title: `${decodedLocationName} Sky`,
+    description: `Get the latest forecast for ${decodedLocationName.toUpperCase()}, summarized by smart ai, easy to read and interpret.`,
     openGraph: {
-      title: `Weather in ${decodedLocationName}`,
-      description: `Get the latest weather updates for ${decodedLocationName.toUpperCase()}, summarized, easy to read and interpret.`,
-      url: `https://weatherrush.netlify.app/weather?locationId=${locationId}&name=${encodeURIComponent(decodedLocationName)}`,
-      images: [`https://weatherrush.netlify.app/api/og?location=${encodeURIComponent(decodedLocationName)}`],
+      title: `${decodedLocationName} Sky`,
+      description: `Get the latest forecast for ${decodedLocationName.toUpperCase()}, summarized by smart ai, easy to read and interpret.`,
+      url: `https://tempetiq.netlify.app/weather?locationId=${locationId}&name=${encodeURIComponent(decodedLocationName)}`,
+      images: [`https://tempetiq.netlify.app/api/og?location=${encodeURIComponent(decodedLocationName)}`],
     },
   };
 }

@@ -51,11 +51,9 @@ const fetchWeatherData = async (lat?: number, lon?: number) => {
                     temperatureApparent: currentData.apparent_temperature ?? 0,
                     isDay: currentData.is_day ?? true,
                     precipitation: currentData.precipitation ?? 0,
-                    visibility: currentData.visibility ?? 0,
                     windSpeed: currentData.wind_speed_10m ?? 0,
                     windDirection: currentData.wind_direction_10m ?? 90,
                     humidity: currentData.relative_humidity_2m ?? 0,
-                    uv: currentData.uv_index ?? 0
 
                 },
                 forecast: {

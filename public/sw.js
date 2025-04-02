@@ -1,5 +1,5 @@
-const CACHE_NAME = 'weather-rush-v3'; // Incremented version for cache refresh
-const STATIC_CACHE_NAME = 'static-cache-v3';
+const CACHE_NAME = 'weather-rush-v1'; // Incremented version for cache refresh
+const STATIC_CACHE_NAME = 'static-cache-v1';
 const URLS_TO_CACHE = ["/", "/weather", "/settings", "/offline"];
 
 // Install event: Cache essential assets

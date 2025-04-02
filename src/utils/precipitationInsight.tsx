@@ -11,7 +11,8 @@ function generatePrecipitationInsight (forecast : Pick<ForecastType, 'hours' |'d
   const getSurely = (prob: number) => {
     if (prob > 80) return "expect";
     if (prob > 50 && prob < 80) return "possible";
-    return "low chance";
+    if(prob > 30 && prob < 50) return "low chance";
+    return "very low chance";
   };
   const getPrecipitationType = (temp: number) => {
     if (temp <= 0) return "snow";
@@ -19,7 +20,7 @@ function generatePrecipitationInsight (forecast : Pick<ForecastType, 'hours' |'d
     return "rain"; // Default to rain for warmer temperatures
   };
 
-  let nextRainHour = precipitation.findIndex((amt) => amt > 0); 
+  let nextRainHour = precipitation.findIndex((amt, i) => amt > 0 && precipitationProbability[i] > 10); 
   let nextRainTime = nextRainHour !== -1 ? formatHour(hours[nextRainHour], currentDate) : null;
   let upcomingRainDays = days
   .map((day, i) => ((precipitationSum[i] > 1 && i !== 0) ? formatDay(day, currentDate) : null))
@@ -32,30 +33,30 @@ function generatePrecipitationInsight (forecast : Pick<ForecastType, 'hours' |'d
   let precipitationTitle = ""
 
   if (isRainingNow) {
-     precipitationTitle = "Rain Now"
+     precipitationTitle = `${getPrecipitationType(temperature[0])} Now`
     while (rainEndHour < hours.length - 1 && precipitation[rainEndHour + 1] > 0) {
       rainEndHour++;
     }
     const rainEndTime = formatHour(hours[rainEndHour], currentDate);
     precipitationResponse = <> <span>{getPrecipitationType(temperature[0])}</span> {rainEndHour > 1 ? <>likely to continue  {rainEndHour < 18 ?
       <>untill {rainEndHour > 3 && <> in the <span>{dayTime(hours[rainEndHour])}</span> at</>} <span>{rainEndTime}</span></> : 'almost all day'
-    }</>: 'likely to stop this hour'}. {upcomingRainDays.length > 1  && <> And also expected in the coming days {upcomingRainDays.length < 4 && <span> 
+    }</>: 'likely to stop this hour'}. {upcomingRainDays.length > 1  && <> Also expected in the coming days {upcomingRainDays.length < 4 && <span> 
           ,{upcomingRainDays.join(", ")}</span>}</>}</>
   
   }else if (nextRainHour !== -1) { 
     precipitationTitle = "Rain Coming"
     precipitationResponse = <> {getSurely(precipitationProbability[nextRainHour])} <span>{getPrecipitationType(temperature[nextRainHour])}</span> around 
       {nextRainHour > 3 && <><span> {dayTime(hours[nextRainHour])}</span> time at</>}
-      <span> {nextRainTime}</span>. {upcomingRainDays.length > 1  && <> And  also expected in the coming days {upcomingRainDays.length < 4 && <span>
+      <span> {nextRainTime}</span>. {upcomingRainDays.length > 1  && <> Also expected in the coming days {upcomingRainDays.length < 4 && <span>
           ,{upcomingRainDays.join(", ")}</span>}</>} </>
     ;
   } else if (nextRainDay) {
     if(upcomingRainDays.length > 3){
       precipitationTitle = "Wet Days Ahead"
-      precipitationResponse =  <>Dry now, Wet days are coming this week.</>
+      precipitationResponse =  <>Dry now, but Wet days are coming this week.</>
       
     }else{
-      precipitationTitle = "Rainy Day Ahead"
+      precipitationTitle = "wet Day Ahead"
       precipitationResponse = <>
         Dry now, but <span>{upcomingRainDays.join(", ")}</span> {upcomingRainDays.length > 1 ? 'are' : 'is'} the next wet {upcomingRainDays.length > 1 ? 'days' : 'day'}.
       </>

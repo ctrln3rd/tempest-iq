@@ -75,7 +75,7 @@ button:not(.no-global-style){
     @apply fixed top-0 left-0 w-full h-full flex gap-4 pointer-events-none;
   }
   .cloud {
-    @apply absolute bg-gray-600 opacity-85 w-[80%] h-[50%] rounded-full blur-[80px] max-sm:blur-3xl;
+    @apply absolute bg-gray-600 opacity-85 w-[80%] h-[50%] rounded-full blur-3xl max-sm:blur-2xl;
     animation: cloud-move 12s linear infinite;
   }
 

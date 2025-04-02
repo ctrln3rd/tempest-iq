@@ -44,7 +44,7 @@ export default function Home() {
     setRadiusT(getThreshold());
 
  const checkLocation = async () => {
-     if(locations.length >= 30) setInfo(prev=> [...prev, 'locations list is full clear locations or remove some'])
+     if(locations.length >= 29) setInfo(prev=> [...prev, 'locations list is full clear locations or remove some'])
      const lastcurrent = locations.find(loc => loc.current === true);
            const geo_location: any = await getgeolocation();
            if(geo_location === 'notallowed'){
@@ -168,11 +168,11 @@ export default function Home() {
           <span key={index}>{info}</span>
         ))}
         </p>}
-      {!(locations.length >=30) ? <button className="self-start" onClick={()=>setIsSearch(true)}>Add location</button> :
+      {!(locations.length >= 29) ? <button className="self-start" onClick={()=>setIsSearch(true)}>Add location</button> :
       <button className="self-start" onClick={clearLocations}>clear locations</button>}
         {locations && <div className="flex flex-col items-start gap-3 w-full max-sm:items-stretch max-sm:px-1">
           {locations.map((loc: any) => (
-            <div key={loc.id} className="flex flex-col gap-3  items-center justify-between min-w-[40vw] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
+            <div key={loc.id} className="flex flex-col gap-3  items-center justify-between w-[80%] max-sm:w-[95%] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
               <Link href={{pathname: '/weather', query: {id: loc.id, name: loc.name}}} prefetch={false}
               className="flex justify-between items-center w-full px-2 cursor-pointer" >
               <h3 className="flex flex-col items-start gap-1 cursor-pointer" >

@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
             flexDirection: 'row',
             width: '1200px',
             height: '630px',
-            backgroundColor: '#767171',
+            backgroundColor: '#',
             color: 'white',
             alignItems: 'center',
             justifyContent: 'center',
@@ -23,11 +23,10 @@ export async function GET(req: NextRequest) {
             paddingInline: '10px',
             gap: '10px'
         }}> 
-        <img src={imageUrl} style={{width: '30%', height: '48%'}} alt='background image'/>
+        <img src={imageUrl} style={{width: '250px', height: '250px'}} alt='background image'/>
        
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px'}}>
-            <h1>Weather Rush</h1>
-            <h3>weather for-<span style={{color: 'wheat', opacity: 0.8}}>{location}</span></h3>
+            <h1>Tempet Iq - <span style={{color: '#42b0f5', opacity: 0.8}}>{location}</span></h1>
         </div>
         </div>,{
             width: 1200,
