@@ -2,8 +2,9 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest{
     return {
-        short_name: "tempetiq",
-        name: "Tempet IQ",
+        short_name: "tempIQ",
+        name: "TempestIQ - Smart Forecast",
+        description: "Accurate forecast insights and summeries powererd by intelligence",
         icons: [
           {
             src: "favicon.ico",

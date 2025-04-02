@@ -7,7 +7,7 @@ export const runtime = 'edge';
 export async function GET(req: NextRequest) {
    const {searchParams} = new URL(req.url)
    const location = searchParams.get('location') || 'Nairobi'
-   const imageUrl = 'https://weatherrush.netlify.app/logo512.png'
+   const imageUrl = 'https://tempestiq.netlify.app/thunder.png'
     return new ImageResponse(
        <div style={{
             display:'flex',
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
         <img src={imageUrl} style={{width: '250px', height: '250px'}} alt='background image'/>
        
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px'}}>
-            <h1>Tempet Iq - <span style={{color: '#42b0f5', opacity: 0.8}}>{location}</span></h1>
+            <h1>Tempest Iq - <span style={{color: '#42b0f5', opacity: 0.8}}>{location}</span></h1>
         </div>
         </div>,{
             width: 1200,

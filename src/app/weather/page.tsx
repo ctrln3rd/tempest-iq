@@ -21,8 +21,8 @@ export async function generateMetadata(
     openGraph: {
       title: `${decodedLocationName} Sky`,
       description: `Get the latest forecast for ${decodedLocationName.toUpperCase()}, summarized by smart ai, easy to read and interpret.`,
-      url: `https://tempetiq.netlify.app/weather?locationId=${locationId}&name=${encodeURIComponent(decodedLocationName)}`,
-      images: [`https://tempetiq.netlify.app/api/og?location=${encodeURIComponent(decodedLocationName)}`],
+      url: `https://tempestiq.netlify.app/weather?locationId=${locationId}&name=${encodeURIComponent(decodedLocationName)}`,
+      images: [`https://tempestiq.netlify.app/api/og?location=${encodeURIComponent(decodedLocationName)}`],
     },
   };
 }

@@ -1,12 +1,12 @@
 import Settings from "@/component/Settings";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-    title: 'tempet iq settings',
-    description: 'tempet iq provides you with quick detailed and easily interprateble forecast data for any location in the world',
+    title: 'tempest IQ settings',
+    description: 'tempestIQ provides you with quick detailed and easily interprateble forecast data for any location in the world',
     openGraph: {
-       title:'tempet iq settings',
-       images: ['https://tempetiq.netlify.app/opengraph.jpg'],
-       description: 'tempet iq provides you with quick detailed and easily interprateble forecast data for any location in the world'
+       title:'tempest IQ settings',
+       images: ['https://tempestiq.netlify.app/opengraph.jpg'],
+       description: 'tempestIQ provides you with quick detailed and easily interprateble forecast data for any location in the world'
     }
  }
 

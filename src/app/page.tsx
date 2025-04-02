@@ -2,12 +2,12 @@ import Home from "@/component/Home";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-   title: 'weather rush',
-   description: 'weather rush provides you with quick detailed and easily interprateble weather data for any location in the world',
+   title: 'Tempest IQ',
+   description: 'tempestIQ provides you with ai sammerized quick detailed and easily interprateble forecast data for any location in the world',
    openGraph: {
-      title:'weather rush',
-      images: ['https://weatherrush.netlify.app/opengraph.jpg'],
-      description: 'weather rush provides you with quick detailed and easily interprateble weather data for any location in the world'
+      title:'Tempest IQ',
+      images: ['https://tempestiq.netlify.app/opengraph.jpg'],
+      description: 'tempestIQ provides you with ai sammerized quick detailed and easily interprateble forecast data for any location in the world'
    }
 }
 

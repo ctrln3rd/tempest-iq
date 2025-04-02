@@ -29,7 +29,7 @@ export default function Header() {
         }
     }, [pathname]);
 
-    let title = locationName ? decodeURIComponent(locationName) : "tempet IQ";
+    let title = locationName ? decodeURIComponent(locationName) : "tempest IQ";
     if (pathname === "/settings") title = "Settings";
     
     
@@ -53,7 +53,7 @@ export default function Header() {
     if( typeof window !== 'undefined'){
         const weatherUrl= window.location.href;
             navigator.share({
-                title: 'Weather update Alert',
+                title: 'Forecast Alert',
                 text: "Check out the latest sky over my location",
                 url: weatherUrl,
             })

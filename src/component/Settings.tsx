@@ -83,7 +83,7 @@ export default function Settings(){
         <div className="flex flex-col items-start gap-5 px-20 pt-7 pb-14 max-md:px-10 max-sm:px-5">
             <div className="flex flex-col items-stretch gap-2 w-full">
                 {Object.entries(settings).map(([key, value])=>(
-                    <div key={key} className='flex flex-row justify-between w-[90%] items-center px-10 max-sm:px-7 py-5 shadow-md shadow-black rounded-lg'>
+                    <div key={key} className='flex flex-row justify-between w-[90%] max-sm:w-[95%] items-center px-10 max-sm:px-7 py-5 shadow-md shadow-black rounded-lg'>
                         <div>
                             <h4>{configtitle(key)}</h4>
                             <p className='opacity-70'>{configUnits(key, value)}</p>
@@ -112,13 +112,13 @@ export default function Settings(){
 
         
             <div className='flex flex-col gap-3'>
-            <h3 className='opacity-80'>About tempet Iq</h3>
-            <p>Tempet Iq is a showcase of my next.js(react) expertise and API integration,
+            <h3 className='opacity-80'>About tempestIQ</h3>
+            <p>TempestIQ is a showcase of my next.js(react) expertise and API integration,
                  demonstrating my proficiency in modern web development.
                  With a sleek and responsive design, the app provides real-time weather
                   updates using external APIs, 
                  allowing users to stay informed about current conditions and forecasts worldwide. 
-                 Tempet Iq reflects a commitment to user-centric design, 
+                 TempestIQ reflects a commitment to user-centric design, 
                  offering an intuitive interface and seamless navigation.<br/> <br/> For more projects showcasing my  skills, 
                 visit <button><a href="https://austinemark.netlify.app">my website</a> </button>and
                  experience the blend of functionality, aesthetics, and technical excellence firsthand.</p>
