@@ -10,12 +10,13 @@ export default function manifest(): MetadataRoute.Manifest{
             src: "/logo512.png",
             type: "image/png",
             sizes: "512x512",
-            purpose: "maskable"
+            purpose: "any"
           },
           {
             src: "/logo192.png",
             type: "image/png",
             sizes: "192x192"
+            purpose: "maskable"
           } 
         ],
         start_url: "/",

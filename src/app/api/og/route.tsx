@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
             paddingInline: '10px',
             gap: '10px'
         }}> 
-        <img src={imageUrl} style={{width: '250px', height: '250px'}} alt='background image'/>
+        <img src={imageUrl} style={{width: '300px', height: '300px'}} alt='background image'/>
        
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '5px'}}>
             <h1 style={{margin: 0, padding: 0}}>TempestIQ</h1>
