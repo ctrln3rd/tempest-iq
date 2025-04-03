@@ -190,7 +190,8 @@ function WeatherComonent(){
             {current ? (
                 <div
                 className={`absolute inset-0 w-full h-full flex flex-col items-center gap-[20%] p-0 max-sm:gap-[25%]`}>
-                <div className={`w-full h-full fixed inset-0 m-0 p-0 ${getCodeBackground(current.code, isday)}`} />
+
+                <div className={`fixed w-full h-full inset-0 m-0 p-0 ${getCodeBackground(current.code, isday)}`} />
 
                {/* Weather Animations */}
                  <Animations weatherCode={current.code} isDay={isday} />

@@ -83,7 +83,7 @@ export default function Settings(){
         <div className="flex flex-col items-start gap-5 px-20 pt-7 pb-14 max-md:px-10 max-sm:px-5">
             <div className="flex flex-col items-center gap-2 w-full">
                 {Object.entries(settings).map(([key, value])=>(
-                    <div key={key} className='flex flex-row justify-between w-full items-center px-10 max-sm:px-3 py-5 shadow-md shadow-black border border-white/10 rounded-lg'>
+                    <div key={key} className='flex flex-row justify-between w-full items-center px-10 max-sm:px-3 py-5 shadow-md  border border-white/10 rounded-lg'>
                         <div>
                             <h4>{configtitle(key)}</h4>
                             <p className='opacity-70'>{configUnits(key, value)}</p>
