@@ -189,8 +189,8 @@ function WeatherComonent(){
         <>
             {current ? (
                 <div
-                className={`absolute inset-0 w-full h-full flex flex-col items-center gap-[20%] max-sm:gap-[25%] pb-[10%]`}>
-                <div className={`w-full h-full fixed inset-0 ${getCodeBackground(current.code, isday)}`} />
+                className={`absolute inset-0 w-full h-full flex flex-col items-center gap-[20%] p-0 max-sm:gap-[25%]`}>
+                <div className={`w-full h-full fixed inset-0 m-0 p-0 ${getCodeBackground(current.code, isday)}`} />
 
                {/* Weather Animations */}
                  <Animations weatherCode={current.code} isDay={isday} />
@@ -202,7 +202,7 @@ function WeatherComonent(){
                         {temperatureUnitChart(Number(current?.temperature))}<span className="justify-self-start">°</span>
                     </h2>
                 </div>
-                <div className="flex items-center justify-center gap-7 max-md:gap-5 max-sm:flex-col max-sm:items-start max-sm:gap-2">
+                <div className="flex flex-col  justify-center gap-2">
                     <p className=" flex gap-1.5 items-center">
                         <HelperIcon icon="feelslike" /> <span className="opacity-85">Feels like</span>
                         {temperatureUnit(Number(current?.temperatureApparent))}
@@ -232,14 +232,13 @@ function WeatherComonent(){
             </div>
             {lastFetched && <div className="self-end flex items-center gap-1.5"> 
                 <HelperIcon icon="clock"/> last fetched: <span className="opacity-80">{getTimeDifference(lastFetched)}</span> </div>}
-            {!isFull && <div className="flex flex-col items-start gap-7">
+            {!isFull && <div className="flex flex-col items-start gap-12">
                 <h3>Smart AI summaries and insights</h3>
-                <div className="flex flex-col items-start gap-6">
-                    <div className="flex gap-7 flex-col items-start">
+                <div className="flex flex-col items-start gap-10">
+                    <div className="flex gap-10 flex-col items-start w-full">
                     <WeatherInsight weatherForecast={forecast}/>
                     </div>
-                    <div className="w-full h-0.5 bg-white/30"/>
-                    <div className="flex flex-col items-start gap-6">
+                    <div className="flex flex-col items-start gap-10 w-full">
                         <CautionAndActivities weatherForecast={forecast}/>
                     </div>
                 </div>

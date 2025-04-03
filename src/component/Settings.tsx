@@ -81,9 +81,9 @@ export default function Settings(){
 
     return(
         <div className="flex flex-col items-start gap-5 px-20 pt-7 pb-14 max-md:px-10 max-sm:px-5">
-            <div className="flex flex-col items-stretch gap-2 w-full">
+            <div className="flex flex-col items-center gap-2 w-full">
                 {Object.entries(settings).map(([key, value])=>(
-                    <div key={key} className='flex flex-row justify-between w-[90%] max-sm:w-[95%] items-center px-10 max-sm:px-3 py-5 shadow-md shadow-black rounded-lg'>
+                    <div key={key} className='flex flex-row justify-between w-full items-center px-10 max-sm:px-3 py-5 shadow-md shadow-black border border-white/10 rounded-lg'>
                         <div>
                             <h4>{configtitle(key)}</h4>
                             <p className='opacity-70'>{configUnits(key, value)}</p>
@@ -91,7 +91,7 @@ export default function Settings(){
                         <button onClick={() =>handelOpenChangeCard(key)}>change</button>
                     </div>
                 ))}
-             <button onClick={handlereset} className='self-start flex flex-row'> <HelperIcon icon='resetlist'/>reset setting</button>
+             <button onClick={handlereset} className='self-start flex flex-row items-center gap-0.5'> <HelperIcon icon='resetlist'/>reset setting</button>
             </div>
 
             {showchangeCard && <div className='fixed top-[50%] left-[50%] transform translate-[-50%] bg-gray-900 px-5 py-3 flex flex-col min-w-[40vw]

@@ -3,7 +3,9 @@
 
 html,body {
   font-family: var(--font-inter), sans-serif;
-  @apply bg-gray-800 text-white overflow-x-hidden max-w-screen;
+  @apply min-h-screen bg-gradient-to-r from-slate-950 to-violet-800 text-white bg-fixed overflow-x-hidden max-w-screen;
+  margin: 0;
+  padding: 0;
 }
 
 
@@ -12,9 +14,9 @@ h1{
 }
 
 button:not(.no-global-style){
-  @apply bg-blue-400/15 backdrop-blur-md
+  @apply bg-white/7 backdrop-blur-md
    text-white hover:bg-blue-600 border
-    border-white/30 active:bg-blue-900 cursor-pointer px-5 py-1.5 rounded-md max-sm:px-2 max-sm:py-1;
+    border-white/15 active:bg-blue-900 cursor-pointer px-5 py-1.5 rounded-md max-sm:px-2 max-sm:py-1;
 }
 .hide-scrollbar{
   -ms-overflow-style: none;

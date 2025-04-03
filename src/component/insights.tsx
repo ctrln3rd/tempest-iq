@@ -34,15 +34,15 @@ export function WeatherInsight({ weatherForecast }: { weatherForecast: ForecastT
 
   return (
     <>
-      <div className="flex flex-col items-start gap-1 precipitation-insight">
-        <div className="flex gap-1 items-center">
+      <div className="flex flex-col items-start gap-2.5 precipitation-insight w-full">
+        <div className="flex gap-2.5 items-center justify-center w-full bg-white/3 backdrop-blur-md border border-white/15 rounded-md px-2 py-2.5">
           <HelperIcon icon="precipitation"/>
           <h3 className="opacity-80">{precipitationTitle}</h3>
         </div>
          {precipitationInsight && <>{precipitationInsight}</>}
       </div>
-      <div className="flex flex-col items-start gap-1 temperature-insight">
-        <div className="flex gap-1 items-center">
+      <div className="flex flex-col items-start gap-2.5 temperature-insight w-full">
+        <div className="flex gap-2.5 items-center justify-center w-full bg-white/3 backdrop-blur-md border border-white/15 rounded-md px-2 py-1">
           <HelperIcon icon="temperature"/>
           <h3 className="opacity-80">{temperatureTitle}</h3>
         </div>
@@ -74,16 +74,16 @@ export function CautionAndActivities({ weatherForecast}:{weatherForecast: Foreca
    return (
      <>
        {cautionInsight && (
-         <div className="flex flex-col gap-1 items-start caution-insight">
-       <div className="flex items-center gap-1 opacity-70">
+         <div className="flex flex-col gap-2.5 items-start caution-insight w-full">
+       <div className="flex items-center gap-2.5 w-full justify-center bg-white/3 backdrop-blur-md border border-white/15 rounded-md px-2 py-1">
          <HelperIcon icon="warning2"/>
          <h3 className="opacity-80">{cautionTitle}</h3>
        </div>
            {cautionInsight}
          </div>
        )}
-       {activityTitle && (<div className="flex flex-col gap-1 items-start actvity-insight">
-       <div className="flex items-center gap-1">
+       {activityTitle && (<div className="flex flex-col gap-2.5 items-start actvity-insight w-full">
+       <div className="flex items-center gap-2.5  w-full justify-center bg-white/3 backdrop-blur-md border border-white/15 rounded-md px-2 py-1">
          <HelperIcon icon="activity"/>
          <h3 className="opacity-80">{activityTitle}</h3>
        </div>

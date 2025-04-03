@@ -26,7 +26,7 @@ export default function Home() {
   const router = useRouter();
   const { locations, saveLocation, removeLocation,  shortWeatherData, clearLocations } = useLocalStorageStore();
   const {isCurrentChecked, setIsCurrentChecked, isEditMode, setEditMode} = useHomeStore();
-  const {getCodeCondition, getCodeIcon} = useWeatherConfigStore()
+  const {getCodeCondition, getCodeIcon, getCodeBackground} = useWeatherConfigStore()
   const { getTimeDifference } = useDateConfigStore()
   const { getThreshold } = useSettingsStore();
   
@@ -170,9 +170,11 @@ export default function Home() {
         </p>}
       {!(locations.length >= 29) ? <button className="self-start" onClick={()=>setIsSearch(true)}>Add location</button> :
       <button className="self-start" onClick={clearLocations}>clear locations</button>}
-        {locations && <div className="flex flex-col items-start gap-3 w-full max-sm:items-stretch max-sm:px-1">
+        {locations && <div className="flex flex-col items-start gap-6 w-full max-sm:items-stretch max-sm:gap-3">
           {locations.map((loc: any) => (
-            <div key={loc.id} className="flex flex-col gap-3  items-center justify-between w-[80%] max-sm:w-[95%] rounded-lg shadow-md shadow-gray-900 py-3 px-1">
+            <div key={loc.id} 
+            className="flex flex-col gap-3  items-center justify-between w-full  rounded-xl shadow-md
+             bg-white/3 backdrop-blur-md border border-white/15 py-3 px-6 max-sm:px-1">
               <Link href={{pathname: '/weather', query: {id: loc.id, name: loc.name}}} prefetch={false}
               className="flex justify-between items-center w-full px-2 cursor-pointer" >
               <h3 className="flex flex-col items-start gap-1 cursor-pointer" >
@@ -201,7 +203,7 @@ export default function Home() {
       </div>
 
       {isSearch && (
-        <div ref={searchRef} className="absolute left-[50%] top-[7vh] transform translate-x-[-50%] bg-gray-900 w-[40%] h-[70%]
+        <div ref={searchRef} className="absolute left-[50%] top-[7vh] transform translate-x-[-50%] bg-[#181717] w-[40%] h-[70%]
         px-3 py-3 flex flex-col items-stretch gap-4 max-md:w-[70%] max-sm:w-[98%] z-35">
             <form onSubmit={searchLocation} className=" py-1.5  flex flex-col items-center gap-3">
               <input
@@ -232,7 +234,7 @@ export default function Home() {
           </div>
         </div>
       )}
-      {isEditMode && 
+      {isEditMode &&
       <div className="fixed bottom-[10%] left-[50%] -translate-x-[50%] flex gap-3 px-4 py-4 rounded-lg bg-gray-900/40 backdrop-blur-md shadow-xl text-nowrap">
         {locations.length < 31 && <button onClick={() => setIsSearch(true)}>add location</button>}
         <button onClick={()=> setEditMode(false)}>exit edit mode</button>
