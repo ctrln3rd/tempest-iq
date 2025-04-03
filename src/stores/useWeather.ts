@@ -24,8 +24,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "clear",
     gradient: "bg-gradient-to-b from-sky-800 to-yellow-600",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black",
-    themeDay: "#F59E0B",  // Hex for 'from-sky-800 to-yellow-600'
-    themeNight: "#1E3A8A", // Hex for 'from-indigo-900 to-black'
+    themeDay: "#00598A",  // Hex for 'from-sky-800 to-yellow-600'
+    themeNight: "#312c85", // Hex for 'from-indigo-900 to-black'
     animation: "",
   },
   "mostly clear": {
@@ -33,8 +33,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "clear",
     gradient: "bg-gradient-to-b from-sky-800 to-yellow-600",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black",
-    themeDay: "#F59E0B",
-    themeNight: "#1E3A8A",
+    themeDay: "#00598A",  // Hex for 'from-sky-800 to-yellow-600'
+    themeNight: "#312c85", // Hex for 'from-indigo-900 to-black'
     animation: "",
   },
   "partly cloudy": {
@@ -42,8 +42,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "pcloudy",
     gradient: "bg-gradient-to-b from-sky-800 to-blue-900",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black",
-    themeDay: "#3B82F6",  // Hex for 'from-sky-800 to-blue-900'
-    themeNight: "#1E3A8A", // Hex for 'from-indigo-900 to-black'
+    themeDay: "#00598A",  // Hex for 'from-sky-800 to-blue-900'
+    themeNight: "#312c85", // Hex for 'from-indigo-900 to-black'
     animation: "animate-few-clouds",
   },
   cloudy: {
@@ -51,8 +51,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "cloudy",
     gradient: "bg-gradient-to-b from-slate-600 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black",
-    themeDay: "#4B5563", // Hex for 'from-slate-600 to-gray-900'
-    themeNight: "#1F2937", // Hex for 'from-gray-800 to-black'
+    themeDay: "#45556c", // Hex for 'from-slate-600 to-gray-900'
+    themeNight: "#1E2939", // Hex for 'from-gray-800 to-black'
     animation: "animate-clouds",
   },
   drizzle: {
@@ -60,8 +60,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "drizzle",
     gradient: "bg-gradient-to-b from-gray-500 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black",
-    themeDay: "#9CA3AF", // Hex for 'from-gray-500 to-gray-900'
-    themeNight: "#1F2937", // Hex for 'from-gray-800 to-black'
+    themeDay: "#6A7282", // Hex for 'from-gray-500 to-gray-900'
+    themeNight: "#1E2939", // Hex for 'from-gray-800 to-black'
     animation: "animate-light-rain",
   },
   rain: {
@@ -69,8 +69,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "rain",
     gradient: "bg-gradient-to-b from-gray-600 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black",
-    themeDay: "#6B7280", // Hex for 'from-gray-600 to-gray-900'
-    themeNight: "#1F2937", // Hex for 'from-gray-800 to-black'
+    themeDay: "#4A5565", // Hex for 'from-gray-600 to-gray-900'
+    themeNight: "#1E2939", // Hex for 'from-gray-800 to-black'
     animation: "animate-rain",
   },
   "rain showers": {
@@ -78,8 +78,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "rain",
     gradient: "bg-gradient-to-b from-gray-600 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black",
-    themeDay: "#6B7280",
-    themeNight: "#1F2937",
+    themeDay: "#4a5565",
+    themeNight: "#1E2939",
     animation: "animate-rain",
   },
   thunderstorm: {
@@ -87,8 +87,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "thunderstorm",
     gradient: "bg-gradient-to-b from-gray-600 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black",
-    themeDay: "#6B7280",
-    themeNight: "#1F2937",
+    themeDay: "#4a5565",
+    themeNight: "#1E2939",
     animation: "animate-lightning",
   },
   snow: {
@@ -96,8 +96,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "snow",
     gradient: "bg-gradient-to-b from-blue-200 to-gray-500",
     gradientNight: "bg-gradient-to-b from-purple-900 to-black",
-    themeDay: "#93C5FD", // Hex for 'from-blue-200 to-gray-500'
-    themeNight: "#4C1D95", // Hex for 'from-purple-900 to-black'
+    themeDay: "#BEDBFF", // Hex for 'from-blue-200 to-gray-500'
+    themeNight: "#59168B", // Hex for 'from-purple-900 to-black'
     animation: "animate-snow",
   },
   fog: {
@@ -105,8 +105,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "fog",
     gradient: "bg-gradient-to-b from-blue-200 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-700 to-black",
-    themeDay: "#93C5FD", // Hex for 'from-blue-200 to-gray-900'
-    themeNight: "#374151", // Hex for 'from-gray-700 to-black'
+    themeDay: "#BEDBFF", // Hex for 'from-blue-200 to-gray-900'
+    themeNight: " #364153", // Hex for 'from-gray-700 to-black'
     animation: "animate-fog",
   },
 };
