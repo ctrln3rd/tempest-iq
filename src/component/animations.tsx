@@ -1,9 +1,9 @@
 import React from "react";
 import { useWeatherConfigStore } from "@/stores/useWeather";
 
-const Animations = ({ weatherCode, isDay }: {weatherCode: number, isDay: boolean}) => {
+const Animations = ({ weatherCode }: {weatherCode: number}) => {
   const getAnimation = useWeatherConfigStore.getState().getCodeAnimation;
-  const animationClass = getAnimation(weatherCode, isDay);
+  const animationClass = getAnimation(weatherCode);
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">

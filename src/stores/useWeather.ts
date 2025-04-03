@@ -7,6 +7,8 @@ export interface WeatherCondition {
   gradient: string;
   gradientNight: string;
   animation: string;
+  themeDay: string;
+  themeNight: string;
 }
 
 export interface MoonPhase {
@@ -22,6 +24,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "clear",
     gradient: "bg-gradient-to-b from-sky-800 to-yellow-600",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black",
+    themeDay: "#F59E0B",  // Hex for 'from-sky-800 to-yellow-600'
+    themeNight: "#1E3A8A", // Hex for 'from-indigo-900 to-black'
     animation: "",
   },
   "mostly clear": {
@@ -29,6 +33,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "clear",
     gradient: "bg-gradient-to-b from-sky-800 to-yellow-600",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black",
+    themeDay: "#F59E0B",
+    themeNight: "#1E3A8A",
     animation: "",
   },
   "partly cloudy": {
@@ -36,6 +42,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "pcloudy",
     gradient: "bg-gradient-to-b from-sky-800 to-blue-900",
     gradientNight: "bg-gradient-to-b from-indigo-900 to-black",
+    themeDay: "#3B82F6",  // Hex for 'from-sky-800 to-blue-900'
+    themeNight: "#1E3A8A", // Hex for 'from-indigo-900 to-black'
     animation: "animate-few-clouds",
   },
   cloudy: {
@@ -43,6 +51,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "cloudy",
     gradient: "bg-gradient-to-b from-slate-600 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black",
+    themeDay: "#4B5563", // Hex for 'from-slate-600 to-gray-900'
+    themeNight: "#1F2937", // Hex for 'from-gray-800 to-black'
     animation: "animate-clouds",
   },
   drizzle: {
@@ -50,6 +60,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "drizzle",
     gradient: "bg-gradient-to-b from-gray-500 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black",
+    themeDay: "#9CA3AF", // Hex for 'from-gray-500 to-gray-900'
+    themeNight: "#1F2937", // Hex for 'from-gray-800 to-black'
     animation: "animate-light-rain",
   },
   rain: {
@@ -57,6 +69,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "rain",
     gradient: "bg-gradient-to-b from-gray-600 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black",
+    themeDay: "#6B7280", // Hex for 'from-gray-600 to-gray-900'
+    themeNight: "#1F2937", // Hex for 'from-gray-800 to-black'
     animation: "animate-rain",
   },
   "rain showers": {
@@ -64,6 +78,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "rain",
     gradient: "bg-gradient-to-b from-gray-600 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black",
+    themeDay: "#6B7280",
+    themeNight: "#1F2937",
     animation: "animate-rain",
   },
   thunderstorm: {
@@ -71,6 +87,8 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "thunderstorm",
     gradient: "bg-gradient-to-b from-gray-600 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-800 to-black",
+    themeDay: "#6B7280",
+    themeNight: "#1F2937",
     animation: "animate-lightning",
   },
   snow: {
@@ -78,16 +96,21 @@ const codeDetails: Record<string, WeatherCondition> = {
     icon: "snow",
     gradient: "bg-gradient-to-b from-blue-200 to-gray-500",
     gradientNight: "bg-gradient-to-b from-purple-900 to-black",
+    themeDay: "#93C5FD", // Hex for 'from-blue-200 to-gray-500'
+    themeNight: "#4C1D95", // Hex for 'from-purple-900 to-black'
     animation: "animate-snow",
   },
   fog: {
-    codes: [45, 48], // Fog Codes
+    codes: [45, 48],
     icon: "fog",
     gradient: "bg-gradient-to-b from-blue-200 to-gray-900",
     gradientNight: "bg-gradient-to-b from-gray-700 to-black",
+    themeDay: "#93C5FD", // Hex for 'from-blue-200 to-gray-900'
+    themeNight: "#374151", // Hex for 'from-gray-700 to-black'
     animation: "animate-fog",
   },
 };
+
 
 // Moon phase details
 const getMoonDetails: Record<number, MoonPhase> = {
@@ -102,49 +125,51 @@ const getMoonDetails: Record<number, MoonPhase> = {
 };
 
 // Helper functions stored inside Zustand
-export const useWeatherConfigStore = create(() => ({
-  getCodeCondition: (code: number): string => {
+export const useWeatherConfigStore = create<{
+  themeColor: string;
+  getCodeCondition: (code: number) => string;
+  getCodeBackground: (code: number, isDay: boolean) => string;
+  getCodeAnimation: (code: number) => string;
+  getCodeIcon: (code: number) => Conditions;
+  formatWind: (wind: number) => string;
+  formatWindDirection: (deg: number) => string;
+
+  
+}>((set) => ({
+  themeColor: '',
+  getCodeCondition: (code) => {
     for (let condition in codeDetails) {
       if (codeDetails[condition].codes.includes(code)) return condition;
     }
     return "unknown";
   },
 
-  getCodeBackground: (code: number, isDay: boolean): string => {
-    return Object.values(codeDetails).find(({ codes }) => codes.includes(code))?.[
-      isDay ? "gradient" : "gradientNight"
-    ] || "bg-gradient-to-b from-gray-600 to-gray-900 blur-md";
+  getCodeBackground: (code, isDay) => {
+    const condition = Object.values(codeDetails).find(({ codes }) => codes.includes(code));
+    if (condition) {
+      // Update the theme color when the background is accessed
+      set({ themeColor: isDay ? condition.themeDay : condition.themeNight });
+      return isDay ? condition.gradient : condition.gradientNight;
+    }
+    return "bg-gradient-to-b from-gray-600 to-gray-900";
   },
 
-  getCodeAnimation: (code: number, isDay: boolean): string => {
+  getCodeAnimation: (code: number) => {
     return Object.values(codeDetails).find(({ codes }) => codes.includes(code))?.animation || "";
   },
 
-  getCodeIcon: (code: number): Conditions => {
+  getCodeIcon: (code) => {
     return Object.values(codeDetails).find(({ codes }) => codes.includes(code))?.icon as Conditions || 'cloudy'
   },
 
-  getPrecipDetails: (precip: number): string => {
-    return ["rain", "snow", "cold rain", "sleet"][precip - 1] || "rain";
-  },
 
-  getMoonDetails,
-
-  truncateSentence: (sentence: string, length = 13): string =>
-    sentence.length > length ? sentence.slice(0, length) + "..." : sentence,
-
-  formatWind: (wind: number): string =>
+  formatWind: (wind) =>
     wind < 3 ? "calm" : wind < 30 ? "breeze" : wind < 70 ? "stormy" : "hurricane",
 
-  formatVisibility: (visibility: number): string =>
-    visibility >= 10 ? "excellent" : visibility >= 5 ? "good" : visibility >= 1 ? "moderate" : "very poor",
 
-  formatWindDirection: (deg: number): string => {
+  formatWindDirection: (deg) => {
     const directions = ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"];
     return directions[Math.floor((deg + 22.5) / 45) % 8];
   },
 
-  uvHealth: (index: number): string => ["#00ff37", "#ffe75c", "#ffab5c", "#ff905c", "#ff675c"][
-    index <= 2 ? 0 : index <= 5 ? 1 : index <= 7 ? 2 : index <= 10 ? 3 : 4
-  ],
 }));

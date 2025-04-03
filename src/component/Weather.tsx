@@ -52,7 +52,7 @@ function WeatherComonent(){
     const {temperatureUnit, temperatureUnitChart, speedUnit, distanceUnit , getAutoAge}= useSettingsStore();
     const {checkWeatherDiffExpired, formatLocalDate, getTimeDifference} = useDateConfigStore();
     const {locations, weatherData, saveWeatherData, saveShortWeatherData, saveLocation} = useLocalStorageStore();
-    const {getCodeBackground,getCodeCondition, formatWind, formatVisibility, formatWindDirection, uvHealth} = useWeatherConfigStore();
+    const {getCodeBackground,getCodeCondition, formatWind, formatWindDirection } = useWeatherConfigStore();
     
     useEffect(() => {
         if (!locationId) {
@@ -194,7 +194,7 @@ function WeatherComonent(){
                 <div className={`fixed w-full h-full inset-0 m-0 p-0 ${getCodeBackground(current.code, isday)}`} />
 
                {/* Weather Animations */}
-                 <Animations weatherCode={current.code} isDay={isday} />
+                 <Animations weatherCode={current.code} />
 
             <div className='self-start py-5 z-5 flex flex-col items-start justify-end pl-[4%] gap-4 mt-[10dvh]'>
                 <div className="flex gap-2 items-center">
