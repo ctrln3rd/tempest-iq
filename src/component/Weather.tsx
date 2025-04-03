@@ -49,10 +49,10 @@ function WeatherComonent(){
     const locationName = params.get('name') || 'Nairobi'
     const [lastFetched, setLastFetched] = useState<number | null>(null);
     //configs
-    const {temperatureUnit, temperatureUnitChart, speedUnit, distanceUnit , getAutoAge}= useSettingsStore();
+    const {temperatureUnit, temperatureUnitChart, speedUnit, getAutoAge}= useSettingsStore();
     const {checkWeatherDiffExpired, formatLocalDate, getTimeDifference} = useDateConfigStore();
     const {locations, weatherData, saveWeatherData, saveShortWeatherData, saveLocation} = useLocalStorageStore();
-    const {getCodeBackground,getCodeCondition, formatWind, formatWindDirection } = useWeatherConfigStore();
+    const {getCodeBackground,getCodeCondition, getThemeColor, formatWind, formatWindDirection } = useWeatherConfigStore();
     
     useEffect(() => {
         if (!locationId) {
@@ -169,6 +169,13 @@ function WeatherComonent(){
     useEffect(() => {
         if (current) {
             setIsDay(Boolean(current.isDay));
+            const themecolor = getThemeColor(current.code, Boolean(current.isDay))
+            if (themecolor) {
+                const metaThemeColor = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement;
+                if (metaThemeColor) {
+                metaThemeColor.content = themecolor;
+                }
+            }   
         }
     }, [current]);
      

@@ -8,11 +8,9 @@ import { Inter } from "next/font/google";
 import PWAInstallPrompt from "@/component/installPrompt";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 import { useSettingsStore } from "@/stores/useSettings";
-import { useWeatherConfigStore } from "@/stores/useWeather";
 
 export default function RootLayouts({ children }: { children: React.ReactNode }){
   const size = useSettingsStore().settings.displaySize;
-  const themecolor = useWeatherConfigStore().themeColor
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
@@ -21,14 +19,6 @@ export default function RootLayouts({ children }: { children: React.ReactNode })
         .catch((err) => console.log("Service Worker Registration Failed:", err));
     }
   }, []);
-  useEffect(()=>{
-    if (themecolor) {
-      const metaThemeColor = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement;
-      if (metaThemeColor) {
-        metaThemeColor.content = themecolor;
-      }
-    }
-  }, [themecolor])
   return(
     <html lang="en" className={`${inter.variable}`}>
       <head>

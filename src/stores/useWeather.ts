@@ -115,17 +115,17 @@ const codeDetails: Record<string, WeatherCondition> = {
 
 // Helper functions stored inside Zustand
 export const useWeatherConfigStore = create<{
-  themeColor: string;
   getCodeCondition: (code: number) => string;
   getCodeBackground: (code: number, isDay: boolean) => string;
+  getThemeColor: (code: number, isDay: boolean) => string;
   getCodeAnimation: (code: number) => string;
   getCodeIcon: (code: number) => Conditions;
   formatWind: (wind: number) => string;
   formatWindDirection: (deg: number) => string;
 
   
-}>((set) => ({
-  themeColor: '',
+}>(() => ({
+
   getCodeCondition: (code) => {
     for (let condition in codeDetails) {
       if (codeDetails[condition].codes.includes(code)) return condition;
@@ -136,13 +136,18 @@ export const useWeatherConfigStore = create<{
   getCodeBackground: (code, isDay) => {
     const condition = Object.values(codeDetails).find(({ codes }) => codes.includes(code));
     if (condition) {
-      // Update the theme color when the background is accessed
-      set({ themeColor: isDay ? condition.themeDay : condition.themeNight });
       return isDay ? condition.gradient : condition.gradientNight;
     }
     return "bg-gradient-to-b from-gray-600 to-gray-900";
   },
+   getThemeColor: (code, isDay)=>{
+    const condition = Object.values(codeDetails).find(({ codes }) => codes.includes(code));
+    if (condition) {
+      return isDay ? condition.themeDay : condition.themeNight;
+    }
+    return " ";
 
+   },
   getCodeAnimation: (code) => {
     return Object.values(codeDetails).find(({ codes }) => codes.includes(code))?.animation || "";
   },
