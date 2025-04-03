@@ -112,17 +112,6 @@ const codeDetails: Record<string, WeatherCondition> = {
 };
 
 
-// Moon phase details
-const getMoonDetails: Record<number, MoonPhase> = {
-  0: { text: "new moon", image: "/images/icons/newmoon.png" },
-  1: { text: "waxing crescent", image: "/images/icons/waxingcresent.png" },
-  2: { text: "first quarter", image: "/images/icons/waxingcresent.png" },
-  3: { text: "waxing gibbous", image: "/images/icons/fullmoon.png" },
-  4: { text: "full moon", image: "/images/icons/fullmoon.png" },
-  5: { text: "waning gibbous", image: "/images/icons/fullmoon.png" },
-  6: { text: "last quarter", image: "/images/icons/waningcresent.png" },
-  7: { text: "waning crescent", image: "/images/icons/waningcresent.png" },
-};
 
 // Helper functions stored inside Zustand
 export const useWeatherConfigStore = create<{
@@ -154,7 +143,7 @@ export const useWeatherConfigStore = create<{
     return "bg-gradient-to-b from-gray-600 to-gray-900";
   },
 
-  getCodeAnimation: (code: number) => {
+  getCodeAnimation: (code) => {
     return Object.values(codeDetails).find(({ codes }) => codes.includes(code))?.animation || "";
   },
 
@@ -162,10 +151,9 @@ export const useWeatherConfigStore = create<{
     return Object.values(codeDetails).find(({ codes }) => codes.includes(code))?.icon as Conditions || 'cloudy'
   },
 
-
-  formatWind: (wind) =>
-    wind < 3 ? "calm" : wind < 30 ? "breeze" : wind < 70 ? "stormy" : "hurricane",
-
+  formatWind: (wind) => 
+     wind < 3 ? "calm" : wind < 30 ? "breeze" : wind < 70 ? "stormy" : "hurricane",
+  
 
   formatWindDirection: (deg) => {
     const directions = ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"];
