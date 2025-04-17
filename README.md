@@ -1,10 +1,10 @@
 <!-- Banner -->
-![Weather Rush](https://capsule-render.vercel.app/api?type=rect&color=gradient&text=🌤️Weather%20Rush&fontSize=50&fontAlignY=45&height=100)
+![Tempest Iq](https://capsule-render.vercel.app/api?type=rect&color=gradient&text=🌤️Weather%20Rush&fontSize=50&fontAlignY=45&height=100)
 
-# 🌍 Weather Rush  
+# 🌍 Tempest IQ
 ### ⚡ Fast & Accurate Weather App built with Next.js  
 
-🚀 **Weather Rush** is a modern weather app that provides real-time weather updates for any location.  
+🚀 **Tempest Iq** is a modern weather app that provides real-time weather updates for any location.  
 It is powered by:  
 ✔️ **Open-Meteo API** (Weather Data)  
 ✔️ **Nominatim API** (Geolocation Search)  
@@ -12,7 +12,7 @@ It is powered by:
 ---
 
 ## 🌟 **Live Demo**  
-🔗 **[Try Weather Rush](https://weatherrush.netlify.app/)**  
+🔗 **[Try Tempest Iq](https://tempestiq.netlify.app/)**  
 
 ---
 
