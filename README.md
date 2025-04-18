@@ -1,5 +1,5 @@
 <!-- Banner -->
-![Tempest Iq](https://capsule-render.vercel.app/api?type=rect&color=gradient&text=🌤️Weather%20Rush&fontSize=50&fontAlignY=45&height=100)
+![Tempest Iq](https://capsule-render.vercel.app/api?type=rect&color=gradient&text=🌤️Tempest%20%-20IQ&fontSize=50&fontAlignY=45&height=100)
 
 # 🌍 Tempest IQ
 ### ⚡ Fast & Accurate Weather App built with Next.js  
