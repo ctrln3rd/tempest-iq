@@ -44,7 +44,7 @@ function generatePrecipitationInsight (forecast : Pick<ForecastType, 'hours' |'d
           ,{upcomingRainDays.join(", ")}</span>}</>}</>
   
   }else if (nextRainHour !== -1) { 
-    precipitationTitle =  `${getPrecipitationType(temperature[nextRainHour])} Coming`
+    precipitationTitle =  `${getPrecipitationType(temperature[nextRainHour])} around ${formatHour(hours[nextRainHour], currentDate)}`
     precipitationResponse = <> {getSurely(precipitationProbability[nextRainHour])} <span>{getPrecipitationType(temperature[nextRainHour])}</span> around 
       {nextRainHour > 3 && <><span> {dayTime(hours[nextRainHour])}</span> time at</>}
       <span> {nextRainTime}</span>. {upcomingRainDays.length > 1  && <> Also expected in the coming days {upcomingRainDays.length < 4 && <span>

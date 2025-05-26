@@ -34,23 +34,23 @@ function generateTemperatureInsight( forecast: Pick<ForecastType, 'temperature'|
 
     const weeklyAvgTemp = avgTemps.reduce((sum, temp) => sum + temp, 0) / avgTemps.length;
 
-    let temperatureTitle = "Moderate Day";
+    let temperatureTitlePart = "Moderate Day";
     if(avgTemps[0] >= 30){
-       temperatureTitle = "Hot Day"
+       temperatureTitlePart = "Hot Day"
     }else if(avgTemps[0] <= 10){
-      temperatureTitle = "Cold Day"
+      temperatureTitlePart = "Cold Day"
     }else if(weeklyAvgTemp >= 30){
-      temperatureTitle = "Hot Week"
+      temperatureTitlePart = "Hot Week"
     }else if(weeklyAvgTemp <= 10){
-      temperatureTitle = "Cold Week"
+      temperatureTitlePart = "Cold Week"
     }
-  
+    let temperatureTitle = `avg today(${todayavg}) - ${temperatureTitlePart}`
     return [ temperatureTitle,
       <p>
-        Today average temperature is <span>{todayavg}</span> and hottest time will be in the <span>{hottestTime} hours</span> at <span>{hottestHour} with ({hottestTemp})</span>
-        , while the coldest time will be in the <span>{coldestTime} hours </span>
-        at <span>{coldestHour} with ({coldestTemp})</span>. <br/> The hottest day will be <span>{hottestDay}</span> with an 
-        average of <span>({hottestDayTemp})</span>, and the coldest will be <span>{coldestDay}</span> with an 
+        Hottest time in the <span>{hottestTime} hours</span> at <span>{hottestHour} with ({hottestTemp})</span>
+        , while the coldest time in the <span>{coldestTime} hours </span>
+        at <span>{coldestHour} with ({coldestTemp})</span>. <br/> The hottest day is <span>{hottestDay}</span> with an 
+        average of <span>({hottestDayTemp})</span>, and the coldest day is <span>{coldestDay}</span> with an 
         average of <span>({coldestDayTemp})</span>.
       </p>
     ];
